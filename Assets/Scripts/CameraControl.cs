@@ -41,7 +41,7 @@ public class CameraControl : MonoBehaviour
         cameraDistance = 4;
         cameraDistanceLimit = new float[] { 6, 2 };
         cameraHight = 3;
-        cameraHightLimit = new float[] { 5, 0.8f };
+        cameraHightLimit = new float[] { 8, 0.8f };
         lerpTime = 0.01f;
 
         //Input
