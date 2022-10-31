@@ -9,10 +9,15 @@ public class AssetManagement : MonoBehaviour
 
     [Header("AssetObjects")]
     [Tooltip("playerObject")] public GameObject playerObject;
-    [Tooltip("enemySoldierObjects")] public GameObject[] enemySoldierObjects;
-    [Tooltip("bossObjects")] public GameObject[] bossObjects;
+    [Tooltip("enemySoldierObjects")] public GameObject[] enemySoldierObjects;    
     [Tooltip("hitTextObject")] public GameObject hitTextObject;
     [Tooltip("effectObjects")] public GameObject[] effectObjects;
+
+    [Header("BossObject")]
+    [Tooltip("bossObjects")] public List<GameObject[]> boss_List = new List<GameObject[]>();
+    [Tooltip("bossObjects1")] public GameObject[] bossObjects1;
+    [Tooltip("bossObjects2")] public GameObject[] bossObjects2;
+    [Tooltip("bossObjects3")] public GameObject[] bossObjects3;
 
     private void Awake()
     {
@@ -28,10 +33,14 @@ public class AssetManagement : MonoBehaviour
     private void Start()
     {        
         OnLoadinSingleAsset(loadPath:"prefab/player", objName:"Player", obj: out playerObject);
-        OnLoadinGroupAsset(loadPath: "prefab/enemysoldiers", obj: out enemySoldierObjects);
-        OnLoadinGroupAsset(loadPath: "prefab/boss", obj: out bossObjects);
         OnLoadinSingleAsset(loadPath: "prefab/hit_text", objName: "Hit_Text", obj: out hitTextObject);
-        OnLoadinGroupAsset(loadPath: "prefab/effect", obj: out effectObjects);
+        OnLoadinGroupAsset(loadPath: "prefab/enemysoldiers", obj: out enemySoldierObjects, null);                
+        OnLoadinGroupAsset(loadPath: "prefab/effect", obj: out effectObjects, null);
+
+        //boss
+        OnLoadinGroupAsset(loadPath: "prefab/boss1", obj: out bossObjects1, boss_List);
+        OnLoadinGroupAsset(loadPath: "prefab/boss2", obj: out bossObjects2, boss_List);
+        OnLoadinGroupAsset(loadPath: "prefab/boss3", obj: out bossObjects3, boss_List);
     }
 
     /// <summary>
@@ -53,11 +62,13 @@ public class AssetManagement : MonoBehaviour
     /// </summary>
     /// <param name="loadPath"></param>
     /// <param name="obj"></param>
-    void OnLoadinGroupAsset(string loadPath, out GameObject[] obj)
+    void OnLoadinGroupAsset(string loadPath, out GameObject[] obj, List<GameObject[]> list)
     {
         string path = $"{Application.streamingAssetsPath}/MyAssetBundle/{loadPath}";
 
         AssetBundle ab = AssetBundle.LoadFromFile(path);
-        obj = ab.LoadAllAssets<GameObject>() as GameObject[];        
+        obj = ab.LoadAllAssets<GameObject>() as GameObject[];
+
+        if (list != null) list.Add(obj);
     }
 }

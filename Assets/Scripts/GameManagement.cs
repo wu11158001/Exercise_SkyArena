@@ -66,7 +66,7 @@ public class GameManagement : MonoBehaviour
                 
         OnCreateInitialObject_Single("PlayerObject", AssetManagement.Instance.playerObject);
         OnCreateInitialObject_Group("EnemySoldierObject", AssetManagement.Instance.enemySoldierObjects);
-        OnCreateInitialObject_Group("BossObject", AssetManagement.Instance.bossObjects);
+        OnCreateInitialObject_List("BossObject", AssetManagement.Instance.boss_List);
         OnCreateInitialObject_Single("HitTextObject", AssetManagement.Instance.hitTextObject);
         OnCreateInitialObject_Group("EffectObject", AssetManagement.Instance.effectObjects);
     }
@@ -95,6 +95,24 @@ public class GameManagement : MonoBehaviour
         {
             number = objectPool.OnCreateAndRecordObject(objs[i], FindChild.OnFindChild<Transform>(transform, "ObjectPool"));
             objectPool_Dictionary.Add(objName + i.ToString(), number);
+        }
+    }
+
+    /// <summary>
+    /// CreateInitialObject_List
+    /// </summary>
+    /// <param name="objName"></param>
+    /// <param name="list"></param>
+    void OnCreateInitialObject_List(string objName, List<GameObject[]> list)
+    {
+        int number = 0;
+        for (int i = 0; i < list.Count; i++)
+        {
+            for (int j = 0; j < list[i].Length; j++)
+            {
+                number = objectPool.OnCreateAndRecordObject(list[i][j], FindChild.OnFindChild<Transform>(transform, "ObjectPool"));
+                objectPool_Dictionary.Add($"{objName}{i}-{j}", number);
+            }
         }
     }
 
@@ -141,18 +159,44 @@ public class GameManagement : MonoBehaviour
     {
         enemy_List.Clear();
 
-        //移除物件
         for (int i = 0; i < objs.Length; i++)
         {
             objectPool.OnCleanObject(OnSerchObjectPoolNumber(objectName + i.ToString()));
         }
 
-        //移除特效
+        OnCleanEffect();
+    }
+
+    /// <summary>
+    /// CleanBoss
+    /// </summary>
+    /// <param name="objectName"></param>
+    /// <param name="list"></param>
+    public void OnCleanBoss(string objectName, List<GameObject[]> list)
+    {
+        enemy_List.Clear();
+
+        for (int i = 0; i < list.Count; i++)
+        {
+            for (int j = 0; j < list[i].Length; j++)
+            {
+                objectPool.OnCleanObject(OnSerchObjectPoolNumber($"{objectName}{i}-{j}"));
+            }
+        }
+
+        OnCleanEffect();
+    }
+
+    /// <summary>
+    /// CleanEffect
+    /// </summary>
+    void OnCleanEffect()
+    {
         for (int i = 0; i < AssetManagement.Instance.effectObjects.Length; i++)
         {
             objectPool.OnCleanObject(OnSerchObjectPoolNumber("EffectObject" + i.ToString()));
         }
-    }
+    }    
 
     /// <summary>
     /// RespawnPlayer
@@ -200,8 +244,10 @@ public class GameManagement : MonoBehaviour
 
         isChallengeBoss = true;
 
-        int bossNumber = UnityEngine.Random.Range(0, AssetManagement.Instance.bossObjects.Length);
-        GameObject boss = objectPool.OnActiveObject(OnSerchObjectPoolNumber("BossObject" + bossNumber));
+        int bossType = UnityEngine.Random.Range(0, AssetManagement.Instance.boss_List.Count);
+        int bossNumber = UnityEngine.Random.Range(0, AssetManagement.Instance.boss_List[bossType].Length);
+
+        GameObject boss = objectPool.OnActiveObject(OnSerchObjectPoolNumber($"BossObject{bossType}-{bossNumber}"));
         boss.layer = LayerMask.NameToLayer("Enemy");
         boss.transform.position = OnEnemyInitialPosition();
         if (!boss.TryGetComponent<AIBoss>(out AIBoss aiBoss)) aiBoss = boss.AddComponent<AIBoss>();

@@ -242,7 +242,7 @@ public class GameUI : MonoBehaviour
                 if (GameManagement.Instance.isChallengeBoss)
                 {
                     GameManagement.Instance.isChallengeBoss = false;
-                    GameManagement.Instance.OnCleanEnemySoldier("BossObject", AssetManagement.Instance.bossObjects);
+                    GameManagement.Instance.OnCleanBoss("BossObject", AssetManagement.Instance.boss_List);
                 }
             }
 

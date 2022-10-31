@@ -375,7 +375,7 @@ public class AIPlayer : MonoBehaviour
         if (GameManagement.Instance.isChallengeBoss && race == Race.Enemy)
         {
             GameManagement.Instance.isChallengeBoss = false;
-            GameManagement.Instance.OnCleanEnemySoldier("BossObject", AssetManagement.Instance.bossObjects);
+            GameManagement.Instance.OnCleanBoss("BossObject", AssetManagement.Instance.boss_List);
             GameManagement.Instance.GetPlayerObject.OnUpdateValue();
             GameUI.Instance.OnSetGameLevel();
             GameUI.Instance.OnUIActive(true);                                  
