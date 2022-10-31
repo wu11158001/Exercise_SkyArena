@@ -1,7 +1,10 @@
 ManifestFileVersion: 0
-CRC: 3993548382
+CRC: 325524023
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
+      Name: prefab/enemysoldiers
+      Dependencies: {}
+    Info_1:
       Name: prefab/player
       Dependencies: {}
