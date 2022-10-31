@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 704019255
+CRC: 957168570
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -10,4 +10,7 @@ AssetBundleManifest:
       Dependencies: {}
     Info_2:
       Name: prefab/player
+      Dependencies: {}
+    Info_3:
+      Name: prefab/hit_text
       Dependencies: {}
