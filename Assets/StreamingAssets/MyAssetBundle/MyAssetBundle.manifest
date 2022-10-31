@@ -1,22 +1,25 @@
 ManifestFileVersion: 0
-CRC: 833598416
+CRC: 586596874
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
       Name: prefab/effect
       Dependencies: {}
     Info_1:
-      Name: prefab/boss
-      Dependencies: {}
-    Info_2:
       Name: prefab/enemysoldiers
       Dependencies: {}
-    Info_3:
+    Info_2:
       Name: prefab/player
       Dependencies: {}
-    Info_4:
+    Info_3:
       Name: prefab/hit_text
       Dependencies: {}
-    Info_5:
+    Info_4:
       Name: prefab/boss3
+      Dependencies: {}
+    Info_5:
+      Name: prefab/boss1
+      Dependencies: {}
+    Info_6:
+      Name: prefab/boss2
       Dependencies: {}
