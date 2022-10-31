@@ -3,39 +3,36 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-/// <summary>
-/// 玩家AI
-/// </summary>
 public class AIPlayer : MonoBehaviour
 {
     public enum Race { Player, Enemy}
-    [Header("種族")]
-    [SerializeField] [Tooltip("種族")] public Race race;
+    [Header("Race")]
+    [SerializeField] [Tooltip("Race")] public Race race;
 
     protected enum State { Idle, Move, Attack}
-    [Header("狀態")]
-    [SerializeField] [Tooltip("狀態")] protected State state;   
+    [Header("State")]
+    [SerializeField] [Tooltip("State")] protected State state;   
 
-    [Header("數值")]
-    [SerializeField] [Tooltip("生命值")] protected int Hp;
-    [SerializeField] [Tooltip("攻擊力")] protected int attack;
+    [Header("Value")]
+    [SerializeField] [Tooltip("Hp")] protected int Hp;
+    [SerializeField] [Tooltip("Attack")] protected int attack;
 
     [Header("Component")]
     [SerializeField] [Tooltip("Animator")] Animator animator;
     [SerializeField] [Tooltip("AnimatorStateInfo")] AnimatorStateInfo info;
-    [SerializeField] [Tooltip("碰撞框")]  CapsuleCollider thisCollider;
+    [SerializeField] [Tooltip("Collider")]  CapsuleCollider thisCollider;
 
-    [Header("移動")]
-    [SerializeField] [Tooltip("攻擊對象")] protected Transform targetObject;
-    [SerializeField] [Tooltip("移動速度")] public float moveSpeed;
-    [SerializeField] [Tooltip("選轉速度")] float rotateSpeed;
-    [SerializeField] [Tooltip("是否與敵人碰撞")] bool isCollisionFromEnemy;
+    [Header("Move")]
+    [SerializeField] [Tooltip("TargetObject")] protected Transform targetObject;
+    [SerializeField] [Tooltip("MoveSpeed")] public float moveSpeed;
+    [SerializeField] [Tooltip("RotateSpeed")] float rotateSpeed;
+    [SerializeField] [Tooltip("IsCollisionFromEnemy")] bool isCollisionFromEnemy;
 
-    [Header("攻擊")]
-    [SerializeField] [Tooltip("可使用攻擊招式數量")] protected int attackCount;
-    [SerializeField] [Tooltip("攻擊半徑")] protected float attackRadius;
-    [SerializeField] [Tooltip("攻擊頻率")] protected float attackFrequency;
-    [SerializeField] [Tooltip("攻擊時間(計時器)")] float attackTimeCountDown;
+    [Header("Attack")]
+    [SerializeField] [Tooltip("AttackCount")] protected int attackCount;
+    [SerializeField] [Tooltip("AttackRadius")] protected float attackRadius;
+    [SerializeField] [Tooltip("AttackFrequency")] protected float attackFrequency;
+    [SerializeField] [Tooltip("AttackTimeCountDown")] float attackTimeCountDown;
 
     protected void Awake()
     {        
@@ -45,72 +42,70 @@ public class AIPlayer : MonoBehaviour
     }
 
     private void Start()
-    {
-        //移動        
-        rotateSpeed = NumericalValueManagement.NumericalValue_Commom.commomValue_RotateSpeed;//選轉速度
+    {  
+        rotateSpeed = NumericalValueManagement.NumericalValue_Commom.commomValue_RotateSpeed;
 
-        OnInitialNumericalValue();//初始數值
-        playerInitial();//玩家初始資料
+        OnInitialNumericalValue();
+        OnPlayerInitial();
     }
 
     /// <summary>
-    /// 初始數值
+    /// InitialNumericalValue
     /// </summary>
     public virtual void OnInitialNumericalValue()
     {        
-        state = State.Idle;//狀態
-
-        race = Race.Player;//種族       
+        state = State.Idle;
+        race = Race.Player;  
  
-        moveSpeed = NumericalValueManagement.NumericalValue_Player.moveSpeed;//移動速度
-        attackCount = NumericalValueManagement.NumericalValue_Player.attackCount;//可使用攻擊招式數量
-        attackRadius = NumericalValueManagement.NumericalValue_Player.attackRadius;//攻擊半徑
-        attackFrequency = NumericalValueManagement.NumericalValue_Player.attackFrequency;//攻擊頻率
+        moveSpeed = NumericalValueManagement.NumericalValue_Player.moveSpeed;
+        attackCount = NumericalValueManagement.NumericalValue_Player.attackCount;
+        attackRadius = NumericalValueManagement.NumericalValue_Player.attackRadius;
+        attackFrequency = NumericalValueManagement.NumericalValue_Player.attackFrequency;
         attackTimeCountDown = attackFrequency;        
     }
 
     /// <summary>
-    /// 更新數值
+    /// UpdateValue
     /// </summary>
     public virtual void OnUpdateValue()
     {
         Hp = NumericalValueManagement.NumericalValue_Player.initial_Hp + 
-            (NumericalValueManagement.NumericalValue_Player.raiseUpgradeHp * (GameDataManagement.Instance.playerLevel - 1));//生命值
+            (NumericalValueManagement.NumericalValue_Player.raiseUpgradeHp * (GameDataManagement.Instance.playerLevel - 1));
         attack = NumericalValueManagement.NumericalValue_Player.initial_Attack +
-            (NumericalValueManagement.NumericalValue_Player.raiseUpgradeAttack * (GameDataManagement.Instance.playerLevel - 1));//攻擊力
+            (NumericalValueManagement.NumericalValue_Player.raiseUpgradeAttack * (GameDataManagement.Instance.playerLevel - 1));
 
-        GameUI.Instance.OnSetPlayerLifeBar(Hp);////設定玩家血條 
+        GameUI.Instance.OnSetPlayerLifeBar(Hp);
     }
 
     /// <summary>
-    /// 玩家初始資料
+    /// PlayerInitial
     /// </summary>
-    void playerInitial()
+    void OnPlayerInitial()
     {
         if (race == Race.Player)
         {
-            GameUI.Instance.OnSetPlayerLevel();//設定玩家等級
-            GameUI.Instance.OnSetPlayerExperience();//設定玩家經驗值
+            GameUI.Instance.OnSetPlayerGrade();
+            GameUI.Instance.OnSetPlayerExperience();
                              
-            OnUpdateValue();//更新數值
+            OnUpdateValue();
         }
     }
 
     private void Update()
     {
-        OnAnimatorStateInfo();//AnimatorStateInfo
-        OnCheckTarget();//檢查目標是否存在
-        OnAnimationOver();//動畫結束
+        OnAnimatorStateInfo();
+        OnCheckTarget();
+        OnAnimationOver();
 
         if (targetObject != null && targetObject.gameObject.activeSelf && Hp > 0)
         {
-            OnMovement();//移動
-            OnAttackActive();//攻擊
+            OnMovement();
+            OnAttackActive();
         }        
     }
 
     /// <summary>
-    /// 激活攻擊
+    /// AttackActive
     /// </summary>
     protected void OnAttackActive()
     {
@@ -123,8 +118,7 @@ public class AIPlayer : MonoBehaviour
 
             if(!info.IsTag("Attack")) attackTimeCountDown -= Time.deltaTime;
             if(attackTimeCountDown <= 0)
-            {
-                //判斷角度
+            {                
                 Vector3 dir = (targetObject.position - transform.position).normalized;
                 if (Vector3.Dot(transform.forward, dir) < 0 || Vector3.Angle(transform.forward, dir) > 1) return;
                 
@@ -137,14 +131,12 @@ public class AIPlayer : MonoBehaviour
     }
 
     /// <summary>
-    /// 移動
+    /// Movement
     /// </summary>
     protected void OnMovement()
-    {
-        //選轉
+    {       
         if (!info.IsTag("Attack") && !isCollisionFromEnemy) transform.forward = Vector3.RotateTowards(transform.forward, targetObject.position - transform.position, rotateSpeed, 0);        
-
-        //移動
+              
         if (!OnJudgeAttackRange())
         {
             if (state != State.Move)
@@ -153,8 +145,7 @@ public class AIPlayer : MonoBehaviour
                 animator.SetBool("Move", true);
             }            
         }
-
-        //距離目標太近
+      
         if(!info.IsTag("Attack") && isCollisionFromEnemy)
         {
             if (state != State.Move)
@@ -165,10 +156,10 @@ public class AIPlayer : MonoBehaviour
 
             transform.forward = Vector3.RotateTowards(transform.forward, transform.position - targetObject.position, rotateSpeed, 0);         
         }
-    }    
+    }
 
     /// <summary>
-    /// 判斷攻擊範圍
+    /// JudgeAttackRange
     /// </summary>
     protected bool OnJudgeAttackRange()
     {
@@ -186,17 +177,17 @@ public class AIPlayer : MonoBehaviour
             }
         }      
 
-        OnJudgeEnemyCollider();//判斷與敵人碰撞
+        OnJudgeCollisionFromEnemy();
         if(isCollisionFromEnemy && !isInRange) isCollisionFromEnemy = isInRange;
         
         return isInRange;
     }
 
     /// <summary>
-    /// 判斷與敵人碰撞
+    /// JudgeCollisionFromEnemy
     /// </summary>
     /// <returns></returns>
-    void OnJudgeEnemyCollider()
+    void OnJudgeCollisionFromEnemy()
     {
         if (race == Race.Player)
         {
@@ -214,18 +205,18 @@ public class AIPlayer : MonoBehaviour
     }
 
     /// <summary>
-    /// 檢查目標是否存在
+    /// CheckTarget
     /// </summary>
     protected virtual void OnCheckTarget()
     {
         if (targetObject == null || !targetObject.gameObject.activeSelf)
         {
-            OnSearchTarget();//搜尋攻擊目標
+            OnSearchTarget();
         }
     }
 
     /// <summary>
-    /// 搜尋攻擊目標
+    /// SearchTarget
     /// </summary>
     public virtual void OnSearchTarget()
     {
@@ -240,23 +231,23 @@ public class AIPlayer : MonoBehaviour
     }
 
     /// <summary>
-    /// 動畫結束
+    /// AnimationOver
     /// </summary>
     protected void OnAnimationOver()
     {
         if (info.normalizedTime >= 1)
         {
-            if (info.IsTag("Attack")) animator.SetFloat("AttackNumber", 0);//攻擊
+            if (info.IsTag("Attack")) animator.SetFloat("AttackNumber", 0);
             if (info.IsTag("Death"))
             {
-                gameObject.SetActive(false);//死亡            
-                OnBossDeath();//Boss死亡
+                gameObject.SetActive(false);       
+                OnBossDeath();
             }
         }
     }
 
     /// <summary>
-    /// OnAnimatorStateInfo
+    /// AnimatorStateInfo
     /// </summary>
     protected void OnAnimatorStateInfo()
     {
@@ -264,121 +255,119 @@ public class AIPlayer : MonoBehaviour
     }
 
     /// <summary>
-    /// 單體攻擊行為
+    /// SingleAttackBehavior
     /// </summary>
-    /// <param name="effectName">特效名稱</param>
+    /// <param name="effectName"></param>
     void OnSingleAttackBehavior(string effectName)
     {
-        new AttackBehavior().OnSingleAttack(attacker: transform,//攻擊者物件
-                                            attackerRace: race,//攻擊者種族
-                                            target: targetObject,//攻擊目標
-                                            attack: attack,//攻擊力
-                                            effectName: effectName);//特效名稱
+        new AttackBehavior().OnSingleAttack(attacker: transform,
+                                            attackerRace: race,
+                                            target: targetObject,
+                                            attack: attack,
+                                            effectName: effectName);
     }
 
     /// <summary>
-    /// 受擊
+    /// GetHit
     /// </summary>
-    /// <param name="attacker">攻擊者物件</param>
-    /// <param name="attackerRace">攻擊者種族</param>
-    /// <param name="attack">攻擊力</param>
-    /// <param name="effectName">特效名稱</param>
+    /// <param name="attacker"></param>
+    /// <param name="attackerRace"></param>
+    /// <param name="attack"></param>
+    /// <param name="effectName"></param>
     public void OnGetHit(Transform attacker, Race attackerRace, int attack, string effectName)
     {
-        if (attackerRace == race) return;//攻擊者種族
+        if (attackerRace == race) return;
         if (Hp <= 0) return;        
 
         Hp -= attack;
-
-        //死亡
+               
+        //Death
         if (Hp <= 0)
         {
             Hp = 0;
             animator.SetTrigger("Death");
-            OnEnemyDeath();//敵人死亡
-            OnPlayerDeath();//玩家死亡
-            if (attacker.TryGetComponent<AIPlayer>(out AIPlayer aIPlayer)) aIPlayer.OnSearchTarget();//搜尋攻擊目標
+            OnEnemySoldierDeath();
+            OnPlayerDeath();
+            if (attacker.TryGetComponent<AIPlayer>(out AIPlayer aIPlayer)) aIPlayer.OnSearchTarget();
         }
 
-        //產生擊中數字
-        GameManagement.Instance.OnCreateHitNumber(attacker: attacker,//攻擊者物件
-                                                  pos: transform.position + thisCollider.center,//被攻擊者物件
-                                                  race: race,//被攻擊者種族
-                                                  text: attack.ToString());//顯示文字
+        //HitNumber
+        GameManagement.Instance.OnCreateHitNumber(attacker: attacker,
+                                                  pos: transform.position + thisCollider.center,
+                                                  race: race,
+                                                  text: attack.ToString());
 
-        //產生特效
-        if(!string.IsNullOrEmpty(effectName)) GameManagement.Instance.OnCreateEffect(transform.position + thisCollider.center, effectName);//產生特效
+        //Effect
+        if (!string.IsNullOrEmpty(effectName)) GameManagement.Instance.OnCreateEffect(transform.position + thisCollider.center, effectName);
 
-        OnPlayerGetHit();//玩家受擊
-        OnBossGetHit();//Boss受擊
-    }   
-    
+        OnPlayerGetHit();
+        OnBossGetHit();
+    }
+
     /// <summary>
-    /// Boss受擊
+    /// BossGetHit
     /// </summary>
     void OnBossGetHit()
     {
         if (race == Race.Enemy && GameManagement.Instance.isChallengeBoss)
         {
-            GameUI.Instance.OnSetBossLifeBar(Hp);//設定玩家血條
+            GameUI.Instance.OnSetBossLifeBar(Hp);
         }
     }
 
     /// <summary>
-    /// 玩家受擊
+    /// PlayerGetHit
     /// </summary>
     void OnPlayerGetHit()
-    {
-        //該物件為玩家
+    {       
         if (race == Race.Player)
         {
-            OnPlayerLifeBar(Hp);//玩家血條
+            OnPlayerLifeBar(Hp);
         }
     }
 
     /// <summary>
-    /// 玩家血條
+    /// PlayerLifeBar
     /// </summary>
-    /// <param name="playerHp">玩家Hp</param>
+    /// <param name="playerHp"></param>
     void OnPlayerLifeBar(int playerHp)
     {               
-        GameUI.Instance.OnSetPlayerLifeBar(playerHp);//設定玩家血條
+        GameUI.Instance.OnSetPlayerLifeBar(playerHp);
     }
 
     /// <summary>
-    /// 玩家死亡
+    /// PlayerDeath
     /// </summary>
     void OnPlayerDeath()
     {
         if (race == Race.Player)
         {
             GameManagement.Instance.isPlayerDeath = true;
-            GameUI.Instance.OnUIActive(false);//UI激活
+            GameUI.Instance.OnUIActive(false);
         }
     }
 
     /// <summary>
-    /// 敵人死亡
+    /// EnemySoldierDeath
     /// </summary>
-    void OnEnemyDeath()
-    {
-        //該物件為玩家
+    void OnEnemySoldierDeath()
+    {        
         if (race == Race.Enemy)
-        {
-            //玩家經驗值
-            GameDataManagement.Instance.playerExperience += NumericalValueManagement.NumericalValueManagement.enemyExperience;
+        {        
+            GameDataManagement.Instance.playerExperience += NumericalValueManagement.NumericalValue_Game.enemyExperience;
             
-            if(GameDataManagement.Instance.playerExperience >= ((GameDataManagement.Instance.playerLevel - 1) * NumericalValueManagement.NumericalValueManagement.raiseUpgradeExperience) + NumericalValueManagement.NumericalValueManagement.upgradeExperience)
+            if(GameDataManagement.Instance.playerExperience >= 
+                ((GameDataManagement.Instance.playerLevel - 1) * NumericalValueManagement.NumericalValue_Game.raiseUpgradeExperience) + NumericalValueManagement.NumericalValue_Game.upgradeExperience)
             {
-                OnPlayerUpgrade();//玩家升級
+                OnPlayerUpgrade();
             }
-            GameUI.Instance.OnSetPlayerExperience();//設定玩家經驗條
-            GameManagement.Instance.GetEnemyList.Remove(transform);//移除敵人List 
+            GameUI.Instance.OnSetPlayerExperience();
+            GameManagement.Instance.GetEnemyList.Remove(transform);
         }
     }
 
     /// <summary>
-    /// Boss死亡
+    /// BossDeath
     /// </summary>
     void OnBossDeath()
     {
@@ -386,21 +375,20 @@ public class AIPlayer : MonoBehaviour
         if (GameManagement.Instance.isChallengeBoss && race == Race.Enemy)
         {
             GameManagement.Instance.isChallengeBoss = false;
-            GameManagement.Instance.OnCleanEnemySoldier("BossObject", AssetManagement.Instance.bossObjects);//清除敵人
-            GameManagement.Instance.GetPlayerObject.OnUpdateValue();//更新數值
-            GameUI.Instance.OnSetGameLevel();//設定關卡等級
-            GameUI.Instance.OnUIActive(true);//UI激活                                             
+            GameManagement.Instance.OnCleanEnemySoldier("BossObject", AssetManagement.Instance.bossObjects);
+            GameManagement.Instance.GetPlayerObject.OnUpdateValue();
+            GameUI.Instance.OnSetGameLevel();
+            GameUI.Instance.OnUIActive(true);                                  
         }
     }
 
     /// <summary>
-    /// 玩家升級
+    /// PlayerUpgrade
     /// </summary>
     void OnPlayerUpgrade()
-    {        
-        //經驗提升        
-        GameUI.Instance.OnSetPlayerLevel();//設定玩家等級        
-        GameManagement.Instance.GetPlayerObject.OnUpdateValue();//更新數值
+    {               
+        GameUI.Instance.OnSetPlayerGrade();
+        GameManagement.Instance.GetPlayerObject.OnUpdateValue();
     }    
    
     private void OnDrawGizmos()

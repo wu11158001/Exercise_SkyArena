@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-/// <summary>
-/// 遊戲管理中心
-/// </summary>
+
 public class GameManagement : MonoBehaviour
 {
     static GameManagement gameManagement;
@@ -14,19 +12,19 @@ public class GameManagement : MonoBehaviour
     [Header("Component")]
     ObjectPool objectPool = new ObjectPool();
 
-    [Header("產生敵人")]
-    [SerializeField] [Tooltip("地形物件")] Transform terrainObject;
-    [SerializeField] [Tooltip("產生最大範圍")] float createMaxRadius = 4.3f;    
-    [SerializeField] [Tooltip("產生時間(計時器)")] float createTimeCountDown = 0;
+    [Header("Terrain")]
+    [SerializeField] [Tooltip("TerrainObject")] Transform terrainObject;
+    [SerializeField] [Tooltip("CreateMaxRadius")] float createMaxRadius = 4.3f;    
+    [SerializeField] [Tooltip("CreateTimeCountDown")] float createTimeCountDown = 0;
 
-    [Header("物件")]
-    [SerializeField] [Tooltip("玩家AI腳本")] AIPlayer aiPlayer;
-    [SerializeField] [Tooltip("場上的敵人List")] List<Transform> enemy_List = new List<Transform>();
-    [Tooltip("物件池物件")] Dictionary<string, int> objectPool_Dictionary = new Dictionary<string, int>();
+    [Header("GameObjectList")]
+    [SerializeField] [Tooltip("aiPlayer(Component)")] AIPlayer aiPlayer;
+    [SerializeField] [Tooltip("enemy_List")] List<Transform> enemy_List = new List<Transform>();
+    [Tooltip("objectPool_Dictionary")] Dictionary<string, int> objectPool_Dictionary = new Dictionary<string, int>();
 
-    [Header("判斷")]    
-    [Tooltip("玩家死亡")] public bool isPlayerDeath;
-    [Tooltip("挑戰Boss")] public bool isChallengeBoss;
+    [Header("Judge")]    
+    [Tooltip("isPlayerDeath")] public bool isPlayerDeath;
+    [Tooltip("isChallengeBoss")] public bool isChallengeBoss;
 
     private void Awake()
     {
@@ -46,13 +44,13 @@ public class GameManagement : MonoBehaviour
 
     private void Start()
     {
-        OnTerrainPosition();//地形位置
-        OnCreateInitialObject();//產生初始物件
-        OnRespawnPlayer();//重生玩家
+        OnTerrainPosition();
+        OnCreateInitialObject();
+        OnRespawnPlayer();
     }
 
     /// <summary>
-    /// 地形位置
+    /// TerrainPosition
     /// </summary>
     void OnTerrainPosition()
     {
@@ -60,24 +58,24 @@ public class GameManagement : MonoBehaviour
     }
 
     /// <summary>
-    /// 產生初始物件
+    /// CreateInitialObject
     /// </summary>
     void OnCreateInitialObject()
     {
         objectPool = ObjectPool.Instance;
                 
-        OnCreateInitialObject_Single("PlayerObject", AssetManagement.Instance.playerObject);//主角物件
-        OnCreateInitialObject_Group("EnemySoldierObject", AssetManagement.Instance.enemySoldierObjects);//敵人士兵物件
-        OnCreateInitialObject_Group("BossObject", AssetManagement.Instance.bossObjects);//Boss物件
-        OnCreateInitialObject_Single("HitTextObject", AssetManagement.Instance.hitTextObject);//擊中數字物件
-        OnCreateInitialObject_Group("EffectObject", AssetManagement.Instance.effectObjects);//特效物件
-    }    
+        OnCreateInitialObject_Single("PlayerObject", AssetManagement.Instance.playerObject);
+        OnCreateInitialObject_Group("EnemySoldierObject", AssetManagement.Instance.enemySoldierObjects);
+        OnCreateInitialObject_Group("BossObject", AssetManagement.Instance.bossObjects);
+        OnCreateInitialObject_Single("HitTextObject", AssetManagement.Instance.hitTextObject);
+        OnCreateInitialObject_Group("EffectObject", AssetManagement.Instance.effectObjects);
+    }
 
     /// <summary>
-    /// 產生初始物件_單一物件
+    /// CreateInitialObject_Single
     /// </summary>
-    /// <param name="objName">物件名稱</param>
-    /// <param name="obj">物件</param>
+    /// <param name="objName"></param>
+    /// <param name="obj"></param>
     void OnCreateInitialObject_Single(string objName, GameObject obj)
     {
         int number = 0;
@@ -86,10 +84,10 @@ public class GameManagement : MonoBehaviour
     }
 
     /// <summary>
-    /// 產生初始物件_陣列物件
+    /// CreateInitialObject_Group
     /// </summary>
-    /// <param name="objName">物件名稱</param>
-    /// <param name="objs">物件</param>
+    /// <param name="objName"></param>
+    /// <param name="objs"></param>
     void OnCreateInitialObject_Group(string objName, GameObject[] objs)
     {
         int number = 0;
@@ -101,7 +99,7 @@ public class GameManagement : MonoBehaviour
     }
 
     /// <summary>
-    /// 搜尋物件池編號
+    /// SerchObjectPoolNumber
     /// </summary>
     /// <param name="objectName"></param>
     int OnSerchObjectPoolNumber(string objectName)
@@ -121,24 +119,24 @@ public class GameManagement : MonoBehaviour
 
     private void Update()
     {
-        OnCreateEnenySoldier();//產生敵人士兵
+        OnCreateEnenySoldier();
     }
 
     /// <summary>
-    /// 獲取玩家物件
+    /// GetPlayerObject
     /// </summary>
     public AIPlayer GetPlayerObject => aiPlayer;
 
     /// <summary>
-    /// 獲取敵人List
+    /// GetEnemyList
     /// </summary>
     public List<Transform> GetEnemyList => enemy_List;
 
     /// <summary>
-    /// 清除敵人
+    /// CleanEnemySoldier
     /// </summary>
-    /// <param name="objectName">物件名稱</param>
-    /// <param name="objs">物件</param>
+    /// <param name="objectName"></param>
+    /// <param name="objs"></param>
     public void OnCleanEnemySoldier(string objectName , GameObject[] objs)
     {
         enemy_List.Clear();
@@ -157,7 +155,7 @@ public class GameManagement : MonoBehaviour
     }
 
     /// <summary>
-    /// 重生玩家
+    /// RespawnPlayer
     /// </summary>
     public void OnRespawnPlayer()
     {
@@ -167,10 +165,10 @@ public class GameManagement : MonoBehaviour
         if (!player.TryGetComponent<AIPlayer>(out aiPlayer)) aiPlayer = player.AddComponent<AIPlayer>();
         aiPlayer.OnInitialNumericalValue();//初始數值        
         CameraControl.Instance.SetFollowTarget = player.transform;//設定攝影機跟隨物件
-    }   
+    }
 
     /// <summary>
-    /// 產生敵人士兵
+    /// CreateEnenySoldier
     /// </summary>
     void OnCreateEnenySoldier()
     {
@@ -180,23 +178,21 @@ public class GameManagement : MonoBehaviour
         createTimeCountDown -= Time.deltaTime;
         if (createTimeCountDown <= 0)
         {
-            createTimeCountDown = UnityEngine.Random.Range(NumericalValueManagement.NumericalValueManagement.createEnemyTime[0], NumericalValueManagement.NumericalValueManagement.createEnemyTime[1]);
-
-            //產生敵人士兵
+            createTimeCountDown = UnityEngine.Random.Range(NumericalValueManagement.NumericalValue_Game.createEnemyTime[0], NumericalValueManagement.NumericalValue_Game.createEnemyTime[1]);
+                     
             int enemyNumber = UnityEngine.Random.Range(0, AssetManagement.Instance.enemySoldierObjects.Length);
             GameObject enemy = objectPool.OnActiveObject(OnSerchObjectPoolNumber("EnemySoldierObject" + enemyNumber));
             enemy.layer = LayerMask.NameToLayer("Enemy");
             enemy.transform.position = OnEnemyInitialPosition();
             if (!enemy.TryGetComponent<AIEnemySoldier>(out AIEnemySoldier aiEnemySoldier)) aiEnemySoldier = enemy.AddComponent<AIEnemySoldier>();
-            aiEnemySoldier.OnInitialNumericalValue();//初始數值            
-
-            //紀錄敵人            
+            aiEnemySoldier.OnInitialNumericalValue();     
+       
             enemy_List.Add(enemy.transform);
         }
     }
 
     /// <summary>
-    /// 產生Boss
+    /// CreateBoss
     /// </summary>
     public void OnCreateBoss()
     {
@@ -209,14 +205,13 @@ public class GameManagement : MonoBehaviour
         boss.layer = LayerMask.NameToLayer("Enemy");
         boss.transform.position = OnEnemyInitialPosition();
         if (!boss.TryGetComponent<AIBoss>(out AIBoss aiBoss)) aiBoss = boss.AddComponent<AIBoss>();
-        aiBoss.OnInitialNumericalValue();//初始數值
-
-        //紀錄敵人            
+        aiBoss.OnInitialNumericalValue();
+       
         enemy_List.Add(aiBoss.transform);
     }
 
     /// <summary>
-    /// 敵人初始位置
+    /// EnemyInitialPosition
     /// </summary>
     Vector3 OnEnemyInitialPosition()
     {
@@ -227,12 +222,12 @@ public class GameManagement : MonoBehaviour
     }
 
     /// <summary>
-    /// 產生擊中數字
+    /// OnCreateHitNumber
     /// </summary>
-    /// <param name="attacker">攻擊者物件</param>
-    /// <param name="pos">初始位置</param>
-    /// <param name="race">攻擊者種族</param>
-    /// <param name="text">顯示文字</param>
+    /// <param name="attacker"></param>
+    /// <param name="pos"></param>
+    /// <param name="race"></param>
+    /// <param name="text"></param>
     public void OnCreateHitNumber(Transform attacker, Vector3 pos, AIPlayer.Race race, string text)
     {
         GameObject numberObject = objectPool.OnActiveObject(OnSerchObjectPoolNumber("HitTextObject"));
@@ -246,8 +241,10 @@ public class GameManagement : MonoBehaviour
     }
 
     /// <summary>
-    /// 產生特效
+    /// OnCreateEffect
     /// </summary>
+    /// <param name="pos"></param>
+    /// <param name="effectName"></param>
     public void OnCreateEffect(Vector3 pos, string effectName)
     {
         for (int i = 0; i < AssetManagement.Instance.effectObjects.Length; i++)

@@ -4,42 +4,38 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-/// <summary>
-/// 開始場景UI
-/// </summary>
 public class StartSceneUI : MonoBehaviour
 {
-    [Header("背景")]
-    [SerializeField] [Tooltip("背景物件")] Image backgroundObject;
+    [SerializeField] [Tooltip("苑ackgroundObject")] Image backgroundObject;
 
-    [Header("提示文字")]
-    [SerializeField] [Tooltip("提示文字物件")] Text tipTextObject;
-    [SerializeField] [Tooltip("提示文字Alpha")] float tipTextAlpha;
-    [SerializeField] [Tooltip("提示文字閃爍值")] float tipTextFlickerValue;
-    [SerializeField] [Tooltip("提示文字閃爍速度")] float tipTextFlickerSpeed;
+    [Header("TipText")]
+    [SerializeField] [Tooltip("TipTextObject")] Text tipTextObject;
+    [SerializeField] [Tooltip("TipTextAlpha")] float tipTextAlpha;
+    [SerializeField] [Tooltip("TipTextFlickerValue")] float tipTextFlickerValue;
+    [SerializeField] [Tooltip("TipTextFlickerSpeed")] float tipTextFlickerSpeed;
 
-    [Header("淡出")]
-    [SerializeField] [Tooltip("淡出速度")] float fadeSpeed;
-    [SerializeField] [Tooltip("提示文字淡出閃爍速度")] float tipTextFadeFlickerSpeed;
+    [Header("TipText ")]
+    [SerializeField] [Tooltip("FadeSpeed")] float fadeSpeed;
+    [SerializeField] [Tooltip("TipTextFadeFlickerSpeed")] float tipTextFadeFlickerSpeed;
 
-    [Header("判斷")]
-    [SerializeField] [Tooltip("是否淡出場景")] bool isFadeScene;
-    [SerializeField] [Tooltip("是否載入場景")] bool isLoadingScene;
+    [Header("Judge")]
+    [SerializeField] [Tooltip("IsFadeScene")] bool isFadeScene;
+    [SerializeField] [Tooltip("IsLoadingScene")] bool isLoadingScene;
 
     private void Start()
     {
-        OnBackgroundSize();//背景Size
+        OnBackgroundSize();
     }
 
     private void Update()
     {
-        OnTipTextFlicker();//提示文字閃爍
-        OnPlayerClick();//玩家點擊螢幕
-        OnScreenFabe();//畫面淡出
+        OnTipTextFlicker();
+        OnPlayerClick();
+        OnScreenFabe();
     }
 
     /// <summary>
-    /// 背景Size
+    /// 耑ackgroundSize
     /// </summary>
     void OnBackgroundSize()
     {
@@ -47,7 +43,7 @@ public class StartSceneUI : MonoBehaviour
     }
 
     /// <summary>
-    /// 載入場景
+    /// LoadingScene
     /// </summary>
     void OnLoadingScene()
     {
@@ -59,24 +55,23 @@ public class StartSceneUI : MonoBehaviour
     }
 
     /// <summary>
-    /// 畫面淡出
+    /// ScreenFabe
     /// </summary>
     void OnScreenFabe()
     {
-        if(isFadeScene)//是否淡出場景
+        if(isFadeScene)
         {
-            //物件淡出
-            backgroundObject.color = OnFadeObject(backgroundObject.color);//背景
-            tipTextObject.color = OnFadeObject(tipTextObject.color);//提示文字
+            backgroundObject.color = OnFadeObject(backgroundObject.color);
+            tipTextObject.color = OnFadeObject(tipTextObject.color);
 
-            OnLoadingScene();//載入場景
+            OnLoadingScene();
         }
     }
 
     /// <summary>
-    /// 物件淡出
+    /// FadeObject
     /// </summary>
-    /// <param name="objColor">淡出物件顏色</param>
+    /// <param name="objColor"></param>
     /// <returns></returns>
     Color OnFadeObject(Color objColor)
     {        
@@ -88,24 +83,23 @@ public class StartSceneUI : MonoBehaviour
     }
 
     /// <summary>
-    /// 玩家點擊螢幕
+    /// PlayerClick
     /// </summary>
     void OnPlayerClick()
-    {
-        //點擊開始
+    {  
         if (Input.anyKeyDown)
         {
-            isFadeScene = true;//是否淡出場景        
-            tipTextFlickerSpeed = tipTextFadeFlickerSpeed;//提示文字閃爍速度
+            isFadeScene = true;
+            tipTextFlickerSpeed = tipTextFadeFlickerSpeed;
         }
     }
 
     /// <summary>
-    /// 提示文字閃爍
+    /// TipTextFlicker
     /// </summary>
     void OnTipTextFlicker()
     {
-        tipTextObject.text = "任意鍵開始";
+        tipTextObject.text = "Any Key Start";
         tipTextAlpha += tipTextFlickerValue * Time.deltaTime;
         if (tipTextAlpha <= 0) tipTextFlickerValue = tipTextFlickerSpeed;
         if (tipTextAlpha >= 1) tipTextFlickerValue = -tipTextFlickerSpeed;

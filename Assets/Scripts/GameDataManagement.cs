@@ -2,9 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// 遊戲資料中心
-/// </summary>
 public class GameDataManagement : MonoBehaviour
 {
     static GameDataManagement gameDataManagement;

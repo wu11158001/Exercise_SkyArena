@@ -2,17 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// 特效生存時間
-/// </summary>
 public class EffectLifeTime : MonoBehaviour
 {
-    [Tooltip("生存時間")] float lifeTime;
-    [Tooltip("生存時間(計時器)")] float lifeTimeCountDown;
+    [Tooltip("LifeTime")] float lifeTime;
+    [Tooltip("LifeTimeCountDown")] float lifeTimeCountDown;
 
     private void Awake()
     {
-        lifeTime = 1;//生存時間
+        lifeTime = 1;
     }
 
     private void Update()

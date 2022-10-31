@@ -8,64 +8,64 @@ using UnityEngine.UI;
 /// </summary>
 public class HitText : MonoBehaviour
 {
-    [Tooltip("物件")] Text thisText;
-    [Tooltip("Canvas")] Canvas canvas;
-    [Tooltip("攻擊者物件前方")] Vector3 attackerForward;
-    [Tooltip("初始位置")] Vector3 initialPosition;
-    [Tooltip("位置")] Vector3 textPosition;
-    [Tooltip("顯示時間")] float lifeTime;
-    [Tooltip("顯示時間(計時器)")] float lifeTimeCountDown;    
-    [Tooltip("向上移動速度")] float upSpeed;
-    [Tooltip("向下移動速度")] float downSpeed;
-    [Tooltip("向後移動速度")] float backSpeed;
-    [Tooltip("增加的向後移動速度")] float addBackSpeed;
-    [Tooltip("增加的向下移動速度")] float addDownSpeed;
-    [Tooltip("減少Alpha速度")] float loseAlphaSpeed;
-    [Tooltip("Alpha速度")] float AlphaSpeed;
+    Text thisText;
+    Canvas canvas;
+    Vector3 attackerForward;
+    Vector3 initialPosition;
+    Vector3 textPosition;
+    float lifeTime;
+    float lifeTimeCountDown;    
+    float upSpeed;
+    float downSpeed;
+    float backSpeed;
+    float addBackSpeed;
+    float addDownSpeed;
+    float loseAlphaSpeed;
+    float AlphaSpeed;
 
     private void Awake()
     {
         thisText = GetComponent<Text>();
         canvas = GameObject.FindObjectOfType<Canvas>();
 
-        thisText.fontSize = 40;//文字大小
-        lifeTime = 0.75f;//顯示時間        
-        downSpeed = 4;//向下移動速度
-        backSpeed = 0.5f;//向後移動速度
-        AlphaSpeed = 3;//Alpha速度
+        thisText.fontSize = 40;
+        lifeTime = 0.75f;
+        downSpeed = 4;
+        backSpeed = 0.5f;
+        AlphaSpeed = 3;
     }
 
     private void Update()
     {
-        OnTextDehavior();//文字行為
+        OnTextDehavior();
     }
 
     /// <summary>
-    /// 設定文字
+    /// SetText
     /// </summary>
-    /// <param name="attacker">攻擊者物件前方</param>
-    /// <param name="pos">初始位置</param>
-    /// <param name="race">被攻擊者種族</param>
-    /// <param name="text">顯示文字</param>
+    /// <param name="attackerForward"></param>
+    /// <param name="pos"></param>
+    /// <param name="race"></param>
+    /// <param name="text"></param>
     public void OnSetText(Vector3 attackerForward, Vector3 pos, AIPlayer.Race race, string text)
     {
         thisText.enabled = true;
         transform.SetParent(canvas.transform);             
         
         thisText.color = race == AIPlayer.Race.Player ? Color.red : Color.white;
-        upSpeed = 0;//向上移動速度
-        addBackSpeed = 0;//向後移動速度
-        lifeTimeCountDown = lifeTime;//顯示時間(計時器)        
-        addDownSpeed = 0;//重製增加的向下移動速度
-        loseAlphaSpeed = 0;//重製減少Alpha速度
+        upSpeed = 0;
+        addBackSpeed = 0;
+        lifeTimeCountDown = lifeTime;
+        addDownSpeed = 0;
+        loseAlphaSpeed = 0;
 
-        this.attackerForward = attackerForward;//攻擊者物件前方
-        initialPosition = pos;//初始位置
-        thisText.text = text;//顯示文字        
+        this.attackerForward = attackerForward;
+        initialPosition = pos;
+        thisText.text = text;
     }
 
     /// <summary>
-    /// 文字行為
+    /// TextDehavior
     /// </summary>
     void OnTextDehavior()
     {
@@ -93,7 +93,7 @@ public class HitText : MonoBehaviour
         addBackSpeed += backSpeed * Time.deltaTime;
         textPosition = initialPosition+ Vector3.up * upSpeed + attackerForward * addBackSpeed;
 
-        //判斷Canvas模式
+        //Judge Canvas
         Camera camera = canvas.worldCamera;
         Vector3 position = Camera.main.WorldToScreenPoint(textPosition);        
         if (canvas.renderMode == RenderMode.ScreenSpaceOverlay || camera == null)

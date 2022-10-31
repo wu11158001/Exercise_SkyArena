@@ -2,13 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// 敵人士兵AI
-/// </summary>
 public class AIEnemySoldier : AIPlayer
 {
     /// <summary>
-    /// 檢查目標是否存在
+    /// CheckTarget
     /// </summary>
     protected override void OnCheckTarget()
     {        
@@ -19,7 +16,7 @@ public class AIEnemySoldier : AIPlayer
     }
 
     /// <summary>
-    /// 搜尋攻擊目標
+    /// SearchTarget
     /// </summary>
     public override void OnSearchTarget()
     {        
@@ -27,30 +24,30 @@ public class AIEnemySoldier : AIPlayer
     }
 
     /// <summary>
-    /// 初始數值
+    /// InitialNumericalValue
     /// </summary>   
     public override void OnInitialNumericalValue()
     {
         base.OnInitialNumericalValue();
 
-        race = Race.Enemy;//種族              
+        race = Race.Enemy;  
 
-        moveSpeed = NumericalValueManagement.NumericalValue_EnemySoldier.moveSpeed;//移動速度
-        attackCount = NumericalValueManagement.NumericalValue_EnemySoldier.attackCount;//可使用攻擊招式數量
-        attackRadius = NumericalValueManagement.NumericalValue_EnemySoldier.attackRadius;//攻擊半徑
-        attackFrequency = NumericalValueManagement.NumericalValue_EnemySoldier.attackFrequency;//攻擊頻率
+        moveSpeed = NumericalValueManagement.NumericalValue_EnemySoldier.moveSpeed;
+        attackCount = NumericalValueManagement.NumericalValue_EnemySoldier.attackCount;
+        attackRadius = NumericalValueManagement.NumericalValue_EnemySoldier.attackRadius;
+        attackFrequency = NumericalValueManagement.NumericalValue_EnemySoldier.attackFrequency;
 
-        OnUpdateValue();//更新數值
+        OnUpdateValue();
     }
 
     /// <summary>
-    /// 更新數值
+    /// UpdateValue
     /// </summary>
     public override void OnUpdateValue()
     {
         Hp = NumericalValueManagement.NumericalValue_EnemySoldier.initial_Hp + 
-            (NumericalValueManagement.NumericalValue_EnemySoldier.raiseUpgradeHp * (GameDataManagement.Instance.gameLevel - 1));//生命值
+            (NumericalValueManagement.NumericalValue_EnemySoldier.raiseUpgradeHp * (GameDataManagement.Instance.gameLevel - 1));
         attack = NumericalValueManagement.NumericalValue_EnemySoldier.initial_Attack +
-            (NumericalValueManagement.NumericalValue_EnemySoldier.raiseUpgradeAttack * (GameDataManagement.Instance.gameLevel - 1));//攻擊力
+            (NumericalValueManagement.NumericalValue_EnemySoldier.raiseUpgradeAttack * (GameDataManagement.Instance.gameLevel - 1));
     }
 }

@@ -4,37 +4,34 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 
-/// <summary>
-/// 遊戲UI
-/// </summary>
 public class GameUI : MonoBehaviour
 {
     static GameUI gameUI;
     public static GameUI Instance => gameUI;
 
-    [Header("畫面淡出/入")]
-    [SerializeField] [Tooltip("淡出/入圖片Alpha")] float fadeAlpha;
-    [SerializeField] [Tooltip("淡出/入速度")] float fadeSpeed;
-    [SerializeField] [Tooltip("死亡Alpha")] float deathAlpha;
-    [Tooltip("淡出/入圖片物件")] Image fade_Image;
+    [Header("FadeImage")]
+    [SerializeField] [Tooltip("FadeAlpha")] float fadeAlpha;
+    [SerializeField] [Tooltip("FadeSpeed")] float fadeSpeed;
+    [SerializeField] [Tooltip("DeathAlpha")] float deathAlpha;
+    [Tooltip("Fade_Image")] Image fade_Image;
 
-    [Header("提示文字")]
-    [SerializeField] [Tooltip("死亡時間(計時器)")] float deathTimeCountDown;
-    [Tooltip("提示文字")] Text tip_Text;
+    [Header("TipText")]
+    [SerializeField] [Tooltip("DeathTimeCountDown")] float deathTimeCountDown;
+    [Tooltip("Tip_Text")] Text tip_Text;
 
-    [Header("玩家資訊")]
-    [SerializeField] [Tooltip("玩家等級")] Text playerLevel_Text;
-    [SerializeField] [Tooltip("玩家血條")] Image playerLifeBar_Image;
-    [SerializeField] [Tooltip("玩家血條文字")] Text playerLifeBar_Text;
-    [SerializeField] [Tooltip("玩家經驗條")] Image playerExperienceBar_Image;
-    [SerializeField] [Tooltip("玩家經驗條文字")] Text playerExperienceBar_Text;
-    [SerializeField] [Tooltip("關卡等級文字")] Text gameLevel_Text;
+    [Header("PlayerUI")]
+    [SerializeField] [Tooltip("PlayerLevel_Text")] Text playerLevel_Text;
+    [SerializeField] [Tooltip("PlayerLifeBar_Image")] Image playerLifeBar_Image;
+    [SerializeField] [Tooltip("PlayerLifeBar_Text")] Text playerLifeBar_Text;
+    [SerializeField] [Tooltip("PlayerExperienceBar_Image")] Image playerExperienceBar_Image;
+    [SerializeField] [Tooltip("PlayerExperienceBar_Text")] Text playerExperienceBar_Text;
+    [SerializeField] [Tooltip("GameLevel_Text")] Text gameLevel_Text;
 
-    [Header("挑戰Boss")]
-    [SerializeField] [Tooltip("挑戰Boss按鈕")] Button challengeBoss_Button;
-    [SerializeField] [Tooltip("BossUI顯示控制")] Transform bossUI_Transform;
-    [SerializeField] [Tooltip("Boss血條")] Image bossLifeBar;
-    [SerializeField] [Tooltip("Boss血條文字")] Text bossLifeBar_Text;
+    [Header("BossUI")]
+    [SerializeField] [Tooltip("ChallengeBoss_Button")] Button challengeBoss_Button;
+    [SerializeField] [Tooltip("BossUI_Transform")] Transform bossUI_Transform;
+    [SerializeField] [Tooltip("BossLifeBar")] Image bossLifeBar;
+    [SerializeField] [Tooltip("BossLifeBar_Text")] Text bossLifeBar_Text;
 
 
     private void Awake()
@@ -49,83 +46,81 @@ public class GameUI : MonoBehaviour
 
     private void Start()
     {
-        OnGetComponent();//獲取Component
+        OnGetComponent();
 
-        //畫面淡出/入
-        fadeAlpha = 1;//淡出/入圖片Alpha
+        fadeAlpha = 1;
         fade_Image.color = new Color(0, 0, 0, fadeAlpha);
-        fadeSpeed = 0.3f;//淡出/入速度
-        deathAlpha = 0.85f;//死亡Alpha
+        fadeSpeed = 0.3f;
+        deathAlpha = 0.85f;
 
-        //提示文字
-        deathTimeCountDown = NumericalValueManagement.NumericalValueManagement.deathTime;//死亡時間(計時器)
+        deathTimeCountDown = NumericalValueManagement.NumericalValue_Game.deathTime;
     }
 
     /// <summary>
-    /// 獲取Component
+    /// GetComponent
     /// </summary>
     void OnGetComponent()
     {
-        //淡出/入圖片物件
-        fade_Image = FindChild.OnFindChild<Image>(transform, "FadeOut_Image");//淡出/入圖片物件
-        tip_Text = FindChild.OnFindChild<Text>(transform, "Tip_Text");//提示文字
+        //Fade_Image
+        fade_Image = FindChild.OnFindChild<Image>(transform, "FadeOut_Image");
+        tip_Text = FindChild.OnFindChild<Text>(transform, "Tip_Text");
         tip_Text.enabled = false;
 
-        //玩家等級文字
+        //PlayerLevel_Text
         playerLevel_Text = FindChild.OnFindChild<Text>(transform, "Level_Text");
 
-        //玩家血條
+        //PlayerLifeBar_Image
         playerLifeBar_Image = FindChild.OnFindChild<Image>(transform, "LifaBar_Image");
         playerLifeBar_Image.type = Image.Type.Filled;
         playerLifeBar_Image.fillMethod = Image.FillMethod.Horizontal;
         playerLifeBar_Image.fillOrigin = 0;
 
-        //玩家血條文字
+        //PlayerLifeBar_Text
         playerLifeBar_Text = FindChild.OnFindChild<Text>(transform, "LifeBar_Text");
         playerLifeBar_Text.alignment = TextAnchor.MiddleLeft;
 
-        //玩家經驗條
+        //PlayerExperienceBar_Image
         playerExperienceBar_Image = FindChild.OnFindChild<Image>(transform, "ExperienceBar_Image");
         playerExperienceBar_Image.type = Image.Type.Filled;
         playerExperienceBar_Image.fillMethod = Image.FillMethod.Horizontal;
         playerExperienceBar_Image.fillOrigin = 0;
 
-        //玩家經驗條文字
+        //PlayerExperienceBar_Text
         playerExperienceBar_Text = FindChild.OnFindChild<Text>(transform, "Experience_Text");
         playerExperienceBar_Text.alignment = TextAnchor.MiddleLeft;
 
-        //關卡等級文字
+        //GameLevel_Text
         gameLevel_Text = FindChild.OnFindChild<Text>(transform, "GameLevel_Text");
         OnSetGameLevel();//設定關卡等級
 
-        //挑戰Boss按鈕
+        //ChallengeBoss_Button
         challengeBoss_Button = FindChild.OnFindChild<Button>(transform, "ChallengeBoss_Button");
         challengeBoss_Button.onClick.AddListener(OnChallengeBossButtonFunction);
 
-        //BossUI顯示控制
+        //BossUI ActiveControl
         bossUI_Transform = FindChild.OnFindChild<Transform>(transform, "BossUI");
         bossUI_Transform.gameObject.SetActive(false);
 
-        //Boss血條
+        //BossLifeBar_Image
         bossLifeBar = FindChild.OnFindChild<Image>(transform, "BossLifeBar_Image");
         bossLifeBar.type = Image.Type.Filled;
         bossLifeBar.fillMethod = Image.FillMethod.Horizontal;
         bossLifeBar.fillOrigin = 0;
 
-        //Boss血條文字
+        //BossLifeBar_Text
         bossLifeBar_Text = FindChild.OnFindChild<Text>(transform, "BossLifeBar_Text");
     }
 
     private void Update()
     {
-        OnScreenFadeOut();//畫面淡出
-        OnDeathTimeCountDown();//死亡時間倒數
-    }    
+        OnScreenFadeOut();
+        OnDeathTimeCountDown();
+    }
 
     /// <summary>
-    /// UI激活
+    ///nUIActive
     /// </summary>
-    /// <param name="isActive">是否激活</param>
+    /// <param name="isActive"></param>
     public void OnUIActive(bool isActive)
     {
         challengeBoss_Button.gameObject.SetActive(isActive);
@@ -133,15 +128,15 @@ public class GameUI : MonoBehaviour
     }
 
     /// <summary>
-    /// 挑戰Boss按鈕事件
+    /// ChallengeBossButtonFunction
     /// </summary>
     void OnChallengeBossButtonFunction()
     {
         if (GameManagement.Instance.isPlayerDeath) return;
-        GameManagement.Instance.OnCleanEnemySoldier("EnemySoldierObject", AssetManagement.Instance.enemySoldierObjects);//清除敵人
-        GameManagement.Instance.OnCreateBoss();//產生Boss
-        GameManagement.Instance.GetPlayerObject.OnUpdateValue();//更新數值
-        OnUIActive(false);//UI激活
+        GameManagement.Instance.OnCleanEnemySoldier("EnemySoldierObject", AssetManagement.Instance.enemySoldierObjects);
+        GameManagement.Instance.OnCreateBoss();
+        GameManagement.Instance.GetPlayerObject.OnUpdateValue();
+        OnUIActive(false);
         bossUI_Transform.gameObject.SetActive(true);
         bossLifeBar.fillAmount = 1;
         int boosHp = NumericalValueManagement.NumericalValue_Boss.initial_Hp + (NumericalValueManagement.NumericalValue_Boss.raiseUpgradeHp * (GameDataManagement.Instance.gameLevel - 1));
@@ -149,9 +144,9 @@ public class GameUI : MonoBehaviour
     }
 
     /// <summary>
-    /// 設定Boss血條
+    /// SetBossLifeBar
     /// </summary>
-    /// <param name="hp">Hp</param>
+    /// <param name="hp"></param>
     public void OnSetBossLifeBar(int hp)
     {        
         bossLifeBar.fillAmount = (float)hp /
@@ -161,9 +156,9 @@ public class GameUI : MonoBehaviour
     }
 
     /// <summary>
-    /// 設定玩家血條
-    /// </summary>    
-    /// <param name="hp">Hp</param>
+    /// OnSetPlayerLifeBar
+    /// </summary>
+    /// <param name="hp"></param>
     public void OnSetPlayerLifeBar(int hp)
     {
         playerLifeBar_Image.fillAmount = (float)hp / 
@@ -173,35 +168,36 @@ public class GameUI : MonoBehaviour
     }
 
     /// <summary>
-    /// 設定玩家經驗條
-    /// </summary>    
+    /// SetPlayerExperience
+    /// </summary>
     public void OnSetPlayerExperience()
     {
         float experienceRatio = (float)GameDataManagement.Instance.playerExperience /
-                                (float)(((GameDataManagement.Instance.playerLevel - 1) * NumericalValueManagement.NumericalValueManagement.raiseUpgradeExperience) + NumericalValueManagement.NumericalValueManagement.upgradeExperience);
+                                (float)(((GameDataManagement.Instance.playerLevel - 1) * NumericalValueManagement.NumericalValue_Game.raiseUpgradeExperience) + NumericalValueManagement.NumericalValue_Game.upgradeExperience);
         playerExperienceBar_Image.fillAmount = experienceRatio;
-        playerExperienceBar_Text.text = $"Exp: {GameDataManagement.Instance.playerExperience} / {NumericalValueManagement.NumericalValueManagement.upgradeExperience + (NumericalValueManagement.NumericalValueManagement.raiseUpgradeExperience * (GameDataManagement.Instance.playerLevel - 1))}";
+        playerExperienceBar_Text.text = $"Exp: {GameDataManagement.Instance.playerExperience} / " +
+            $"{NumericalValueManagement.NumericalValue_Game.upgradeExperience + (NumericalValueManagement.NumericalValue_Game.raiseUpgradeExperience * (GameDataManagement.Instance.playerLevel - 1))}";
     }
 
     /// <summary>
-    /// 設定玩家等級
+    /// SetPlayerFrade
     /// </summary>
-    public void OnSetPlayerLevel()
+    public void OnSetPlayerGrade()
     {
-        playerLevel_Text.text = $"等級: {++GameDataManagement.Instance.playerLevel}";
+        playerLevel_Text.text = $"Grade: {++GameDataManagement.Instance.playerLevel}";
         GameDataManagement.Instance.playerExperience = 0;
     }
 
     /// <summary>
-    /// 設定關卡等級
+    /// SetGameLevel
     /// </summary>
     public void OnSetGameLevel()
     {
-        gameLevel_Text.text = $"關卡: {++GameDataManagement.Instance.gameLevel}";
+        gameLevel_Text.text = $"LV: {++GameDataManagement.Instance.gameLevel}";
     }
 
     /// <summary>
-    /// 畫面淡出
+    /// ScreenFadeOut
     /// </summary>
     void OnScreenFadeOut()
     {
@@ -213,13 +209,13 @@ public class GameUI : MonoBehaviour
     }
 
     /// <summary>
-    /// 死亡時間倒數
+    /// DeathTimeCountDown
     /// </summary>
     void OnDeathTimeCountDown()
     {
         if (GameManagement.Instance.isPlayerDeath)
         {
-            //畫面變灰
+            //FadeIn
             if (fadeAlpha < deathAlpha)
             {
                 fadeAlpha += Time.deltaTime;
@@ -229,24 +225,24 @@ public class GameUI : MonoBehaviour
 
             if (!tip_Text.enabled) tip_Text.enabled = true;
 
-            //提示文字
+            //Death Over
             deathTimeCountDown -= Time.deltaTime;
             if (deathTimeCountDown <= 0)
             {
-                deathTimeCountDown = NumericalValueManagement.NumericalValueManagement.deathTime;//死亡時間(計時器)
+                deathTimeCountDown = NumericalValueManagement.NumericalValue_Game.deathTime;
                 GameManagement.Instance.isPlayerDeath = false;
                 tip_Text.enabled = false;
 
-                GameManagement.Instance.OnCleanEnemySoldier("EnemySoldierObject", AssetManagement.Instance.enemySoldierObjects);//清除敵人
-                GameManagement.Instance.OnRespawnPlayer();//重生玩家
-                GameManagement.Instance.GetPlayerObject.OnUpdateValue();//更新數值
-                OnUIActive(true);//UI激活
+                GameManagement.Instance.OnCleanEnemySoldier("EnemySoldierObject", AssetManagement.Instance.enemySoldierObjects);
+                GameManagement.Instance.OnRespawnPlayer();
+                GameManagement.Instance.GetPlayerObject.OnUpdateValue();
+                OnUIActive(true);
 
-                //挑戰Boss
+                //Challenge Boss
                 if (GameManagement.Instance.isChallengeBoss)
                 {
                     GameManagement.Instance.isChallengeBoss = false;
-                    GameManagement.Instance.OnCleanEnemySoldier("BossObject", AssetManagement.Instance.bossObjects);//清除敵人
+                    GameManagement.Instance.OnCleanEnemySoldier("BossObject", AssetManagement.Instance.bossObjects);
                 }
             }
 

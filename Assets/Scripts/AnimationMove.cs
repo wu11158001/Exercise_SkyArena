@@ -2,9 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// 動畫_移動
-/// </summary>
 public class AnimationMove : StateMachineBehaviour
 {
     [Tooltip("移動速度")] float moveSpeed;

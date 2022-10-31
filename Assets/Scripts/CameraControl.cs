@@ -2,33 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// 攝影機跟隨
-/// </summary>
 public class CameraControl : MonoBehaviour
 {
     static CameraControl cameraFollow;
     public static CameraControl Instance => cameraFollow;
 
-    [Header("跟隨")]
-    [SerializeField] [Tooltip("攝影機距離")] float cameraDistance;
-    [SerializeField] [Tooltip("攝影機距離限制(最大,最小)")] float[] cameraDistanceLimit;
-    [SerializeField] [Tooltip("攝影機高度")] float cameraHight;
-    [SerializeField] [Tooltip("攝影機高度限制(最大,最小)")] float[] cameraHightLimit;
-    [SerializeField] [Tooltip("LerpTime")] float lerphTime;
+    [Header("Value")]
+    [SerializeField] [Tooltip("CameraDistance")] float cameraDistance;
+    [SerializeField] [Tooltip("CameraDistanceLimit(max, min)")] float[] cameraDistanceLimit;
+    [SerializeField] [Tooltip("CameraHight")] float cameraHight;
+    [SerializeField] [Tooltip("CameraHightLimit(max, min)")] float[] cameraHightLimit;
+    [SerializeField] [Tooltip("LerpTime")] float lerpTime;
 
-    [Header("選轉")]
-    [SerializeField] [Tooltip("輸入MouseX")] float inputMouseX;
-    [SerializeField] [Tooltip("輸入MouseY")] float inputMouseY;
-    [SerializeField] [Tooltip("輸入MouseScollWhell")] float inputMouseScollWhell;
-    [SerializeField] [Tooltip("輸入值大於多少開始轉動")] float inputMoreThanTheValue;
-    [SerializeField] [Tooltip("向上角度")] float upAngle;
-    [SerializeField] [Tooltip("選轉速度")] float rotateSpeed;
+    [Header("Input")]
+    [SerializeField] [Tooltip("InputMouseX")] float inputMouseX;
+    [SerializeField] [Tooltip("InputMouseY")] float inputMouseY;
+    [SerializeField] [Tooltip("InputMouseScollWhell")] float inputMouseScollWhell;
+    [SerializeField] [Tooltip("InputMoreThanTheValue")] float inputMoreThanTheValue;
+    [SerializeField] [Tooltip("UpAngle")] float upAngle;
+    [SerializeField] [Tooltip("RotateSpeed")] float rotateSpeed;
 
-    [Header("跟隨物件")]
-    [SerializeField] [Tooltip("跟隨物件")] Transform targetObject;
-    [Tooltip("跟隨物件位置")] Vector3 targetPosition;
-    [Tooltip("Forward向量")] Vector3 forwardVector;
+    [Header("TargetObject")]
+    [SerializeField] [Tooltip("targetObject")] Transform targetObject;
+    [Tooltip("targetPosition")] Vector3 targetPosition;
+    [Tooltip("forwardVector")] Vector3 forwardVector;
 
     private void Awake()
     {
@@ -38,19 +35,18 @@ public class CameraControl : MonoBehaviour
             return;
         }
         cameraFollow = this;
+        transform.position = Vector3.zero;
 
-        transform.position = Vector3.zero;//初始位置
+        //Value
+        cameraDistance = 4;
+        cameraDistanceLimit = new float[] { 6, 2 };
+        cameraHight = 3;
+        cameraHightLimit = new float[] { 5, 0.8f };
+        lerpTime = 0.01f;
 
-        //跟隨
-        cameraDistance = 4;//攝影機距離
-        cameraDistanceLimit = new float[] { 6, 2 };//攝影機距離限制(最大,最小)
-        cameraHight = 3;//攝影機高度
-        cameraHightLimit = new float[] { 5, 0.8f };//攝影機高度限制(最大,最小)
-        lerphTime = 0.01f;//LerpTime
-
-        //選轉
+        //Input
         inputMoreThanTheValue = 0.2f;
-        rotateSpeed = 2;//選轉速度
+        rotateSpeed = 2;
     }
 
     private void LateUpdate()
@@ -62,7 +58,7 @@ public class CameraControl : MonoBehaviour
     }
 
     /// <summary>
-    /// 攝影機控制
+    /// CameraFollow
     /// </summary>
     void OnCameraFollow()
     {
@@ -72,14 +68,14 @@ public class CameraControl : MonoBehaviour
             inputMouseX = Input.GetAxis("Mouse X");
             inputMouseY = Input.GetAxis("Mouse Y");
 
-            //左右轉動
+            //Horizontal Rotate
             if (Mathf.Abs(inputMouseX) > inputMoreThanTheValue)
             {
                 transform.RotateAround(targetObject.position, Vector3.up, rotateSpeed * inputMouseX);
                 forwardVector = Vector3.Cross(transform.right, Vector3.up);
             }
 
-            //高度移動
+            //Vertical Rotate
             if (Mathf.Abs(inputMouseY) > inputMoreThanTheValue)
             {
                 cameraHight += -inputMouseY * rotateSpeed;
@@ -88,28 +84,28 @@ public class CameraControl : MonoBehaviour
             }
         }
 
-        //遠近移動
+        //Zoom
         inputMouseScollWhell = Input.GetAxis("Mouse ScrollWheel");
         cameraDistance += -inputMouseScollWhell * rotateSpeed;
         if (cameraDistance >= cameraDistanceLimit[0]) cameraDistance = cameraDistanceLimit[0];
         if (cameraDistance <= cameraDistanceLimit[1]) cameraDistance = cameraDistanceLimit[1];
 
-        //跟隨
+        //Position
         targetPosition = targetObject.position + Vector3.up * cameraHight - forwardVector * cameraDistance;
-        transform.position = Vector3.Lerp(transform.position, targetPosition, lerphTime);
+        transform.position = Vector3.Lerp(transform.position, targetPosition, lerpTime);
         transform.LookAt(targetObject);
     }
 
     /// <summary>
-    /// 設定跟隨目標
+    /// SetFollowTarget
     /// </summary>
     public Transform SetFollowTarget
     {
         set
         {
-            targetObject = value;//跟隨物件
-            forwardVector = targetObject.forward;//Forward向量            
-            targetPosition = targetObject.position + Vector3.up * cameraHight - Vector3.Cross(transform.right, Vector3.up) * cameraDistance;//跟隨物件位置            
+            targetObject = value;
+            forwardVector = targetObject.forward;   
+            targetPosition = targetObject.position + Vector3.up * cameraHight - Vector3.Cross(transform.right, Vector3.up) * cameraDistance;
         }
     }
 }
