@@ -1,0 +1,7 @@
+ManifestFileVersion: 0
+CRC: 3993548382
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: prefab/player
+      Dependencies: {}
