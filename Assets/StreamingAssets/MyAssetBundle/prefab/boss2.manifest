@@ -1,0 +1,46 @@
+ManifestFileVersion: 0
+CRC: 2836536788
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 684b1d8cc5241b06e1d9e91cddb65aae
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 29140705b32bc375f5faac696023eafc
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 90
+  Script: {instanceID: 0}
+- Class: 91
+  Script: {instanceID: 0}
+- Class: 95
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 405a628ec3edcef47b43060f96ac9ec8, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 136
+  Script: {instanceID: 0}
+- Class: 137
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Prefabs/Boss/Boss2-2.prefab
+- Assets/Prefabs/Boss/Boss2-3.prefab
+- Assets/Prefabs/Boss/Boss2-4.prefab
+- Assets/Prefabs/Boss/Boss2-1.prefab
+Dependencies: []
