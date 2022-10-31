@@ -55899,7 +55899,7 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0.75
+  - time: 0.6666667
     functionName: OnSingleAttackBehavior
     data: PlayerNormalAttack_1
     objectReferenceParameter: {fileID: 0}
