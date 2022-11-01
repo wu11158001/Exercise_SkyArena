@@ -22,7 +22,8 @@ namespace NumericalValueManagement
     /// </summary>
     public class NumericalValue_Commom
     {        
-        public static float commomValue_RotateSpeed = 0.1f;   
+        public static float commomValue_RotateSpeed = 0.1f;
+        public static float effectMoveSpeed = 5;
     }
 
     /// <summary>
@@ -32,7 +33,7 @@ namespace NumericalValueManagement
     {
         public static float moveSpeed = 2f;
         public static int initial_Hp = 500;
-        public static int initial_Attack = 50;
+        public static int initial_AttackPower = 50;
         public static int attackCount = 3;
         public static float attackRadius = 1.2f;
         public static float attackFrequency = 0.1f;
@@ -47,7 +48,7 @@ namespace NumericalValueManagement
     {
         public static float moveSpeed = 1f;
         public static int initial_Hp = 100;
-        public static int initial_Attack = 5;
+        public static int initial_AttackPower = 5;
         public static int attackCount = 1;
         public static float attackRadius = 1.2f;
         public static float attackFrequency = 1;
@@ -62,7 +63,7 @@ namespace NumericalValueManagement
     {
         public static float moveSpeed = 1f;
         public static int initial_Hp = 500;
-        public static int initial_Attack = 70;
+        public static int initial_AttackPower = 70;
         public static int attackCount = 3;
         public static float attackRadius = 5;
         public static float attackFrequency = 1;

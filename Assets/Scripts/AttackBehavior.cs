@@ -10,13 +10,15 @@ public class AttackBehavior
     /// <param name="attacker"></param>
     /// <param name="attackerRace"></param>
     /// <param name="target"></param>
-    /// <param name="attack"></param>
+    /// <param name="attackPower"></param>
     /// <param name="effectName"></param>
-    public void OnSingleAttack(Transform attacker , AIPlayer.Race attackerRace, Transform target, int attack, string effectName)
+    public void OnSingleAttack(Transform attacker , AIPlayer.Race attackerRace, Transform target, int attackPower, string effectName)
     {
         target.GetComponent<AIPlayer>().OnGetHit(attacker: attacker,
                                                  attackerRace: attackerRace,
-                                                 attack: attack,
+                                                 attack: attackPower,
                                                  effectName: effectName);
     }
+
+   
 }

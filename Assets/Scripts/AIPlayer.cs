@@ -15,7 +15,7 @@ public class AIPlayer : MonoBehaviour
 
     [Header("Value")]
     [SerializeField] [Tooltip("Hp")] protected int Hp;
-    [SerializeField] [Tooltip("Attack")] protected int attack;
+    [SerializeField] [Tooltip("AttackPower")] protected int attackPower;
 
     [Header("Component")]
     [SerializeField] [Tooltip("Animator")] Animator animator;
@@ -71,7 +71,7 @@ public class AIPlayer : MonoBehaviour
     {
         Hp = NumericalValueManagement.NumericalValue_Player.initial_Hp + 
             (NumericalValueManagement.NumericalValue_Player.raiseUpgradeHp * (GameDataManagement.Instance.playerLevel - 1));
-        attack = NumericalValueManagement.NumericalValue_Player.initial_Attack +
+        attackPower = NumericalValueManagement.NumericalValue_Player.initial_AttackPower +
             (NumericalValueManagement.NumericalValue_Player.raiseUpgradeAttack * (GameDataManagement.Instance.playerLevel - 1));
 
         GameUI.Instance.OnSetPlayerLifeBar(Hp);
@@ -103,6 +103,29 @@ public class AIPlayer : MonoBehaviour
             OnAttackActive();
         }        
     }
+
+    #region AttackMethod
+    /// <summary>
+    /// SingleAttackBehavior
+    /// </summary>
+    /// <param name="effectName"></param>
+    void OnSingleAttackBehavior(string effectName)
+    {
+        new AttackBehavior().OnSingleAttack(attacker: transform,
+                                            attackerRace: race,
+                                            target: targetObject,
+                                            attackPower: attackPower,
+                                            effectName: effectName);
+    }
+
+    /// <summary>
+    /// ShootAttack
+    /// </summary>
+    void OnShootAttack(string effectName)
+    {
+        GameManagement.Instance.OnCreateEffect_Shot(transform.forward, transform.position, effectName);
+    }
+    #endregion
 
     /// <summary>
     /// AttackActive
@@ -157,7 +180,7 @@ public class AIPlayer : MonoBehaviour
             transform.forward = Vector3.RotateTowards(transform.forward, transform.position - targetObject.position, rotateSpeed, 0);         
         }
     }
-
+    
     /// <summary>
     /// JudgeAttackRange
     /// </summary>
@@ -228,45 +251,9 @@ public class AIPlayer : MonoBehaviour
 
         List<Transform> enemys = GameManagement.Instance.GetEnemyList;
         if (enemys.Count > 0) targetObject = enemys[UnityEngine.Random.Range(0, enemys.Count)];
-    }
+    }    
 
-    /// <summary>
-    /// AnimationOver
-    /// </summary>
-    protected void OnAnimationOver()
-    {
-        if (info.normalizedTime >= 1)
-        {
-            if (info.IsTag("Attack")) animator.SetFloat("AttackNumber", 0);
-            if (info.IsTag("Death"))
-            {
-                gameObject.SetActive(false);       
-                OnBossDeath();
-            }
-        }
-    }
-
-    /// <summary>
-    /// AnimatorStateInfo
-    /// </summary>
-    protected void OnAnimatorStateInfo()
-    {
-        info = animator.GetCurrentAnimatorStateInfo(0);
-    }
-
-    /// <summary>
-    /// SingleAttackBehavior
-    /// </summary>
-    /// <param name="effectName"></param>
-    void OnSingleAttackBehavior(string effectName)
-    {
-        new AttackBehavior().OnSingleAttack(attacker: transform,
-                                            attackerRace: race,
-                                            target: targetObject,
-                                            attack: attack,
-                                            effectName: effectName);
-    }
-
+    #region GrtHit
     /// <summary>
     /// GetHit
     /// </summary>
@@ -298,7 +285,7 @@ public class AIPlayer : MonoBehaviour
                                                   text: attack.ToString());
 
         //Effect
-        if (!string.IsNullOrEmpty(effectName)) GameManagement.Instance.OnCreateEffect(transform.position + thisCollider.center, effectName);
+        if (!string.IsNullOrEmpty(effectName)) GameManagement.Instance.OnCreateEffect_Generally(transform.position + thisCollider.center, effectName);
 
         OnPlayerGetHit();
         OnBossGetHit();
@@ -381,6 +368,7 @@ public class AIPlayer : MonoBehaviour
             GameUI.Instance.OnUIActive(true);                                  
         }
     }
+    #endregion
 
     /// <summary>
     /// PlayerUpgrade
@@ -389,8 +377,32 @@ public class AIPlayer : MonoBehaviour
     {               
         GameUI.Instance.OnSetPlayerGrade();
         GameManagement.Instance.GetPlayerObject.OnUpdateValue();
-    }    
-   
+    }
+
+    /// <summary>
+    /// AnimationOver
+    /// </summary>
+    protected void OnAnimationOver()
+    {
+        if (info.normalizedTime >= 1)
+        {
+            if (info.IsTag("Attack")) animator.SetFloat("AttackNumber", 0);
+            if (info.IsTag("Death"))
+            {
+                gameObject.SetActive(false);
+                OnBossDeath();
+            }
+        }
+    }
+
+    /// <summary>
+    /// AnimatorStateInfo
+    /// </summary>
+    protected void OnAnimatorStateInfo()
+    {
+        info = animator.GetCurrentAnimatorStateInfo(0);
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;

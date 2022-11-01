@@ -28,7 +28,7 @@ public class AIBoss : AIEnemySoldier
     {
         Hp = NumericalValueManagement.NumericalValue_Boss.initial_Hp +
             (NumericalValueManagement.NumericalValue_Boss.raiseUpgradeHp * (GameDataManagement.Instance.gameLevel - 1));
-        attack = NumericalValueManagement.NumericalValue_Boss.initial_Attack +
+        attackPower = NumericalValueManagement.NumericalValue_Boss.initial_AttackPower +
             (NumericalValueManagement.NumericalValue_Boss.raiseUpgradeAttack * (GameDataManagement.Instance.gameLevel - 1));
     }
 }

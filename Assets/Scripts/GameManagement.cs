@@ -244,8 +244,10 @@ public class GameManagement : MonoBehaviour
 
         isChallengeBoss = true;
 
-        int bossType = UnityEngine.Random.Range(0, AssetManagement.Instance.boss_List.Count);
-        int bossNumber = UnityEngine.Random.Range(0, AssetManagement.Instance.boss_List[bossType].Length);
+        int bossType = 1;
+        int bossNumber = 1;
+        //int bossType = UnityEngine.Random.Range(0, AssetManagement.Instance.boss_List.Count);
+        //int bossNumber = UnityEngine.Random.Range(0, AssetManagement.Instance.boss_List[bossType].Length);
 
         GameObject boss = objectPool.OnActiveObject(OnSerchObjectPoolNumber($"BossObject{bossType}-{bossNumber}"));
         boss.layer = LayerMask.NameToLayer("Enemy");
@@ -268,7 +270,7 @@ public class GameManagement : MonoBehaviour
     }
 
     /// <summary>
-    /// OnCreateHitNumber
+    /// CreateHitNumber
     /// </summary>
     /// <param name="attacker"></param>
     /// <param name="pos"></param>
@@ -286,24 +288,55 @@ public class GameManagement : MonoBehaviour
                           text: text);//Εγ₯ά€ε¦r
     }
 
+    #region Create Effect
     /// <summary>
-    /// OnCreateEffect
+    /// SearchEffect
+    /// </summary>
+    /// <param name="effectName"></param>
+    GameObject  OnSearchEffect(string effectName)
+    {
+        GameObject effect = null;
+
+        for (int i = 0; i < AssetManagement.Instance.effectObjects.Length; i++)
+        {
+            if (AssetManagement.Instance.effectObjects[i].name == effectName)
+            {
+                effect = objectPool.OnActiveObject(OnSerchObjectPoolNumber("EffectObject" + i.ToString()));                           
+
+                return effect;
+            }
+        }
+
+        return default;
+    }
+
+    /// <summary>
+    /// CreateEffect_Generally
     /// </summary>
     /// <param name="pos"></param>
     /// <param name="effectName"></param>
-    public void OnCreateEffect(Vector3 pos, string effectName)
+    public void OnCreateEffect_Generally(Vector3 pos, string effectName)
     {
-        for (int i = 0; i < AssetManagement.Instance.effectObjects.Length; i++)
-        {
-            if(AssetManagement.Instance.effectObjects[i].name == effectName)
-            {
-                GameObject effect = objectPool.OnActiveObject(OnSerchObjectPoolNumber("EffectObject" + i.ToString()));
-                if (!effect.TryGetComponent<EffectLifeTime>(out EffectLifeTime effectLifeTime)) effect.AddComponent<EffectLifeTime>();                
-                effect.transform.position = pos;
+        GameObject effect = OnSearchEffect(effectName);
+        if (effect == null) return;
 
-                return;
-            }
-        }        
+        if (!effect.TryGetComponent<EffectLifeTime>(out EffectLifeTime effectLifeTime)) effect.AddComponent<EffectLifeTime>();
+        effect.transform.position = pos;
     }
+
+    /// <summary>
+    /// CreateEffect_Shot
+    /// </summary>
+    public void OnCreateEffect_Shot(Vector3 forward , Vector3 pos, string effectName)
+    {
+        GameObject effect = OnSearchEffect(effectName);
+        if (effect == null) return;
+
+        if (!effect.TryGetComponent<EffectLifeTime>(out EffectLifeTime effectLifeTime)) effect.AddComponent<EffectLifeTime>();
+        if (!effect.TryGetComponent<EffectMovement>(out EffectMovement effectMovement)) effect.AddComponent<EffectMovement>();
+        effect.transform.position = pos;
+        effect.transform.forward = forward;
+    }
+    #endregion
 }
 

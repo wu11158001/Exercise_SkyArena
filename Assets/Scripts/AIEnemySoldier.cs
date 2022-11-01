@@ -11,7 +11,7 @@ public class AIEnemySoldier : AIPlayer
     {        
         if (targetObject == null)
         {
-            OnSearchTarget();//·j´M§ðÀ»¥Ø¼Ð
+            OnSearchTarget();
         }
     }
 
@@ -47,7 +47,7 @@ public class AIEnemySoldier : AIPlayer
     {
         Hp = NumericalValueManagement.NumericalValue_EnemySoldier.initial_Hp + 
             (NumericalValueManagement.NumericalValue_EnemySoldier.raiseUpgradeHp * (GameDataManagement.Instance.gameLevel - 1));
-        attack = NumericalValueManagement.NumericalValue_EnemySoldier.initial_Attack +
+        attackPower = NumericalValueManagement.NumericalValue_EnemySoldier.initial_AttackPower +
             (NumericalValueManagement.NumericalValue_EnemySoldier.raiseUpgradeAttack * (GameDataManagement.Instance.gameLevel - 1));
     }
 }
