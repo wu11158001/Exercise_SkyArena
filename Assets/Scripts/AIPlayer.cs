@@ -190,7 +190,7 @@ public class AIPlayer : MonoBehaviour
 
         string rival = race == Race.Player ? "Enemy" : "Player";
         LayerMask mask = LayerMask.GetMask(rival);
-        Collider[] colliders = Physics.OverlapSphere(transform.position + thisCollider.center, attackRadius, mask);
+        Collider[] colliders = Physics.OverlapSphere(transform.position + (thisCollider.center * transform.localScale.x), attackRadius, mask);
         for (int i = 0; i < colliders.Length; i++)
         {
             if (colliders[i].transform == targetObject)
@@ -406,6 +406,6 @@ public class AIPlayer : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position + thisCollider.center, attackRadius);
+        Gizmos.DrawWireSphere(transform.position + (thisCollider.center * transform.localScale.x) , attackRadius);
     }
 }

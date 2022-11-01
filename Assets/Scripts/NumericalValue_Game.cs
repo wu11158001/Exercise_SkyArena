@@ -65,7 +65,7 @@ namespace NumericalValueManagement
         public static int initial_Hp = 500;
         public static int initial_AttackPower = 70;
         public static int attackCount = 3;
-        public static float attackRadius = 5;
+        public static float attackRadius = 2.0f;
         public static float attackFrequency = 1;
         public static int raiseUpgradeHp = 500;
         public static int raiseUpgradeAttack = 70;
