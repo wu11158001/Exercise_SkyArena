@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 3947475007
+CRC: 2779058060
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 7af295bcef5ba2de7d48c6d7737cf334
+    Hash: c599d1f53ea232ae943becec0cbdbe14
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 7c3a5806348e9a69782900c40c0ec2b7
+    Hash: 12c0813995244133b390684b4454507c
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -17,8 +17,6 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 28
   Script: {instanceID: 0}
-- Class: 43
-  Script: {instanceID: 0}
 - Class: 48
   Script: {instanceID: 0}
 - Class: 198
@@ -28,9 +26,9 @@ ClassTypes:
 SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/Prefabs/Effects/EnemySoldierAttack_2.prefab
-- Assets/Prefabs/Effects/Boss2Attack3.prefab
 - Assets/Prefabs/Effects/PlayerNormalAttack_1.prefab
 - Assets/Prefabs/Effects/BossAttack_1.prefab
-- Assets/Prefabs/Effects/Boss2Attack2.prefab
 - Assets/Prefabs/Effects/EnemySoldierAttack_1.prefab
+- Assets/Prefabs/Effects/Boss2Attack3.prefab
+- Assets/Prefabs/Effects/Boss2Attack2.prefab
 Dependencies: []

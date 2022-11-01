@@ -332,9 +332,9 @@ public class GameManagement : MonoBehaviour
         GameObject effect = OnSearchEffect(effectName);
         if (effect == null) return;
         if (!effect.TryGetComponent<EffectLifeTime>(out EffectLifeTime effectLifeTime)) effectLifeTime = effect.AddComponent<EffectLifeTime>();        
-        effect.transform.SetParent(parent);
-        effect.transform.localPosition = Vector3.zero;
-        effect.transform.localEulerAngles = Vector3.zero;
+        //effect.transform.SetParent(parent);
+        effect.transform.position = parent.position;
+        effect.transform.rotation = parent.rotation;
     }  
     #endregion
 }
