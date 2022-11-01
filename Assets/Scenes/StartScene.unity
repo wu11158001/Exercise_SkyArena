@@ -319,7 +319,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u4EFB\u610F\u9375\u958B\u59CB"
+  m_Text: Any Key Start
 --- !u!222 &673908648
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -518,9 +518,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerObject: {fileID: 0}
   enemySoldierObjects: []
-  bossObjects: []
   hitTextObject: {fileID: 0}
   effectObjects: []
+  bossObjects1: []
+  bossObjects2: []
+  bossObjects3: []
 --- !u!4 &1576914266
 Transform:
   m_ObjectHideFlags: 0
