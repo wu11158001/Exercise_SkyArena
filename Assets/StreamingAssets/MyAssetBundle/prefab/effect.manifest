@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 779707891
+CRC: 1328457026
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 9961d9507188031b0d1e937e587880d2
+    Hash: 87d0392366fb8ed07dd51948cb1be4c0
   TypeTreeHash:
     serializedVersion: 2
     Hash: 12c0813995244133b390684b4454507c
@@ -28,5 +28,6 @@ Assets:
 - Assets/Prefabs/Effects/EnemySoldierAttack_2.prefab
 - Assets/Prefabs/Effects/PlayerNormalAttack_1.prefab
 - Assets/Prefabs/Effects/BossAttack_1.prefab
+- Assets/Prefabs/Effects/Boss2Attack2.prefab
 - Assets/Prefabs/Effects/EnemySoldierAttack_1.prefab
 Dependencies: []
