@@ -21,6 +21,7 @@ public class AIPlayer : MonoBehaviour
     [SerializeField] [Tooltip("Animator")] Animator animator;
     [SerializeField] [Tooltip("AnimatorStateInfo")] AnimatorStateInfo info;
     [SerializeField] [Tooltip("Collider")]  CapsuleCollider thisCollider;
+    [SerializeField] [Tooltip("ShootingPosition")] Transform shootingPosition;
 
     [Header("Move")]
     [SerializeField] [Tooltip("TargetObject")] protected Transform targetObject;
@@ -39,6 +40,7 @@ public class AIPlayer : MonoBehaviour
         //Component
         animator = GetComponent<Animator>();
         thisCollider = GetComponent<CapsuleCollider>();
+        shootingPosition = FindChild.OnFindChild<Transform>(transform, "ShootingPosition");
     }
 
     private void Start()
@@ -119,12 +121,13 @@ public class AIPlayer : MonoBehaviour
     }
 
     /// <summary>
-    /// ShootAttack
+    /// EjectAttack
     /// </summary>
-    void OnShootAttack(string effectName)
+    /// <param name="effectName"></param>
+    void OnEjectAttack(string effectName)
     {
-        GameManagement.Instance.OnCreateEffect_Shot(transform.forward, transform.position, effectName);
-    }
+        GameManagement.Instance.OnCreateEffect_Eject(shootingPosition, effectName);
+    }  
     #endregion
 
     /// <summary>

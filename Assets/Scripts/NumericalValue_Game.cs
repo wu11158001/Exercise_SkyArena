@@ -62,8 +62,8 @@ namespace NumericalValueManagement
     public class NumericalValue_Boss
     {
         public static float moveSpeed = 1f;
-        public static int initial_Hp = 500;
-        public static int initial_AttackPower = 70;
+        public static int initial_Hp = 5000;
+        public static int initial_AttackPower = 7;
         public static int attackCount = 3;
         public static float attackRadius = 3.5f;
         public static float attackFrequency = 1;

@@ -245,7 +245,7 @@ public class GameManagement : MonoBehaviour
         isChallengeBoss = true;
 
         int bossType = 1;
-        int bossNumber = 1;
+        int bossNumber = 0;
         //int bossType = UnityEngine.Random.Range(0, AssetManagement.Instance.boss_List.Count);
         //int bossNumber = UnityEngine.Random.Range(0, AssetManagement.Instance.boss_List[bossType].Length);
 
@@ -320,23 +320,22 @@ public class GameManagement : MonoBehaviour
         GameObject effect = OnSearchEffect(effectName);
         if (effect == null) return;
 
-        if (!effect.TryGetComponent<EffectLifeTime>(out EffectLifeTime effectLifeTime)) effect.AddComponent<EffectLifeTime>();
+        if (!effect.TryGetComponent<EffectLifeTime>(out EffectLifeTime effectLifeTime)) effectLifeTime = effect.AddComponent<EffectLifeTime>();        
         effect.transform.position = pos;
     }
 
     /// <summary>
-    /// CreateEffect_Shot
+    /// CreateEffect_Eject
     /// </summary>
-    public void OnCreateEffect_Shot(Vector3 forward , Vector3 pos, string effectName)
+    public void OnCreateEffect_Eject(Transform parent, string effectName)
     {
         GameObject effect = OnSearchEffect(effectName);
         if (effect == null) return;
-
-        if (!effect.TryGetComponent<EffectLifeTime>(out EffectLifeTime effectLifeTime)) effect.AddComponent<EffectLifeTime>();
-        if (!effect.TryGetComponent<EffectMovement>(out EffectMovement effectMovement)) effect.AddComponent<EffectMovement>();
-        effect.transform.position = pos;
-        effect.transform.forward = forward;
-    }
+        if (!effect.TryGetComponent<EffectLifeTime>(out EffectLifeTime effectLifeTime)) effectLifeTime = effect.AddComponent<EffectLifeTime>();        
+        effect.transform.SetParent(parent);
+        effect.transform.localPosition = Vector3.zero;
+        effect.transform.localEulerAngles = Vector3.zero;
+    }  
     #endregion
 }
 
