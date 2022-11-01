@@ -57212,7 +57212,7 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0.51666665
-    functionName: OnShootAttack
+    functionName: OnSingleAttackBehavior
     data: Boss2Attack2
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
