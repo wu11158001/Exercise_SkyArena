@@ -18,7 +18,11 @@ public class AIBoss : AIEnemySoldier
         attackRadius = NumericalValueManagement.NumericalValue_Boss.attackRadius;
         attackFrequency = NumericalValueManagement.NumericalValue_Boss.attackFrequency;
 
-        OnUpdateValue();//§ó·s¼Æ­È
+        //BossExclusive
+        attackDistance = NumericalValueManagement.NumericalValue_Boss.attackDistance;
+        damageOverTimeRadius = NumericalValueManagement.NumericalValue_Boss.damageOverTimeRadius;
+
+        OnUpdateValue();
     }
 
     /// <summary>

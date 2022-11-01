@@ -26,6 +26,9 @@ public class GameManagement : MonoBehaviour
     [Tooltip("isPlayerDeath")] public bool isPlayerDeath;
     [Tooltip("isChallengeBoss")] public bool isChallengeBoss;
 
+    [Header("AttackBehavior")]
+    [Tooltip("AttackList")] public List<AttackBehavior> attack_List = new List<AttackBehavior>();
+
     private void Awake()
     {
         if(AssetManagement.Instance == null)
@@ -138,7 +141,20 @@ public class GameManagement : MonoBehaviour
     private void Update()
     {
         OnCreateEnenySoldier();
+        OnDamageOverTime();
     }
+
+    /// <summary>
+    /// DamageOverTime
+    /// </summary>
+    void OnDamageOverTime()
+    {
+        for (int i = 0; i < attack_List.Count; i++)
+        {
+            attack_List[i].OnDamageOverTime();
+        }
+    }
+    
 
     /// <summary>
     /// GetPlayerObject
@@ -331,8 +347,7 @@ public class GameManagement : MonoBehaviour
     {
         GameObject effect = OnSearchEffect(effectName);
         if (effect == null) return;
-        if (!effect.TryGetComponent<EffectLifeTime>(out EffectLifeTime effectLifeTime)) effectLifeTime = effect.AddComponent<EffectLifeTime>();        
-        //effect.transform.SetParent(parent);
+        if (!effect.TryGetComponent<EffectLifeTime>(out EffectLifeTime effectLifeTime)) effectLifeTime = effect.AddComponent<EffectLifeTime>();
         effect.transform.position = parent.position;
         effect.transform.rotation = parent.rotation;
     }  

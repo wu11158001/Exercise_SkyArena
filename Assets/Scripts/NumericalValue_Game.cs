@@ -69,5 +69,7 @@ namespace NumericalValueManagement
         public static float attackFrequency = 1;
         public static int raiseUpgradeHp = 500;
         public static int raiseUpgradeAttack = 70;
+        public static float attackDistance = 2;
+        public static float damageOverTimeRadius = 1.5f;
     }
 }

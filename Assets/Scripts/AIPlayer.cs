@@ -35,6 +35,11 @@ public class AIPlayer : MonoBehaviour
     [SerializeField] [Tooltip("AttackFrequency")] protected float attackFrequency;
     [SerializeField] [Tooltip("AttackTimeCountDown")] float attackTimeCountDown;
 
+    [Header("BossExclusive")]
+    [SerializeField] [Tooltip("AttackDistance")] protected float attackDistance;
+    [SerializeField] [Tooltip("DamageOverTimeRadius")] protected float damageOverTimeRadius;
+    [SerializeField] [Tooltip("AttackBehaviorInUse")] protected AttackBehavior attackBehavioInUse;
+
     protected void Awake()
     {        
         //Component
@@ -126,8 +131,25 @@ public class AIPlayer : MonoBehaviour
     /// <param name="effectName"></param>
     void OnEjectAttack(string effectName)
     {
+        AttackBehavior attackBehavior = new AttackBehavior() { target  = targetObject,
+                                                               attacker = transform,
+                                                               attackerRace = race,
+                                                               attackPower = attackPower,
+                                                               attackDistance = attackDistance,
+                                                               damageOverTimeRadius = damageOverTimeRadius};
+        
         GameManagement.Instance.OnCreateEffect_Eject(shootingPosition, effectName);
-    }  
+        GameManagement.Instance.attack_List.Add(attackBehavior);
+        attackBehavioInUse = attackBehavior;
+    }
+
+    /// <summary>
+    /// RemoveAttackList
+    /// </summary>
+    void OnRemoveAttackList()
+    {
+        GameManagement.Instance.attack_List.Remove(attackBehavioInUse);
+    }
     #endregion
 
     /// <summary>
@@ -408,7 +430,10 @@ public class AIPlayer : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position + (thisCollider.center * transform.localScale.x) , attackRadius);
+        /*Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position + (thisCollider.center * transform.localScale.x) , attackRadius);*/
+
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position + (thisCollider.center * transform.localScale.x) + transform.forward * attackDistance, damageOverTimeRadius);
     }
 }
