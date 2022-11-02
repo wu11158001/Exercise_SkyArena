@@ -31,7 +31,7 @@ namespace NumericalValueManagement
     /// </summary>
     public class NumericalValue_Player
     {
-        public static float moveSpeed = 3f;
+        public static float moveSpeed = 2.5f;
         public static int initial_Hp = 500;
         public static int initial_AttackPower = 50;
         public static int attackCount = 3;

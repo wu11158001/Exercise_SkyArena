@@ -262,10 +262,10 @@ public class GameManagement : MonoBehaviour
 
         isChallengeBoss = true;
 
-        int bossType = 2;
-        int bossNumber = 0;
+        int bossType = 0;
+        
         //int bossType = UnityEngine.Random.Range(0, AssetManagement.Instance.boss_List.Count);
-        //int bossNumber = UnityEngine.Random.Range(0, AssetManagement.Instance.boss_List[bossType].Length);
+        int bossNumber = UnityEngine.Random.Range(0, AssetManagement.Instance.boss_List[bossType].Length);
 
         GameObject boss = objectPool.OnActiveObject(OnSerchObjectPoolNumber($"BossObject{bossType}-{bossNumber}"));
         boss.layer = LayerMask.NameToLayer("Enemy");

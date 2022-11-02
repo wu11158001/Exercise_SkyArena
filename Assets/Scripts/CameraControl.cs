@@ -26,6 +26,7 @@ public class CameraControl : MonoBehaviour
     [SerializeField] [Tooltip("targetObject")] Transform targetObject;
     [Tooltip("targetPosition")] Vector3 targetPosition;
     [Tooltip("forwardVector")] Vector3 forwardVector;
+    [Tooltip("LookAtPosition")] Vector3 lookAtPosition;
 
     private void Awake()
     {
@@ -62,7 +63,6 @@ public class CameraControl : MonoBehaviour
     /// </summary>
     void OnCameraFollow()
     {
-        //¥ª¥k¿ïÂà
         if (Input.GetMouseButton(1))
         {
             inputMouseX = Input.GetAxis("Mouse X");
@@ -71,7 +71,8 @@ public class CameraControl : MonoBehaviour
             //Horizontal Rotate
             if (Mathf.Abs(inputMouseX) > inputMoreThanTheValue)
             {
-                transform.RotateAround(targetObject.position, Vector3.up, rotateSpeed * inputMouseX);
+                lookAtPosition = targetObject.position + targetObject.GetComponent<CapsuleCollider>().center;
+                transform.RotateAround(lookAtPosition, Vector3.up, rotateSpeed * inputMouseX);
                 forwardVector = Vector3.Cross(transform.right, Vector3.up);
             }
 
@@ -91,7 +92,7 @@ public class CameraControl : MonoBehaviour
         if (cameraDistance <= cameraDistanceLimit[1]) cameraDistance = cameraDistanceLimit[1];
 
         //Position
-        targetPosition = targetObject.position + Vector3.up * cameraHight - forwardVector * cameraDistance;
+        targetPosition = lookAtPosition + Vector3.up * cameraHight - forwardVector * cameraDistance;
         transform.position = Vector3.Lerp(transform.position, targetPosition, lerpTime);
         transform.LookAt(targetObject);
     }
@@ -104,8 +105,9 @@ public class CameraControl : MonoBehaviour
         set
         {
             targetObject = value;
-            forwardVector = targetObject.forward;   
-            targetPosition = targetObject.position + Vector3.up * cameraHight - Vector3.Cross(transform.right, Vector3.up) * cameraDistance;
+            forwardVector = targetObject.forward;
+            lookAtPosition = targetObject.position + targetObject.GetComponent<CapsuleCollider>().center;
+            targetPosition = lookAtPosition + Vector3.up * cameraHight - Vector3.Cross(transform.right, Vector3.up) * cameraDistance;
         }
     }
 }

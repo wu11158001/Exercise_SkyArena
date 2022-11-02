@@ -22,7 +22,7 @@ public class AttackBehavior
     /// <param name="attackPower"></param>
     /// <param name="effectName"></param>
     public void OnSingleAttack(Transform attacker , AIPlayer.Race attackerRace, Transform target, int attackPower, string effectName)
-    {
+    {        
         if(target.TryGetComponent<AIPlayer>(out AIPlayer aIPlayer)) aIPlayer.OnGetHit(attacker: attacker,
                                                                                       attackerRace: attackerRace,
                                                                                       attack: attackPower,

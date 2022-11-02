@@ -345,7 +345,7 @@ public class AIPlayer : MonoBehaviour
 
         //Effect
         if (!string.IsNullOrEmpty(effectName)) GameManagement.Instance.OnCreateEffect_Generally( position: transform.position + (thisCollider.center * transform.localScale.x),
-                                                                                                 forward: transform.forward, 
+                                                                                                 forward: attacker.forward, 
                                                                                                  effectName: effectName);
 
         OnPlayerGetHit();
