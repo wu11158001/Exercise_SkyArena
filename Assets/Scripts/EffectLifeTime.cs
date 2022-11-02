@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class EffectLifeTime : MonoBehaviour
 {
-    [Tooltip("LifeTime")] float lifeTime;
-    [Tooltip("LifeTimeCountDown")] float lifeTimeCountDown;
+    [Tooltip("LifeTime")] public float lifeTime;
+    [Tooltip("LifeTimeCountDown")] public float lifeTimeCountDown;
 
     private void Awake()
     {

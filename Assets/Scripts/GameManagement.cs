@@ -346,14 +346,16 @@ public class GameManagement : MonoBehaviour
     /// </summary>
     /// <param name="parent"></param>
     /// <param name="effectName"></param>
-    public void OnCreateEffect_DamageOverTime(Transform parent, string effectName)
+    public GameObject OnCreateEffect_DamageOverTime(Transform parent, string effectName)
     {
         GameObject effect = OnSearchEffect(effectName);
-        if (effect == null) return;
+        if (effect == null) return null;
         
         effect.transform.SetParent(parent);
         effect.transform.position = parent.position;
         effect.transform.rotation = parent.rotation;
+
+        return effect;
     }
 
     /// <summary>
@@ -364,10 +366,10 @@ public class GameManagement : MonoBehaviour
     /// <param name="attacker"></param>
     /// <param name="attackerRace"></param>
     /// <param name="attackPower"></param>
-    public void OnCreateEffect_CollisionAttack(Transform parent, string effectName, Transform attacker, AIPlayer.Race attackerRace, int attackPower)
+    public GameObject OnCreateEffect_CollisionAttack(Transform parent, string effectName, Transform attacker, AIPlayer.Race attackerRace, int attackPower)
     {
         GameObject effect = OnSearchEffect(effectName);
-        if (effect == null) return;
+        if (effect == null) return null;
 
         effect.transform.SetParent(parent);
         effect.transform.position = parent.position;
@@ -381,6 +383,8 @@ public class GameManagement : MonoBehaviour
         effectCollisionAttack.attacker = attacker;
         effectCollisionAttack.attackerRace = attackerRace;
         effectCollisionAttack.attackPower = attackPower;
+
+        return effect;
     }
     #endregion
 }
