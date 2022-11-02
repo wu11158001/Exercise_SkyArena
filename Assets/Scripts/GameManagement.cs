@@ -330,16 +330,18 @@ public class GameManagement : MonoBehaviour
     /// <summary>
     /// CreateEffect_Generally
     /// </summary>
-    /// <param name="pos"></param>
+    /// <param name="position"></param>
     /// <param name="effectName"></param>
-    public void OnCreateEffect_Generally(Vector3 pos, string effectName)
+    public void OnCreateEffect_Generally(Vector3 position, Vector3 forward,  string effectName)
     {
         GameObject effect = OnSearchEffect(effectName);
         if (effect == null) return;
 
         //Add EffectCollisionAttack
         if (!effect.TryGetComponent<EffectLifeTime>(out EffectLifeTime effectLifeTime)) effectLifeTime = effect.AddComponent<EffectLifeTime>();
-        effect.transform.position = pos;
+        effect.transform.position = position;
+        effect.transform.rotation = Quaternion.Euler(Vector3.zero);
+        effect.transform.forward = forward;
     }
 
     /// <summary>
