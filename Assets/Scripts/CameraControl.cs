@@ -36,7 +36,7 @@ public class CameraControl : MonoBehaviour
             return;
         }
         cameraFollow = this;
-        transform.position = Vector3.zero;
+        transform.position = new Vector3(0, 3.35f, 0);
 
         //Value
         cameraDistance = 4;

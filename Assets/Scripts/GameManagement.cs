@@ -43,6 +43,8 @@ public class GameManagement : MonoBehaviour
             return;
         }
         gameManagement = this;
+
+        terrainObject = GameObject.Find("Arena").transform;
     }
 
     private void Start()
@@ -57,7 +59,7 @@ public class GameManagement : MonoBehaviour
     /// </summary>
     void OnTerrainPosition()
     {
-        terrainObject.position = new Vector3(0, -0.26f, 0);
+        terrainObject.position = new Vector3(0, -0.4f, 1.2f);
     }
 
     /// <summary>
