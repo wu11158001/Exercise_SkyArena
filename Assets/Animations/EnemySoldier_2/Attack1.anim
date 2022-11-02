@@ -60604,7 +60604,7 @@ AnimationClip:
   m_Events:
   - time: 0.8333333
     functionName: OnSingleAttackBehavior
-    data: BasicPlayerGetHit
+    data: BasicGetHit_2
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0

@@ -35,7 +35,7 @@ public class EffectObjectTrackAttack : MonoBehaviour
                 aIPlayer.OnGetHit(attacker: attacker,
                                   attackerRace: attackerRace,
                                   attack: attackPower,
-                                  effectName: "Boss2Attack2");
+                                  effectName: "TrackAttackExplosions");
 
                 gameObject.SetActive(false);
             }
