@@ -134,6 +134,7 @@ public class AIPlayer : MonoBehaviour
     {
         AttackBehavior attackBehavior = new AttackBehavior()
         {
+            target = targetObject,
             attacker = transform,
             attackerRace = race,
             attackPower = attackPower,
@@ -141,7 +142,7 @@ public class AIPlayer : MonoBehaviour
             damageOverTimeRadius = damageOverTimeRadius
         };
 
-        collisionAttackObject = GameManagement.Instance.OnCreateEffect_DamageOverTime(shootingPosition, effectName);
+        collisionAttackObject = GameManagement.Instance.OnCreateEffect_DamageOverTime(targetObject, effectName);
         GameManagement.Instance.attack_List.Add(attackBehavior);
         attackBehavioInUse = attackBehavior;
     }

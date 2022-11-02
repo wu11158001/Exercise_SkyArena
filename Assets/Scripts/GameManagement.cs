@@ -262,7 +262,7 @@ public class GameManagement : MonoBehaviour
 
         isChallengeBoss = true;
 
-        int bossType = 0;
+        int bossType = 1;
         
         //int bossType = UnityEngine.Random.Range(0, AssetManagement.Instance.boss_List.Count);
         int bossNumber = UnityEngine.Random.Range(0, AssetManagement.Instance.boss_List[bossType].Length);
@@ -347,16 +347,15 @@ public class GameManagement : MonoBehaviour
     /// <summary>
     /// CreateEffect_DamageOverTime
     /// </summary>
-    /// <param name="shootionPosition"></param>
+    /// <param name="target"></param>
     /// <param name="effectName"></param>
-    public GameObject OnCreateEffect_DamageOverTime(Transform shootionPosition, string effectName)
+    public GameObject OnCreateEffect_DamageOverTime(Transform target, string effectName)
     {
         GameObject effect = OnSearchEffect(effectName);
         if (effect == null) return null;
-
-        effect.transform.SetParent(shootionPosition);
-        effect.transform.position = shootionPosition.position;
-        effect.transform.rotation = shootionPosition.rotation;
+                
+        effect.transform.position = target.position;
+        effect.transform.rotation = Quaternion.Euler(Vector3.zero);
 
         //Add EffectCollisionAttack
         if (!effect.TryGetComponent<EffectLifeTime>(out EffectLifeTime effectLifeTime)) effectLifeTime = effect.AddComponent<EffectLifeTime>();        

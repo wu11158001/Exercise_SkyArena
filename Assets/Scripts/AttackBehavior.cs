@@ -39,7 +39,7 @@ public class AttackBehavior
         {
             timeCountDown = damageTime;
             
-            Collider[] colliders = Physics.OverlapSphere(attacker.position + (attacker.GetComponent<CapsuleCollider>().center * attacker.localScale.x) + attacker.forward * attackDistance, damageOverTimeRadius);
+            Collider[] colliders = Physics.OverlapSphere(target.position, damageOverTimeRadius);
 
             foreach (var item in colliders)
             {
