@@ -53533,7 +53533,7 @@ AnimationClip:
   m_Events:
   - time: 0.33333334
     functionName: OnSingleAttackBehavior
-    data: EnemySoldierAttack_1
+    data: BasicPlayerGetHit
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0

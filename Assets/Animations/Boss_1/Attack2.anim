@@ -101613,7 +101613,7 @@ AnimationClip:
   m_Events:
   - time: 1.6666666
     functionName: OnSingleAttackBehavior
-    data: BaseAttack_1
+    data: Boss1Attack2
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
