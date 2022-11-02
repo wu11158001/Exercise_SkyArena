@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class AnimationMove : StateMachineBehaviour
 {
-    [Tooltip("移動速度")] float moveSpeed;
-    [Tooltip("物件")] Transform obj;
+    [Tooltip("MoveSpeed")] float moveSpeed;
+    [Tooltip("Object")] Transform obj;
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {        

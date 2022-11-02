@@ -6,13 +6,10 @@ public class GameDataManagement : MonoBehaviour
 {
     static GameDataManagement gameDataManagement;
     public static GameDataManagement Instance => gameDataManagement;
-
-    [Header("玩家")]
-    [Tooltip("玩家等級")] public int playerLevel;
-    [Tooltip("玩家經驗值")] public int playerExperience;
-
-    [Header("關卡")]
-    [Tooltip("關卡等級")] public int gameLevel;
+        
+    [Tooltip("PlayerLevel")] public int playerLevel;
+    [Tooltip("PlayerExperience")] public int playerExperience;
+    [Tooltip("gameLevel")] public int gameLevel;
 
     private void Awake()
     {

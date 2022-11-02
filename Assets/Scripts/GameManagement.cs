@@ -219,12 +219,14 @@ public class GameManagement : MonoBehaviour
     /// </summary>
     public void OnRespawnPlayer()
     {
+        attack_List.Clear();
+
         GameObject player = objectPool.OnActiveObject(OnSerchObjectPoolNumber("PlayerObject"));
         player.layer = LayerMask.NameToLayer("Player");
         player.transform.position = Vector3.zero;
         if (!player.TryGetComponent<AIPlayer>(out aiPlayer)) aiPlayer = player.AddComponent<AIPlayer>();
-        aiPlayer.OnInitialNumericalValue();//初始數值        
-        CameraControl.Instance.SetFollowTarget = player.transform;//設定攝影機跟隨物件
+        aiPlayer.OnInitialNumericalValue();   
+        CameraControl.Instance.SetFollowTarget = player.transform;
     }
 
     /// <summary>
@@ -260,7 +262,7 @@ public class GameManagement : MonoBehaviour
 
         isChallengeBoss = true;
 
-        int bossType = 1;
+        int bossType = 2;
         int bossNumber = 0;
         //int bossType = UnityEngine.Random.Range(0, AssetManagement.Instance.boss_List.Count);
         //int bossNumber = UnityEngine.Random.Range(0, AssetManagement.Instance.boss_List[bossType].Length);
@@ -317,8 +319,8 @@ public class GameManagement : MonoBehaviour
         {
             if (AssetManagement.Instance.effectObjects[i].name == effectName)
             {
-                effect = objectPool.OnActiveObject(OnSerchObjectPoolNumber("EffectObject" + i.ToString()));                           
-
+                effect = objectPool.OnActiveObject(OnSerchObjectPoolNumber("EffectObject" + i.ToString()));
+                if (!effect.TryGetComponent<EffectLifeTime>(out EffectLifeTime effectLifeTime)) effectLifeTime = effect.AddComponent<EffectLifeTime>();
                 return effect;
             }
         }
@@ -335,22 +337,51 @@ public class GameManagement : MonoBehaviour
     {
         GameObject effect = OnSearchEffect(effectName);
         if (effect == null) return;
-
-        if (!effect.TryGetComponent<EffectLifeTime>(out EffectLifeTime effectLifeTime)) effectLifeTime = effect.AddComponent<EffectLifeTime>();        
+        
         effect.transform.position = pos;
     }
 
     /// <summary>
-    /// CreateEffect_Eject
+    /// CreateEffect_DamageOverTime
     /// </summary>
-    public void OnCreateEffect_Eject(Transform parent, string effectName)
+    /// <param name="parent"></param>
+    /// <param name="effectName"></param>
+    public void OnCreateEffect_DamageOverTime(Transform parent, string effectName)
     {
         GameObject effect = OnSearchEffect(effectName);
         if (effect == null) return;
-        if (!effect.TryGetComponent<EffectLifeTime>(out EffectLifeTime effectLifeTime)) effectLifeTime = effect.AddComponent<EffectLifeTime>();
+        
+        effect.transform.SetParent(parent);
         effect.transform.position = parent.position;
         effect.transform.rotation = parent.rotation;
-    }  
+    }
+
+    /// <summary>
+    /// CreateEffect_CollisionAttack
+    /// </summary>
+    /// <param name="parent"></param>
+    /// <param name="effectName"></param>
+    /// <param name="attacker"></param>
+    /// <param name="attackerRace"></param>
+    /// <param name="attackPower"></param>
+    public void OnCreateEffect_CollisionAttack(Transform parent, string effectName, Transform attacker, AIPlayer.Race attackerRace, int attackPower)
+    {
+        GameObject effect = OnSearchEffect(effectName);
+        if (effect == null) return;
+
+        effect.transform.SetParent(parent);
+        effect.transform.position = parent.position;
+        effect.transform.rotation = parent.rotation;
+
+        //Add EffectCollisionAttack
+        if (!effect.TryGetComponent<EffectCollisionAttack>(out EffectCollisionAttack effectCollisionAttack))
+        {
+            effectCollisionAttack = effect.AddComponent<EffectCollisionAttack>();            
+        }
+        effectCollisionAttack.attacker = attacker;
+        effectCollisionAttack.attackerRace = attackerRace;
+        effectCollisionAttack.attackPower = attackPower;
+    }
     #endregion
 }
 

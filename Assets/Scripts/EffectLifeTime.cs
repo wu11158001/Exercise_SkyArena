@@ -9,7 +9,7 @@ public class EffectLifeTime : MonoBehaviour
 
     private void Awake()
     {
-        lifeTime = 3;
+        lifeTime = 2f;
     }
 
     private void Update()

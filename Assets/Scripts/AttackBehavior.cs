@@ -23,10 +23,10 @@ public class AttackBehavior
     /// <param name="effectName"></param>
     public void OnSingleAttack(Transform attacker , AIPlayer.Race attackerRace, Transform target, int attackPower, string effectName)
     {
-        target.GetComponent<AIPlayer>().OnGetHit(attacker: attacker,
-                                                 attackerRace: attackerRace,
-                                                 attack: attackPower,
-                                                 effectName: effectName);
+        if(target.TryGetComponent<AIPlayer>(out AIPlayer aIPlayer)) aIPlayer.OnGetHit(attacker: attacker,
+                                                                                      attackerRace: attackerRace,
+                                                                                      attack: attackPower,
+                                                                                      effectName: effectName);
     }
 
     /// <summary>

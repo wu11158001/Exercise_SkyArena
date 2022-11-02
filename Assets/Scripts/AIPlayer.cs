@@ -126,21 +126,33 @@ public class AIPlayer : MonoBehaviour
     }
 
     /// <summary>
-    /// EjectAttack
+    /// DamageOverTimAttack
     /// </summary>
     /// <param name="effectName"></param>
-    void OnEjectAttack(string effectName)
+    void OnDamageOverTimAttack(string effectName)
     {
-        AttackBehavior attackBehavior = new AttackBehavior() { target  = targetObject,
-                                                               attacker = transform,
+        AttackBehavior attackBehavior = new AttackBehavior() { attacker = transform,
                                                                attackerRace = race,
                                                                attackPower = attackPower,
                                                                attackDistance = attackDistance,
                                                                damageOverTimeRadius = damageOverTimeRadius};
         
-        GameManagement.Instance.OnCreateEffect_Eject(shootingPosition, effectName);
+        GameManagement.Instance.OnCreateEffect_DamageOverTime(shootingPosition, effectName);
         GameManagement.Instance.attack_List.Add(attackBehavior);
         attackBehavioInUse = attackBehavior;
+    }
+
+    /// <summary>
+    /// CollisionAttack
+    /// </summary>
+    /// <param name="effectName"></param>
+    void OnCollisionAttack(string effectName)
+    {
+        GameManagement.Instance.OnCreateEffect_CollisionAttack(parent: shootingPosition, 
+                                                               effectName: effectName,
+                                                               attacker: transform,
+                                                               attackerRace: race,
+                                                               attackPower: attackPower);
     }
 
     /// <summary>

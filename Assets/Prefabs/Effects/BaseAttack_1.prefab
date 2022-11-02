@@ -9774,7 +9774,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8104374976123021043}
   m_Layer: 0
-  m_Name: BossAttack_1
+  m_Name: BaseAttack_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
