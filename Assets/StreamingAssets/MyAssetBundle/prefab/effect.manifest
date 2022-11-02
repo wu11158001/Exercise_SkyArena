@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 2969255818
+CRC: 1942433933
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 83b2a4179bc019df4cd2b36d4af6360a
+    Hash: e188a2e50611268007ad0e67361cb1bc
   TypeTreeHash:
     serializedVersion: 2
-    Hash: f316d63dc77d47bfe72938f070605a8c
+    Hash: cf40d445e85592f686f9cd45e5c12438
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -27,17 +27,28 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 65
   Script: {instanceID: 0}
+- Class: 108
+  Script: {instanceID: 0}
 - Class: 114
   Script: {fileID: 11500000, guid: 0884dceb0d4308c4eb8bc763c8f8deae, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 9205bc1bbacc90040a998067b5643d16, type: 3}
 - Class: 115
+  Script: {instanceID: 0}
+- Class: 135
   Script: {instanceID: 0}
 - Class: 198
   Script: {instanceID: 0}
 - Class: 199
   Script: {instanceID: 0}
-SerializeReferenceClassIdentifiers: []
+SerializeReferenceClassIdentifiers:
+- AssemblyName: CFXRRuntime
+  ClassName: CartoonFX.CFXR_Effect/AnimatedLight
+- AssemblyName: CFXRRuntime
+  ClassName: CartoonFX.CFXR_Effect/CameraShake
 Assets:
 - Assets/Prefabs/Effects/EnemySoldierAttack_2.prefab
+- Assets/Prefabs/Effects/Boss3Attack3.prefab
 - Assets/Prefabs/Effects/PlayerNormalAttack_1.prefab
 - Assets/Prefabs/Effects/BaseAttack_1.prefab
 - Assets/Prefabs/Effects/EnemySoldierAttack_1.prefab

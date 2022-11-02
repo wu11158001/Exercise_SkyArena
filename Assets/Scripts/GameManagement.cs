@@ -319,8 +319,7 @@ public class GameManagement : MonoBehaviour
         {
             if (AssetManagement.Instance.effectObjects[i].name == effectName)
             {
-                effect = objectPool.OnActiveObject(OnSerchObjectPoolNumber("EffectObject" + i.ToString()));
-                if (!effect.TryGetComponent<EffectLifeTime>(out EffectLifeTime effectLifeTime)) effectLifeTime = effect.AddComponent<EffectLifeTime>();
+                effect = objectPool.OnActiveObject(OnSerchObjectPoolNumber("EffectObject" + i.ToString()));                
                 return effect;
             }
         }
@@ -337,23 +336,28 @@ public class GameManagement : MonoBehaviour
     {
         GameObject effect = OnSearchEffect(effectName);
         if (effect == null) return;
-        
+
+        //Add EffectCollisionAttack
+        if (!effect.TryGetComponent<EffectLifeTime>(out EffectLifeTime effectLifeTime)) effectLifeTime = effect.AddComponent<EffectLifeTime>();
         effect.transform.position = pos;
     }
 
     /// <summary>
     /// CreateEffect_DamageOverTime
     /// </summary>
-    /// <param name="parent"></param>
+    /// <param name="shootionPosition"></param>
     /// <param name="effectName"></param>
-    public GameObject OnCreateEffect_DamageOverTime(Transform parent, string effectName)
+    public GameObject OnCreateEffect_DamageOverTime(Transform shootionPosition, string effectName)
     {
         GameObject effect = OnSearchEffect(effectName);
         if (effect == null) return null;
-        
-        effect.transform.SetParent(parent);
-        effect.transform.position = parent.position;
-        effect.transform.rotation = parent.rotation;
+
+        effect.transform.SetParent(shootionPosition);
+        effect.transform.position = shootionPosition.position;
+        effect.transform.rotation = shootionPosition.rotation;
+
+        //Add EffectCollisionAttack
+        if (!effect.TryGetComponent<EffectLifeTime>(out EffectLifeTime effectLifeTime)) effectLifeTime = effect.AddComponent<EffectLifeTime>();        
 
         return effect;
     }
@@ -361,21 +365,22 @@ public class GameManagement : MonoBehaviour
     /// <summary>
     /// CreateEffect_CollisionAttack
     /// </summary>
-    /// <param name="parent"></param>
+    /// <param name="shootionPosition"></param>
     /// <param name="effectName"></param>
     /// <param name="attacker"></param>
     /// <param name="attackerRace"></param>
     /// <param name="attackPower"></param>
-    public GameObject OnCreateEffect_CollisionAttack(Transform parent, string effectName, Transform attacker, AIPlayer.Race attackerRace, int attackPower)
+    public GameObject OnCreateEffect_CollisionAttack(Transform shootionPosition, string effectName, Transform attacker, AIPlayer.Race attackerRace, int attackPower)
     {
         GameObject effect = OnSearchEffect(effectName);
         if (effect == null) return null;
 
-        effect.transform.SetParent(parent);
-        effect.transform.position = parent.position;
-        effect.transform.rotation = parent.rotation;
+        effect.transform.SetParent(shootionPosition);
+        effect.transform.position = shootionPosition.position;
+        effect.transform.rotation = shootionPosition.rotation;
 
         //Add EffectCollisionAttack
+        if (!effect.TryGetComponent<EffectLifeTime>(out EffectLifeTime effectLifeTime)) effectLifeTime = effect.AddComponent<EffectLifeTime>();        
         if (!effect.TryGetComponent<EffectCollisionAttack>(out EffectCollisionAttack effectCollisionAttack))
         {
             effectCollisionAttack = effect.AddComponent<EffectCollisionAttack>();            
@@ -385,6 +390,31 @@ public class GameManagement : MonoBehaviour
         effectCollisionAttack.attackPower = attackPower;
 
         return effect;
+    }
+
+    /// <summary>
+    /// CreateEffect_ObjectTrackAttack
+    /// </summary>
+    public void OnCreateEffect_ObjectTrackAttack(Transform shootionPosition, string effectName, Transform attacker, AIPlayer.Race attackerRace, int attackPower, Transform target)
+    {
+        GameObject effect = OnSearchEffect(effectName);
+        if (effect == null) return;
+
+        effect.transform.position = shootionPosition.position;
+        effect.transform.rotation = Quaternion.Euler(Vector3.zero);
+        effect.transform.forward = shootionPosition.forward;
+
+        //Add EffectCollisionAttack
+        if (!effect.TryGetComponent<EffectObjectTrackAttack>(out EffectObjectTrackAttack effectObjectTrackAttack))
+        {
+            effectObjectTrackAttack = effect.AddComponent<EffectObjectTrackAttack>();
+        }
+        effectObjectTrackAttack.target = target;
+        effectObjectTrackAttack.rotateSpeed = 0;
+        effectObjectTrackAttack.raiseRotateSpeed = 0;
+        effectObjectTrackAttack.attacker = attacker;
+        effectObjectTrackAttack.attackerRace = attackerRace;
+        effectObjectTrackAttack.attackPower = attackPower;
     }
     #endregion
 }

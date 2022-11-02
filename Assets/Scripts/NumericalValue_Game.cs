@@ -23,7 +23,7 @@ namespace NumericalValueManagement
     public class NumericalValue_Commom
     {        
         public static float commomValue_RotateSpeed = 0.1f;
-        public static float effectMoveSpeed = 5;
+        public static float effectMoveSpeed = 20;
     }
 
     /// <summary>
@@ -31,11 +31,11 @@ namespace NumericalValueManagement
     /// </summary>
     public class NumericalValue_Player
     {
-        public static float moveSpeed = 2f;
+        public static float moveSpeed = 3f;
         public static int initial_Hp = 500;
         public static int initial_AttackPower = 50;
         public static int attackCount = 3;
-        public static float attackRadius = 1.2f;
+        public static float attackRadius = 1.3f;
         public static float attackFrequency = 0.1f;
         public static int raiseUpgradeHp = 100;
         public static int raiseUpgradeAttack = 70;
@@ -61,15 +61,15 @@ namespace NumericalValueManagement
     /// </summary>
     public class NumericalValue_Boss
     {
-        public static float moveSpeed = 1f;
+        public static float moveSpeed = 2f;
         public static int initial_Hp = 5000;
         public static int initial_AttackPower = 7;
         public static int attackCount = 3;
-        public static float attackRadius = 3.5f;
+        public static float attackRadius = 3.65f;
         public static float attackFrequency = 1;
         public static int raiseUpgradeHp = 500;
         public static int raiseUpgradeAttack = 70;
-        public static float attackDistance = 2;
+        public static float attackDistance = 2f;
         public static float damageOverTimeRadius = 1.5f;
     }
 }

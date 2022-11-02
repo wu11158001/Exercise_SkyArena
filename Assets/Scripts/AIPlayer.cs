@@ -5,13 +5,13 @@ using System.Linq;
 
 public class AIPlayer : MonoBehaviour
 {
-    public enum Race { Player, Enemy}
+    public enum Race { Player, Enemy }
     [Header("Race")]
     [SerializeField] [Tooltip("Race")] public Race race;
 
-    protected enum State { Idle, Move, Attack}
+    protected enum State { Idle, Move, Attack }
     [Header("State")]
-    [SerializeField] [Tooltip("State")] protected State state;   
+    [SerializeField] [Tooltip("State")] protected State state;
 
     [Header("Value")]
     [SerializeField] [Tooltip("Hp")] protected int Hp;
@@ -20,7 +20,7 @@ public class AIPlayer : MonoBehaviour
     [Header("Component")]
     [SerializeField] [Tooltip("Animator")] Animator animator;
     [SerializeField] [Tooltip("AnimatorStateInfo")] AnimatorStateInfo info;
-    [SerializeField] [Tooltip("Collider")]  CapsuleCollider thisCollider;
+    [SerializeField] [Tooltip("Collider")] CapsuleCollider thisCollider;
     [SerializeField] [Tooltip("ShootingPosition")] Transform shootingPosition;
 
     [Header("Move")]
@@ -42,7 +42,7 @@ public class AIPlayer : MonoBehaviour
     [SerializeField] [Tooltip("CollisionAttackObject")] protected GameObject collisionAttackObject;
 
     protected void Awake()
-    {        
+    {
         //Component
         animator = GetComponent<Animator>();
         thisCollider = GetComponent<CapsuleCollider>();
@@ -50,7 +50,7 @@ public class AIPlayer : MonoBehaviour
     }
 
     private void Start()
-    {  
+    {
         rotateSpeed = NumericalValueManagement.NumericalValue_Commom.commomValue_RotateSpeed;
 
         OnInitialNumericalValue();
@@ -61,15 +61,15 @@ public class AIPlayer : MonoBehaviour
     /// InitialNumericalValue
     /// </summary>
     public virtual void OnInitialNumericalValue()
-    {        
+    {
         state = State.Idle;
-        race = Race.Player;  
- 
+        race = Race.Player;
+
         moveSpeed = NumericalValueManagement.NumericalValue_Player.moveSpeed;
         attackCount = NumericalValueManagement.NumericalValue_Player.attackCount;
         attackRadius = NumericalValueManagement.NumericalValue_Player.attackRadius;
         attackFrequency = NumericalValueManagement.NumericalValue_Player.attackFrequency;
-        attackTimeCountDown = attackFrequency;        
+        attackTimeCountDown = attackFrequency;
     }
 
     /// <summary>
@@ -77,7 +77,7 @@ public class AIPlayer : MonoBehaviour
     /// </summary>
     public virtual void OnUpdateValue()
     {
-        Hp = NumericalValueManagement.NumericalValue_Player.initial_Hp + 
+        Hp = NumericalValueManagement.NumericalValue_Player.initial_Hp +
             (NumericalValueManagement.NumericalValue_Player.raiseUpgradeHp * (GameDataManagement.Instance.playerLevel - 1));
         attackPower = NumericalValueManagement.NumericalValue_Player.initial_AttackPower +
             (NumericalValueManagement.NumericalValue_Player.raiseUpgradeAttack * (GameDataManagement.Instance.playerLevel - 1));
@@ -94,7 +94,7 @@ public class AIPlayer : MonoBehaviour
         {
             GameUI.Instance.OnSetPlayerGrade();
             GameUI.Instance.OnSetPlayerExperience();
-                             
+
             OnUpdateValue();
         }
     }
@@ -109,7 +109,7 @@ public class AIPlayer : MonoBehaviour
         {
             OnMovement();
             OnAttackActive();
-        }        
+        }
     }
 
     #region AttackMethod
@@ -132,11 +132,14 @@ public class AIPlayer : MonoBehaviour
     /// <param name="effectName"></param>
     void OnDamageOverTimAttack(string effectName)
     {
-        AttackBehavior attackBehavior = new AttackBehavior() { attacker = transform,
-                                                               attackerRace = race,
-                                                               attackPower = attackPower,
-                                                               attackDistance = attackDistance,
-                                                               damageOverTimeRadius = damageOverTimeRadius};
+        AttackBehavior attackBehavior = new AttackBehavior()
+        {
+            attacker = transform,
+            attackerRace = race,
+            attackPower = attackPower,
+            attackDistance = attackDistance,
+            damageOverTimeRadius = damageOverTimeRadius
+        };
 
         collisionAttackObject = GameManagement.Instance.OnCreateEffect_DamageOverTime(shootingPosition, effectName);
         GameManagement.Instance.attack_List.Add(attackBehavior);
@@ -149,11 +152,25 @@ public class AIPlayer : MonoBehaviour
     /// <param name="effectName"></param>
     void OnCollisionAttack(string effectName)
     {
-        collisionAttackObject = GameManagement.Instance.OnCreateEffect_CollisionAttack(parent: shootingPosition, 
+        collisionAttackObject = GameManagement.Instance.OnCreateEffect_CollisionAttack(shootionPosition: shootingPosition,
                                                                                        effectName: effectName,
                                                                                        attacker: transform,
                                                                                        attackerRace: race,
                                                                                        attackPower: attackPower);
+    }
+
+    /// <summary>
+    /// ObjectTrackAttack
+    /// </summary>
+    /// <param name="effectName"></param>
+    void OnObjectTrackAttack(string effectName)
+    {
+        GameManagement.Instance.OnCreateEffect_ObjectTrackAttack(shootionPosition: shootingPosition,
+                                                                 effectName: effectName,
+                                                                 attacker: transform,
+                                                                 attackerRace: race,
+                                                                 attackPower: attackPower,
+                                                                 target: targetObject);
     }
 
     /// <summary>
@@ -162,7 +179,7 @@ public class AIPlayer : MonoBehaviour
     void OnRemoveAttackList()
     {
         GameManagement.Instance.attack_List.Remove(attackBehavioInUse);
-        if(collisionAttackObject != null)
+        if (collisionAttackObject != null)
         {
             if (collisionAttackObject.TryGetComponent<EffectLifeTime>(out EffectLifeTime effectLifeTime)) effectLifeTime.lifeTimeCountDown = effectLifeTime.lifeTime;
         }
@@ -176,21 +193,21 @@ public class AIPlayer : MonoBehaviour
     {
         if (OnJudgeAttackRange() && !isCollisionFromEnemy)
         {
-            if (targetObject == null || !targetObject.gameObject.activeSelf) return;                        
-            
+            if (targetObject == null || !targetObject.gameObject.activeSelf) return;
+
             if (state == State.Move) animator.SetBool("Move", false);
             state = State.Attack;
 
-            if(!info.IsTag("Attack")) attackTimeCountDown -= Time.deltaTime;
-            if(attackTimeCountDown <= 0)
-            {                
+            if (!info.IsTag("Attack")) attackTimeCountDown -= Time.deltaTime;
+            if (attackTimeCountDown <= 0)
+            {
                 Vector3 dir = (targetObject.position - transform.position).normalized;
                 if (Vector3.Dot(transform.forward, dir) < 0 || Vector3.Angle(transform.forward, dir) > 1) return;
-                
+
                 attackTimeCountDown = attackFrequency;
 
                 int attackNumber = UnityEngine.Random.Range(1, attackCount + 1);
-                animator.SetFloat("AttackNumber", attackNumber);                
+                animator.SetFloat("AttackNumber", attackNumber);
             }
         }
     }
@@ -199,19 +216,19 @@ public class AIPlayer : MonoBehaviour
     /// Movement
     /// </summary>
     protected void OnMovement()
-    {       
-        if (!info.IsTag("Attack") && !isCollisionFromEnemy) transform.forward = Vector3.RotateTowards(transform.forward, targetObject.position - transform.position, rotateSpeed, 0);        
-              
+    {
+        if (!info.IsTag("Attack") && !isCollisionFromEnemy) transform.forward = Vector3.RotateTowards(transform.forward, targetObject.position - transform.position, rotateSpeed, 0);
+
         if (!OnJudgeAttackRange())
         {
             if (state != State.Move)
             {
                 state = State.Move;
                 animator.SetBool("Move", true);
-            }            
+            }
         }
-      
-        if(!info.IsTag("Attack") && isCollisionFromEnemy)
+
+        if (!info.IsTag("Attack") && isCollisionFromEnemy)
         {
             if (state != State.Move)
             {
@@ -219,10 +236,10 @@ public class AIPlayer : MonoBehaviour
                 animator.SetBool("Move", true);
             }
 
-            transform.forward = Vector3.RotateTowards(transform.forward, transform.position - targetObject.position, rotateSpeed, 0);         
+            transform.forward = Vector3.RotateTowards(transform.forward, transform.position - targetObject.position, rotateSpeed, 0);
         }
     }
-    
+
     /// <summary>
     /// JudgeAttackRange
     /// </summary>
@@ -240,11 +257,11 @@ public class AIPlayer : MonoBehaviour
                 isInRange = true;
                 break;
             }
-        }      
+        }
 
         OnJudgeCollisionFromEnemy();
-        if(isCollisionFromEnemy && !isInRange) isCollisionFromEnemy = isInRange;
-        
+        if (isCollisionFromEnemy && !isInRange) isCollisionFromEnemy = isInRange;
+
         return isInRange;
     }
 
@@ -257,7 +274,7 @@ public class AIPlayer : MonoBehaviour
         if (race == Race.Player)
         {
             LayerMask mask = LayerMask.GetMask("Enemy");
-            Collider[] colliders = Physics.OverlapSphere(transform.position + thisCollider.center, thisCollider.radius, 1<<LayerMask.NameToLayer("Enemy"));
+            Collider[] colliders = Physics.OverlapSphere(transform.position + thisCollider.center, thisCollider.radius, 1 << LayerMask.NameToLayer("Enemy"));
             for (int i = 0; i < colliders.Length; i++)
             {
                 if (colliders[i].transform == targetObject)
@@ -266,7 +283,7 @@ public class AIPlayer : MonoBehaviour
                     return;
                 }
             }
-        }        
+        }
     }
 
     /// <summary>
@@ -285,7 +302,7 @@ public class AIPlayer : MonoBehaviour
     /// </summary>
     public virtual void OnSearchTarget()
     {
-        if(GameManagement.Instance.GetEnemyList.Count <= 0)
+        if (GameManagement.Instance.GetEnemyList.Count <= 0)
         {
             targetObject = null;
             return;
@@ -293,7 +310,7 @@ public class AIPlayer : MonoBehaviour
 
         List<Transform> enemys = GameManagement.Instance.GetEnemyList;
         if (enemys.Count > 0) targetObject = enemys[UnityEngine.Random.Range(0, enemys.Count)];
-    }    
+    }
 
     #region GrtHit
     /// <summary>
@@ -306,10 +323,10 @@ public class AIPlayer : MonoBehaviour
     public void OnGetHit(Transform attacker, Race attackerRace, int attack, string effectName)
     {
         if (attackerRace == race) return;
-        if (Hp <= 0) return;        
+        if (Hp <= 0) return;
 
         Hp -= attack;
-               
+
         //Death
         if (Hp <= 0)
         {
@@ -348,7 +365,7 @@ public class AIPlayer : MonoBehaviour
     /// PlayerGetHit
     /// </summary>
     void OnPlayerGetHit()
-    {       
+    {
         if (race == Race.Player)
         {
             OnPlayerLifeBar(Hp);
@@ -360,7 +377,7 @@ public class AIPlayer : MonoBehaviour
     /// </summary>
     /// <param name="playerHp"></param>
     void OnPlayerLifeBar(int playerHp)
-    {               
+    {
         GameUI.Instance.OnSetPlayerLifeBar(playerHp);
     }
 
@@ -380,12 +397,12 @@ public class AIPlayer : MonoBehaviour
     /// EnemySoldierDeath
     /// </summary>
     void OnEnemySoldierDeath()
-    {        
+    {
         if (race == Race.Enemy)
-        {        
+        {
             GameDataManagement.Instance.playerExperience += NumericalValueManagement.NumericalValue_Game.enemyExperience;
-            
-            if(GameDataManagement.Instance.playerExperience >= 
+
+            if (GameDataManagement.Instance.playerExperience >=
                 ((GameDataManagement.Instance.playerLevel - 1) * NumericalValueManagement.NumericalValue_Game.raiseUpgradeExperience) + NumericalValueManagement.NumericalValue_Game.upgradeExperience)
             {
                 OnPlayerUpgrade();
@@ -407,7 +424,7 @@ public class AIPlayer : MonoBehaviour
             GameManagement.Instance.OnCleanBoss("BossObject", AssetManagement.Instance.boss_List);
             GameManagement.Instance.GetPlayerObject.OnUpdateValue();
             GameUI.Instance.OnSetGameLevel();
-            GameUI.Instance.OnUIActive(true);                                  
+            GameUI.Instance.OnUIActive(true);
         }
     }
     #endregion
@@ -416,7 +433,7 @@ public class AIPlayer : MonoBehaviour
     /// PlayerUpgrade
     /// </summary>
     void OnPlayerUpgrade()
-    {               
+    {
         GameUI.Instance.OnSetPlayerGrade();
         GameManagement.Instance.GetPlayerObject.OnUpdateValue();
     }
@@ -447,10 +464,10 @@ public class AIPlayer : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        /*Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position + (thisCollider.center * transform.localScale.x) , attackRadius);*/
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position + (thisCollider.center * transform.localScale.x) , attackRadius);
 
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position + (thisCollider.center * transform.localScale.x) + transform.forward * attackDistance, damageOverTimeRadius);
+        /*Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position + (thisCollider.center * transform.localScale.x) + transform.forward * attackDistance, damageOverTimeRadius);*/
     }
 }
