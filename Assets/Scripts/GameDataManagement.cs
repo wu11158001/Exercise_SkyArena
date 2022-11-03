@@ -9,7 +9,8 @@ public class GameDataManagement : MonoBehaviour
         
     [Tooltip("PlayerLevel")] public int playerLevel;
     [Tooltip("PlayerExperience")] public int playerExperience;
-    [Tooltip("gameLevel")] public int gameLevel;
+    [Tooltip("GameLevel")] public int gameLevel;
+    [Tooltip("SelectLevel")] public int selectLevel;////using for plugin
 
     private void Awake()
     {
@@ -20,5 +21,7 @@ public class GameDataManagement : MonoBehaviour
         }
         gameDataManagement = this;
         DontDestroyOnLoad(gameObject);
+
+        selectLevel = -1;//using for plugin
     }
 }

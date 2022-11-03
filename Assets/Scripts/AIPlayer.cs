@@ -114,11 +114,22 @@ public class AIPlayer : MonoBehaviour
 
     #region AttackMethod
     /// <summary>
+    /// JudgeTargetObjectIsActive
+    /// </summary>
+    bool OnJudgeTargetObjectIsActive()
+    {
+        if (transform == null || !transform.gameObject.activeSelf || targetObject == null || !targetObject.gameObject.activeSelf) return false;
+
+        return true;
+    }
+
+    /// <summary>
     /// SingleAttackBehavior
     /// </summary>
     /// <param name="effectName"></param>
     void OnSingleAttackBehavior(string effectName)
     {
+        if (!OnJudgeTargetObjectIsActive()) return;
         new AttackBehavior().OnSingleAttack(attacker: transform,
                                             attackerRace: race,
                                             target: targetObject,
@@ -132,6 +143,8 @@ public class AIPlayer : MonoBehaviour
     /// <param name="effectName"></param>
     void OnDamageOverTimAttack(string effectName)
     {
+        if (!OnJudgeTargetObjectIsActive()) return;
+
         AttackBehavior attackBehavior = new AttackBehavior()
         {
             target = targetObject,
@@ -155,12 +168,20 @@ public class AIPlayer : MonoBehaviour
     /// </summary>
     /// <param name="effectName"></param>
     void OnCollisionAttack(string effectName)
-    {
+    {       
+        if(shootingPosition == null)
+        {
+            Debug.LogError("shootingPosition is null");
+            return;
+        }
+
+        if (transform == null || !transform.gameObject.activeSelf) return;
+
         if (GameManagement.Instance.OnCreateEffect_CollisionAttack(shootingPosition: shootingPosition,
-                                                                                       effectName: effectName,
-                                                                                       attacker: transform,
-                                                                                       attackerRace: race,
-                                                                                       attackPower: attackPower).TryGetComponent<EffectLifeTime>(out EffectLifeTime effectLifeTime))
+                                                                                     effectName: effectName,
+                                                                                     attacker: transform,
+                                                                                     attackerRace: race,
+                                                                                     attackPower: attackPower).TryGetComponent<EffectLifeTime>(out EffectLifeTime effectLifeTime))
         {
             collisionAttackObject_List.Add(effectLifeTime);
         }       
@@ -172,6 +193,14 @@ public class AIPlayer : MonoBehaviour
     /// <param name="effectName"></param>
     void OnObjectTrackAttack(string effectName)
     {
+        if (shootingPosition == null)
+        {
+            Debug.LogError("shootingPosition is null");
+            return;
+        }
+
+        if (!OnJudgeTargetObjectIsActive()) return;
+
         GameManagement.Instance.OnCreateEffect_ObjectTrackAttack(shootingPosition: shootingPosition,
                                                                  effectName: effectName,
                                                                  attacker: transform,
@@ -427,7 +456,7 @@ public class AIPlayer : MonoBehaviour
     /// <summary>
     /// BossDeath
     /// </summary>
-    void OnBossDeath()
+    public void OnBossDeath()
     {
         //Boss
         if (GameManagement.Instance.isChallengeBoss && race == Race.Enemy)

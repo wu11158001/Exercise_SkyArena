@@ -263,10 +263,8 @@ public class GameManagement : MonoBehaviour
         if (aiPlayer == null || !aiPlayer.gameObject.activeSelf) return;
 
         isChallengeBoss = true;
-
-        int bossType = 3;
         
-        //int bossType = UnityEngine.Random.Range(0, AssetManagement.Instance.boss_List.Count);
+        int bossType = GameDataManagement.Instance.selectLevel >= 0 ? GameDataManagement.Instance.selectLevel : UnityEngine.Random.Range(0, AssetManagement.Instance.boss_List.Count);
         int bossNumber = UnityEngine.Random.Range(0, AssetManagement.Instance.boss_List[bossType].Length);
 
         GameObject boss = objectPool.OnActiveObject(OnSerchObjectPoolNumber($"BossObject{bossType}-{bossNumber}"));
