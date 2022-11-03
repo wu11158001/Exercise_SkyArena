@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 4084383780
+CRC: 2247708296
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 21d5d3a83407396ca8615610b9bf2392
+    Hash: 625d39e151280edd573050594d747a1a
   TypeTreeHash:
     serializedVersion: 2
     Hash: 7fea876e12a7faa9b2be7c8b4ed9ee2e
@@ -53,13 +53,14 @@ SerializeReferenceClassIdentifiers:
 - AssemblyName: CFXRRuntime
   ClassName: CartoonFX.CFXR_Effect/CameraShake
 Assets:
-- Assets/Prefabs/Effects/Boss4/Boss4Attack2.prefab
 - Assets/Prefabs/Effects/BasicGetHit_2.prefab
 - Assets/Prefabs/Effects/Boss2/Boss2Attack3.prefab
 - Assets/Prefabs/Effects/Boss3/Boss3Attack3.prefab
+- Assets/Prefabs/Effects/Boss4/Boss4Attack2.prefab
 - Assets/Prefabs/Effects/Boss2/Boss2Attack2.prefab
 - Assets/Prefabs/Effects/Boss1/Boss1Attack3.prefab
 - Assets/Prefabs/Effects/Boss3/Boss3Attack1.prefab
+- Assets/Prefabs/Effects/Boss4/Boss4Attack3.prefab
 - Assets/Prefabs/Effects/BasicGetHit_1.prefab
 - Assets/Prefabs/Effects/Boss1/Boss1Attack2.prefab
 - Assets/Prefabs/Effects/Boss3/Boss3Attack2.prefab
