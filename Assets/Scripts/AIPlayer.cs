@@ -39,7 +39,7 @@ public class AIPlayer : MonoBehaviour
     [SerializeField] [Tooltip("AttackDistance")] protected float attackDistance;
     [SerializeField] [Tooltip("DamageOverTimeRadius")] protected float damageOverTimeRadius;
     [SerializeField] [Tooltip("AttackBehaviorInUse")] protected AttackBehavior attackBehavioInUse;
-    [SerializeField] [Tooltip("CollisionAttackObject")] protected GameObject collisionAttackObject;
+    [SerializeField] [Tooltip("CollisionAttackObjects")] protected List<EffectLifeTime> collisionAttackObject_List = new List<EffectLifeTime>();
 
     protected void Awake()
     {
@@ -142,7 +142,10 @@ public class AIPlayer : MonoBehaviour
             damageOverTimeRadius = damageOverTimeRadius
         };
 
-        collisionAttackObject = GameManagement.Instance.OnCreateEffect_DamageOverTime(targetObject, effectName);
+        if (GameManagement.Instance.OnCreateEffect_DamageOverTime(targetObject, effectName).TryGetComponent<EffectLifeTime>(out EffectLifeTime effectLifeTime))
+        {
+            collisionAttackObject_List.Add(effectLifeTime);
+        }
         GameManagement.Instance.attack_List.Add(attackBehavior);
         attackBehavioInUse = attackBehavior;
     }
@@ -153,11 +156,14 @@ public class AIPlayer : MonoBehaviour
     /// <param name="effectName"></param>
     void OnCollisionAttack(string effectName)
     {
-        collisionAttackObject = GameManagement.Instance.OnCreateEffect_CollisionAttack(shootingPosition: shootingPosition,
+        if (GameManagement.Instance.OnCreateEffect_CollisionAttack(shootingPosition: shootingPosition,
                                                                                        effectName: effectName,
                                                                                        attacker: transform,
                                                                                        attackerRace: race,
-                                                                                       attackPower: attackPower);
+                                                                                       attackPower: attackPower).TryGetComponent<EffectLifeTime>(out EffectLifeTime effectLifeTime))
+        {
+            collisionAttackObject_List.Add(effectLifeTime);
+        }       
     }
 
     /// <summary>
@@ -180,9 +186,12 @@ public class AIPlayer : MonoBehaviour
     void OnRemoveAttackList()
     {
         GameManagement.Instance.attack_List.Remove(attackBehavioInUse);
-        if (collisionAttackObject != null)
+        if (collisionAttackObject_List.Count > 0)
         {
-            if (collisionAttackObject.TryGetComponent<EffectLifeTime>(out EffectLifeTime effectLifeTime)) effectLifeTime.lifeTimeCountDown = effectLifeTime.lifeTime;
+            foreach (var item in collisionAttackObject_List)
+            {
+                item.lifeTimeCountDown = item.lifeTime;                
+            }            
         }
     }
     #endregion

@@ -36,7 +36,8 @@ public class CameraControl : MonoBehaviour
             return;
         }
         cameraFollow = this;
-        transform.position = new Vector3(0, 3.35f, 0);
+        transform.position = new Vector3(-7.4f, 8, 13);
+        transform.rotation = Quaternion.Euler(25, 145, 0);
 
         //Value
         cameraDistance = 4;

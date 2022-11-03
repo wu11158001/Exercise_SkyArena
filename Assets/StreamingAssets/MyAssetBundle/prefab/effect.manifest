@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 3568384605
+CRC: 2396571677
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 9f119332e268618f15a582585a3da386
+    Hash: a0d5a934da0c8d1dc13097e3efe6df6e
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 7fea876e12a7faa9b2be7c8b4ed9ee2e
+    Hash: a619ab4c5539046c1d36e7a054dd0c7b
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -32,8 +32,6 @@ ClassTypes:
 - Class: 108
   Script: {instanceID: 0}
 - Class: 114
-  Script: {fileID: 11500000, guid: 6fd2e8874f60266498a388d7229a1bac, type: 3}
-- Class: 114
   Script: {fileID: 11500000, guid: 9205bc1bbacc90040a998067b5643d16, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 0884dceb0d4308c4eb8bc763c8f8deae, type: 3}
@@ -56,13 +54,14 @@ Assets:
 - Assets/Prefabs/Effects/BasicGetHit_2.prefab
 - Assets/Prefabs/Effects/Boss2/Boss2Attack3.prefab
 - Assets/Prefabs/Effects/Boss3/Boss3Attack3.prefab
-- Assets/Prefabs/Effects/Boss4/Boss4Attack2.prefab
 - Assets/Prefabs/Effects/Boss2/Boss2Attack2.prefab
 - Assets/Prefabs/Effects/Boss1/Boss1Attack3.prefab
 - Assets/Prefabs/Effects/Boss3/Boss3Attack1.prefab
+- Assets/Prefabs/Effects/Boss4/Boss4Attack2.prefab
 - Assets/Prefabs/Effects/Boss4/Boss4Attack3.prefab
 - Assets/Prefabs/Effects/BasicGetHit_1.prefab
 - Assets/Prefabs/Effects/Boss1/Boss1Attack2.prefab
+- Assets/Prefabs/Effects/Boss4/Boss4Attack3-2.prefab
 - Assets/Prefabs/Effects/Boss3/Boss3Attack2.prefab
 - Assets/Prefabs/Effects/TrackAttackExplosions.prefab
 Dependencies: []

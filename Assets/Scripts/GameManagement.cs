@@ -357,7 +357,7 @@ public class GameManagement : MonoBehaviour
         if (effect == null) return null;
                 
         effect.transform.position = target.position;
-        effect.transform.rotation = Quaternion.Euler(Vector3.zero);
+        //effect.transform.rotation = Quaternion.Euler(Vector3.zero);
 
         //Add EffectCollisionAttack
         if (!effect.TryGetComponent<EffectLifeTime>(out EffectLifeTime effectLifeTime)) effectLifeTime = effect.AddComponent<EffectLifeTime>();        
