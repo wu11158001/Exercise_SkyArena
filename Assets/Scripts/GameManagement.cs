@@ -264,7 +264,7 @@ public class GameManagement : MonoBehaviour
 
         isChallengeBoss = true;
 
-        int bossType = 2;
+        int bossType = 1;
         
         //int bossType = UnityEngine.Random.Range(0, AssetManagement.Instance.boss_List.Count);
         int bossNumber = UnityEngine.Random.Range(0, AssetManagement.Instance.boss_List[bossType].Length);
