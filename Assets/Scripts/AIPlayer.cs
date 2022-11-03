@@ -153,7 +153,7 @@ public class AIPlayer : MonoBehaviour
     /// <param name="effectName"></param>
     void OnCollisionAttack(string effectName)
     {
-        collisionAttackObject = GameManagement.Instance.OnCreateEffect_CollisionAttack(shootionPosition: shootingPosition,
+        collisionAttackObject = GameManagement.Instance.OnCreateEffect_CollisionAttack(shootingPosition: shootingPosition,
                                                                                        effectName: effectName,
                                                                                        attacker: transform,
                                                                                        attackerRace: race,
@@ -166,7 +166,7 @@ public class AIPlayer : MonoBehaviour
     /// <param name="effectName"></param>
     void OnObjectTrackAttack(string effectName)
     {
-        GameManagement.Instance.OnCreateEffect_ObjectTrackAttack(shootionPosition: shootingPosition,
+        GameManagement.Instance.OnCreateEffect_ObjectTrackAttack(shootingPosition: shootingPosition,
                                                                  effectName: effectName,
                                                                  attacker: transform,
                                                                  attackerRace: race,

@@ -368,25 +368,25 @@ public class GameManagement : MonoBehaviour
     /// <summary>
     /// CreateEffect_CollisionAttack
     /// </summary>
-    /// <param name="shootionPosition"></param>
+    /// <param name="shootingPosition"></param>
     /// <param name="effectName"></param>
     /// <param name="attacker"></param>
     /// <param name="attackerRace"></param>
     /// <param name="attackPower"></param>
-    public GameObject OnCreateEffect_CollisionAttack(Transform shootionPosition, string effectName, Transform attacker, AIPlayer.Race attackerRace, int attackPower)
+    public GameObject OnCreateEffect_CollisionAttack(Transform shootingPosition, string effectName, Transform attacker, AIPlayer.Race attackerRace, int attackPower)
     {
-        if (shootionPosition == null)
+        if (shootingPosition == null)
         {
-            Debug.LogError("shootionPosition is null");
+            Debug.LogError("shootingPosition is null");
             return null;
         }
 
         GameObject effect = OnSearchEffect(effectName);
         if (effect == null) return null;
 
-        effect.transform.SetParent(shootionPosition);
-        effect.transform.position = shootionPosition.position;
-        effect.transform.rotation = shootionPosition.rotation;
+        effect.transform.SetParent(shootingPosition);
+        effect.transform.position = shootingPosition.position;
+        effect.transform.rotation = shootingPosition.rotation;
 
         //Add EffectCollisionAttack
         if (!effect.TryGetComponent<EffectLifeTime>(out EffectLifeTime effectLifeTime)) effectLifeTime = effect.AddComponent<EffectLifeTime>();        
@@ -404,20 +404,20 @@ public class GameManagement : MonoBehaviour
     /// <summary>
     /// CreateEffect_ObjectTrackAttack
     /// </summary>
-    public void OnCreateEffect_ObjectTrackAttack(Transform shootionPosition, string effectName, Transform attacker, AIPlayer.Race attackerRace, int attackPower, Transform target)
+    public void OnCreateEffect_ObjectTrackAttack(Transform shootingPosition, string effectName, Transform attacker, AIPlayer.Race attackerRace, int attackPower, Transform target)
     {
-        if (shootionPosition == null)
+        if (shootingPosition == null)
         {
-            Debug.LogError("shootionPosition is null");
+            Debug.LogError("shootingPosition is null");
             return;
         }
 
         GameObject effect = OnSearchEffect(effectName);
         if (effect == null) return;
 
-        effect.transform.position = shootionPosition.position;
+        effect.transform.position = shootingPosition.position;
         effect.transform.rotation = Quaternion.Euler(Vector3.zero);
-        effect.transform.forward = shootionPosition.forward;
+        effect.transform.forward = shootingPosition.forward;
 
         //Add EffectCollisionAttack
         if (!effect.TryGetComponent<EffectObjectTrackAttack>(out EffectObjectTrackAttack effectObjectTrackAttack))
