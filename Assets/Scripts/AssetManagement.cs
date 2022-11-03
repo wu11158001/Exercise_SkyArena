@@ -18,6 +18,7 @@ public class AssetManagement : MonoBehaviour
     [Tooltip("bossObjects1")] public GameObject[] bossObjects1;
     [Tooltip("bossObjects2")] public GameObject[] bossObjects2;
     [Tooltip("bossObjects3")] public GameObject[] bossObjects3;
+    [Tooltip("bossObjects4")] public GameObject[] bossObjects4;
 
     private void Awake()
     {
@@ -41,6 +42,7 @@ public class AssetManagement : MonoBehaviour
         OnLoadinGroupAsset(loadPath: "prefab/boss1", obj: out bossObjects1, boss_List);
         OnLoadinGroupAsset(loadPath: "prefab/boss2", obj: out bossObjects2, boss_List);
         OnLoadinGroupAsset(loadPath: "prefab/boss3", obj: out bossObjects3, boss_List);
+        OnLoadinGroupAsset(loadPath: "prefab/boss4", obj: out bossObjects4, boss_List);
     }
 
     /// <summary>

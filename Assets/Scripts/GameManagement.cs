@@ -264,7 +264,7 @@ public class GameManagement : MonoBehaviour
 
         isChallengeBoss = true;
 
-        int bossType = 2;
+        int bossType = 3;
         
         //int bossType = UnityEngine.Random.Range(0, AssetManagement.Instance.boss_List.Count);
         int bossNumber = UnityEngine.Random.Range(0, AssetManagement.Instance.boss_List[bossType].Length);
@@ -375,6 +375,12 @@ public class GameManagement : MonoBehaviour
     /// <param name="attackPower"></param>
     public GameObject OnCreateEffect_CollisionAttack(Transform shootionPosition, string effectName, Transform attacker, AIPlayer.Race attackerRace, int attackPower)
     {
+        if (shootionPosition == null)
+        {
+            Debug.LogError("shootionPosition is null");
+            return null;
+        }
+
         GameObject effect = OnSearchEffect(effectName);
         if (effect == null) return null;
 
@@ -400,6 +406,12 @@ public class GameManagement : MonoBehaviour
     /// </summary>
     public void OnCreateEffect_ObjectTrackAttack(Transform shootionPosition, string effectName, Transform attacker, AIPlayer.Race attackerRace, int attackPower, Transform target)
     {
+        if (shootionPosition == null)
+        {
+            Debug.LogError("shootionPosition is null");
+            return;
+        }
+
         GameObject effect = OnSearchEffect(effectName);
         if (effect == null) return;
 

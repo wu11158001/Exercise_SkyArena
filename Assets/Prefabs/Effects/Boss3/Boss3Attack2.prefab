@@ -100,11 +100,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_templateMaterial: {fileID: 2100000, guid: 974b33ccbd786464a825203eb88b8dab, type: 2}
   m_doNotOverwriteTemplateMaterialProperties: 0
-  m_startPos: {x: 0, y: 0, z: 6}
+  m_startPos: {x: 0, y: 0, z: 12}
   m_endPos: {x: 0, y: 0, z: 0}
-  m_lineColor: {r: 0, g: 1, b: 1, a: 1}
-  m_lineWidth: 0.9
-  m_lightSaberFactor: 0.3
+  m_lineColor: {r: 0.9811321, g: 0.1767136, b: 0.013883919, a: 1}
+  m_lineWidth: 1.5
+  m_lightSaberFactor: 0.685
 --- !u!54 &7381092915762853559
 Rigidbody:
   m_ObjectHideFlags: 0

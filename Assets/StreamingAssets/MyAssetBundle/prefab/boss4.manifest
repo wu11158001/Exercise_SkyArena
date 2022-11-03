@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1835622751
+CRC: 3657965822
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: fa2ec569cd4e2c772ceacbc0ec565e0a
+    Hash: 61841c17eec22358820e8ea516696584
   TypeTreeHash:
     serializedVersion: 2
     Hash: 29140705b32bc375f5faac696023eafc
@@ -39,5 +39,8 @@ ClassTypes:
   Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers: []
 Assets:
+- Assets/Prefabs/Boss/Boss4-1.prefab
+- Assets/Prefabs/Boss/Boss4-3.prefab
+- Assets/Prefabs/Boss/Boss4-2.prefab
 - Assets/Prefabs/Boss/Boss4-4.prefab
 Dependencies: []

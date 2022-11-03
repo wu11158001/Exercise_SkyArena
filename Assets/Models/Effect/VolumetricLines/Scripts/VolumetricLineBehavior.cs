@@ -146,6 +146,7 @@ namespace VolumetricLines
 				UpdateBounds();
 			}
 		}
+				
 
 		/// <summary>
 		/// Get or set the light saber factor of this volumetric line's material
