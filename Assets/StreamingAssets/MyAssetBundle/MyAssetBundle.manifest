@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 2433003986
+CRC: 4130899263
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -22,4 +22,7 @@ AssetBundleManifest:
       Dependencies: {}
     Info_6:
       Name: prefab/boss2
+      Dependencies: {}
+    Info_7:
+      Name: prefab/boss4
       Dependencies: {}
