@@ -59,7 +59,7 @@ public class GameManagement : MonoBehaviour
     /// </summary>
     void OnTerrainPosition()
     {
-        terrainObject.position = new Vector3(0, -0.4f, 1.2f);
+        terrainObject.position = new Vector3(0, -0.5f, 1.2f);
     }
 
     /// <summary>
