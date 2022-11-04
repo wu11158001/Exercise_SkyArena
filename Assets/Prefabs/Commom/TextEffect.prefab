@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3034215949604360197}
   - component: {fileID: 6677842494109414803}
   m_Layer: 5
-  m_Name: Hit_Text
+  m_Name: TextEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

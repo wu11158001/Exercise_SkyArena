@@ -376,11 +376,12 @@ public class AIPlayer : MonoBehaviour
             if (attacker.TryGetComponent<AIPlayer>(out AIPlayer aIPlayer)) aIPlayer.OnSearchTarget();
         }
 
-        //HitNumber
-        GameManagement.Instance.OnCreateHitNumber(attacker: attacker,
-                                                  pos: transform.position + thisCollider.center,
-                                                  race: race,
-                                                  text: attack.ToString());
+        //TextEffect
+        GameManagement.Instance.OnCreateTextEffect(attacker: attacker,
+                                                   position: transform.position + thisCollider.center,
+                                                   color: race == Race.Player ? Color.red : Color.white,
+                                                   text: attack.ToString(),
+                                                   type: TextEffect.TextType.GetHit);
 
         //Effect
         if (!string.IsNullOrEmpty(effectName)) GameManagement.Instance.OnCreateEffect_Generally( position: transform.position + (thisCollider.center * transform.localScale.x),
@@ -477,6 +478,12 @@ public class AIPlayer : MonoBehaviour
     {
         GameUI.Instance.OnSetPlayerGrade();
         GameManagement.Instance.GetPlayerObject.OnUpdateValue();
+        GameManagement.Instance.OnCreateUpGradeEffect(targetObject.position);
+        GameManagement.Instance.OnCreateTextEffect(attacker: GameManagement.Instance.GetPlayerObject.transform,
+                                                   position: GameManagement.Instance.GetPlayerObject.transform.position + Vector3.up * 1.5f,
+                                                   color: Color.yellow,
+                                                   text: "Level UP!",
+                                                   type: TextEffect.TextType.UpGrade);
     }
 
     /// <summary>

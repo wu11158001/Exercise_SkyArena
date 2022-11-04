@@ -72,7 +72,7 @@ public class GameManagement : MonoBehaviour
         OnCreateInitialObject_Single("PlayerObject", AssetManagement.Instance.playerObject);
         OnCreateInitialObject_Group("EnemySoldierObject", AssetManagement.Instance.enemySoldierObjects);
         OnCreateInitialObject_List("BossObject", AssetManagement.Instance.boss_List);
-        OnCreateInitialObject_Single("HitTextObject", AssetManagement.Instance.hitTextObject);
+        OnCreateInitialObject_Single("TextEffectObject", AssetManagement.Instance.textEffectObject);
         OnCreateInitialObject_Group("EffectObject", AssetManagement.Instance.effectObjects);
     }
 
@@ -288,22 +288,22 @@ public class GameManagement : MonoBehaviour
     }
 
     /// <summary>
-    /// CreateHitNumber
+    /// CreateTextEffect
     /// </summary>
     /// <param name="attacker"></param>
-    /// <param name="pos"></param>
-    /// <param name="race"></param>
+    /// <param name="position"></param>
+    /// <param name="color"></param>
     /// <param name="text"></param>
-    public void OnCreateHitNumber(Transform attacker, Vector3 pos, AIPlayer.Race race, string text)
+    public void OnCreateTextEffect(Transform attacker, Vector3 position, Color color, string text, TextEffect.TextType type)
     {
-        GameObject numberObject = objectPool.OnActiveObject(OnSerchObjectPoolNumber("HitTextObject"));
-        if (!numberObject.TryGetComponent<HitText>(out HitText hitText)) hitText = numberObject.AddComponent<HitText>();
+        GameObject numberObject = objectPool.OnActiveObject(OnSerchObjectPoolNumber("TextEffectObject"));
+        if (!numberObject.TryGetComponent<TextEffect>(out TextEffect hitText)) hitText = numberObject.AddComponent<TextEffect>();
 
-        //設定文字
-        hitText.OnSetText(attackerForward: attacker.forward,//攻擊者物件前方
-                          pos: pos,//初始位置
-                          race: race,//攻擊者種族
-                          text: text);//顯示文字
+        hitText.OnSetText(attackerForward: attacker.forward,
+                          position: position,
+                          color: color,
+                          text: text,
+                          type: type);
     }
 
     #region Create Effect
@@ -325,6 +325,19 @@ public class GameManagement : MonoBehaviour
         }
 
         return default;
+    }
+
+    /// <summary>
+    /// CreateUpGradeEffect
+    /// </summary>
+    public void OnCreateUpGradeEffect(Vector3 position)
+    {
+        GameObject effect = OnSearchEffect("UpGrade");
+        if (effect == null) return;
+
+        //Add EffectCollisionAttack
+        if (!effect.TryGetComponent<EffectLifeTime>(out EffectLifeTime effectLifeTime)) effectLifeTime = effect.AddComponent<EffectLifeTime>();
+        effect.transform.position = position;
     }
 
     /// <summary>
@@ -354,8 +367,7 @@ public class GameManagement : MonoBehaviour
         GameObject effect = OnSearchEffect(effectName);
         if (effect == null) return null;
                 
-        effect.transform.position = target.position;
-        //effect.transform.rotation = Quaternion.Euler(Vector3.zero);
+        effect.transform.position = target.position;        
 
         //Add EffectCollisionAttack
         if (!effect.TryGetComponent<EffectLifeTime>(out EffectLifeTime effectLifeTime)) effectLifeTime = effect.AddComponent<EffectLifeTime>();        

@@ -10,7 +10,7 @@ public class AssetManagement : MonoBehaviour
     [Header("AssetObjects")]
     [Tooltip("playerObject")] public GameObject playerObject;
     [Tooltip("enemySoldierObjects")] public GameObject[] enemySoldierObjects;    
-    [Tooltip("hitTextObject")] public GameObject hitTextObject;
+    [Tooltip("hitTextObject")] public GameObject textEffectObject;
     [Tooltip("effectObjects")] public GameObject[] effectObjects;
 
     [Header("BossObject")]
@@ -34,7 +34,7 @@ public class AssetManagement : MonoBehaviour
     private void Start()
     {        
         OnLoadinSingleAsset(loadPath:"prefab/player", objName:"Player", obj: out playerObject);
-        OnLoadinSingleAsset(loadPath: "prefab/hit_text", objName: "Hit_Text", obj: out hitTextObject);
+        OnLoadinSingleAsset(loadPath: "prefab/texteffect", objName: "TextEffect", obj: out textEffectObject);
         OnLoadinGroupAsset(loadPath: "prefab/enemysoldiers", obj: out enemySoldierObjects, null);                
         OnLoadinGroupAsset(loadPath: "prefab/effect", obj: out effectObjects, null);
 

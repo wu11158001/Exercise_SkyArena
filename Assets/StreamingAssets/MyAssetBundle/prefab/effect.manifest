@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 1289475205
+CRC: 3832916492
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 07fe2348a3473994852b463da17ced6f
+    Hash: b347e6a71ab2ec9b48cdad3d8d904b4b
   TypeTreeHash:
     serializedVersion: 2
-    Hash: a619ab4c5539046c1d36e7a054dd0c7b
+    Hash: 7fea876e12a7faa9b2be7c8b4ed9ee2e
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -31,6 +31,8 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 108
   Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 6fd2e8874f60266498a388d7229a1bac, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 9205bc1bbacc90040a998067b5643d16, type: 3}
 - Class: 114
@@ -64,4 +66,5 @@ Assets:
 - Assets/Prefabs/Effects/Boss4/Boss4Attack3-2.prefab
 - Assets/Prefabs/Effects/Boss3/Boss3Attack2.prefab
 - Assets/Prefabs/Effects/TrackAttackExplosions.prefab
+- Assets/Prefabs/Effects/Player/UpGrade.prefab
 Dependencies: []

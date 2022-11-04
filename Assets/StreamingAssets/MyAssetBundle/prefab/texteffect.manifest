@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 3178157656
+CRC: 1134693405
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 1cf3c3335e8649d5c5229a0fbe9ad8d9
+    Hash: 6701f8a42292450a0bda834eec9a1122
   TypeTreeHash:
     serializedVersion: 2
     Hash: f0ea01966cc0655ef807d7bd27d481f8
@@ -37,5 +37,5 @@ SerializeReferenceClassIdentifiers:
 - AssemblyName: UnityEngine.UI
   ClassName: UnityEngine.UI.MaskableGraphic/CullStateChangedEvent
 Assets:
-- Assets/Prefabs/Commom/Hit_Text.prefab
+- Assets/Prefabs/Commom/TextEffect.prefab
 Dependencies: []
