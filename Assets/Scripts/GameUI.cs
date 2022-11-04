@@ -91,7 +91,7 @@ public class GameUI : MonoBehaviour
 
         //GameLevel_Text
         gameLevel_Text = FindChild.OnFindChild<Text>(transform, "GameLevel_Text");
-        OnSetGameLevel();//設定關卡等級
+        OnSetGameLevel();
 
         //ChallengeBoss_Button
         challengeBoss_Button = FindChild.OnFindChild<Button>(transform, "ChallengeBoss_Button");
@@ -162,9 +162,9 @@ public class GameUI : MonoBehaviour
     public void OnSetPlayerLifeBar(int hp)
     {
         playerLifeBar_Image.fillAmount = (float)hp / 
-            (float)(NumericalValueManagement.NumericalValue_Player.initial_Hp + (NumericalValueManagement.NumericalValue_Player.raiseUpgradeHp * (GameDataManagement.Instance.playerLevel - 1)));
+            (float)(NumericalValueManagement.NumericalValue_Player.initial_Hp + (NumericalValueManagement.NumericalValue_Player.raiseUpgradeHp * (GameDataManagement.Instance.playerGrade - 1)));
         playerLifeBar_Text.text = $"Hp: {hp} / " +
-            $"{NumericalValueManagement.NumericalValue_Player.initial_Hp + (NumericalValueManagement.NumericalValue_Player.raiseUpgradeHp * (GameDataManagement.Instance.playerLevel - 1))}";
+            $"{NumericalValueManagement.NumericalValue_Player.initial_Hp + (NumericalValueManagement.NumericalValue_Player.raiseUpgradeHp * (GameDataManagement.Instance.playerGrade - 1))}";
     }
 
     /// <summary>
@@ -173,10 +173,10 @@ public class GameUI : MonoBehaviour
     public void OnSetPlayerExperience()
     {
         float experienceRatio = (float)GameDataManagement.Instance.playerExperience /
-                                (float)(((GameDataManagement.Instance.playerLevel - 1) * NumericalValueManagement.NumericalValue_Game.raiseUpgradeExperience) + NumericalValueManagement.NumericalValue_Game.upgradeExperience);
+                                (float)(((GameDataManagement.Instance.playerGrade - 1) * NumericalValueManagement.NumericalValue_Game.raiseUpgradeExperience) + NumericalValueManagement.NumericalValue_Game.upgradeExperience);
         playerExperienceBar_Image.fillAmount = experienceRatio;
         playerExperienceBar_Text.text = $"Exp: {GameDataManagement.Instance.playerExperience} / " +
-            $"{NumericalValueManagement.NumericalValue_Game.upgradeExperience + (NumericalValueManagement.NumericalValue_Game.raiseUpgradeExperience * (GameDataManagement.Instance.playerLevel - 1))}";
+            $"{NumericalValueManagement.NumericalValue_Game.upgradeExperience + (NumericalValueManagement.NumericalValue_Game.raiseUpgradeExperience * (GameDataManagement.Instance.playerGrade - 1))}";
     }
 
     /// <summary>
@@ -184,8 +184,7 @@ public class GameUI : MonoBehaviour
     /// </summary>
     public void OnSetPlayerGrade()
     {
-        playerLevel_Text.text = $"Grade: {++GameDataManagement.Instance.playerLevel}";
-        GameDataManagement.Instance.playerExperience = 0;
+        playerLevel_Text.text = $"Grade: {GameDataManagement.Instance.playerGrade}";        
     }
 
     /// <summary>
@@ -193,7 +192,7 @@ public class GameUI : MonoBehaviour
     /// </summary>
     public void OnSetGameLevel()
     {
-        gameLevel_Text.text = $"LV: {++GameDataManagement.Instance.gameLevel}";
+        gameLevel_Text.text = $"LV: {GameDataManagement.Instance.gameLevel}";
     }
 
     /// <summary>

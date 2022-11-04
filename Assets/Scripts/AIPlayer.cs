@@ -78,9 +78,9 @@ public class AIPlayer : MonoBehaviour
     public virtual void OnUpdateValue()
     {
         Hp = NumericalValueManagement.NumericalValue_Player.initial_Hp +
-            (NumericalValueManagement.NumericalValue_Player.raiseUpgradeHp * (GameDataManagement.Instance.playerLevel - 1));
+            (NumericalValueManagement.NumericalValue_Player.raiseUpgradeHp * (GameDataManagement.Instance.playerGrade - 1));
         attackPower = NumericalValueManagement.NumericalValue_Player.initial_AttackPower +
-            (NumericalValueManagement.NumericalValue_Player.raiseUpgradeAttack * (GameDataManagement.Instance.playerLevel - 1));
+            (NumericalValueManagement.NumericalValue_Player.raiseUpgradeAttack * (GameDataManagement.Instance.playerGrade - 1));
 
         GameUI.Instance.OnSetPlayerLifeBar(Hp);
     }
@@ -371,7 +371,7 @@ public class AIPlayer : MonoBehaviour
         {
             Hp = 0;
             animator.SetTrigger("Death");
-            OnEnemySoldierDeath();
+            OnEnemyDeath();
             OnPlayerDeath();
             if (attacker.TryGetComponent<AIPlayer>(out AIPlayer aIPlayer)) aIPlayer.OnSearchTarget();
         }
@@ -436,21 +436,23 @@ public class AIPlayer : MonoBehaviour
     }
 
     /// <summary>
-    /// EnemySoldierDeath
+    /// EnemyDeath
     /// </summary>
-    void OnEnemySoldierDeath()
+    void OnEnemyDeath()
     {
         if (race == Race.Enemy)
         {
             GameDataManagement.Instance.playerExperience += NumericalValueManagement.NumericalValue_Game.enemyExperience;
 
             if (GameDataManagement.Instance.playerExperience >=
-                ((GameDataManagement.Instance.playerLevel - 1) * NumericalValueManagement.NumericalValue_Game.raiseUpgradeExperience) + NumericalValueManagement.NumericalValue_Game.upgradeExperience)
+                ((GameDataManagement.Instance.playerGrade - 1) * NumericalValueManagement.NumericalValue_Game.raiseUpgradeExperience) + NumericalValueManagement.NumericalValue_Game.upgradeExperience)
             {
                 OnPlayerUpgrade();
+                GameDataManagement.Instance.playerExperience = 0;
             }
             GameUI.Instance.OnSetPlayerExperience();
             GameManagement.Instance.GetEnemyList.Remove(transform);
+            GameDataManagement.Instance.OnSaveJsonData();
         }
     }
 
@@ -465,6 +467,7 @@ public class AIPlayer : MonoBehaviour
             GameManagement.Instance.isChallengeBoss = false;
             GameManagement.Instance.OnCleanBoss("BossObject", AssetManagement.Instance.boss_List);
             GameManagement.Instance.GetPlayerObject.OnUpdateValue();
+            GameDataManagement.Instance.gameLevel++;
             GameUI.Instance.OnSetGameLevel();
             GameUI.Instance.OnUIActive(true);
         }
@@ -476,7 +479,8 @@ public class AIPlayer : MonoBehaviour
     /// </summary>
     void OnPlayerUpgrade()
     {
-        GameUI.Instance.OnSetPlayerGrade();
+        
+        GameDataManagement.Instance.playerGrade++;
         GameManagement.Instance.GetPlayerObject.OnUpdateValue();
         GameManagement.Instance.OnCreateUpGradeEffect(targetObject.position);
         GameManagement.Instance.OnCreateTextEffect(attacker: GameManagement.Instance.GetPlayerObject.transform,
@@ -484,6 +488,7 @@ public class AIPlayer : MonoBehaviour
                                                    color: Color.yellow,
                                                    text: "Level UP!",
                                                    type: TextEffect.TextType.UpGrade);
+        GameUI.Instance.OnSetPlayerGrade();
     }
 
     /// <summary>

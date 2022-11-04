@@ -9,6 +9,7 @@ public class CameraControl : MonoBehaviour
 
     [Header("Value")]
     [SerializeField] [Tooltip("CameraDistance")] float cameraDistance;
+    [SerializeField] [Tooltip("LookHight")] float lookHight;
     [SerializeField] [Tooltip("CameraDistanceLimit(max, min)")] float[] cameraDistanceLimit;
     [SerializeField] [Tooltip("CameraHight")] float cameraHight;
     [SerializeField] [Tooltip("CameraHightLimit(max, min)")] float[] cameraHightLimit;
@@ -40,9 +41,10 @@ public class CameraControl : MonoBehaviour
         transform.rotation = Quaternion.Euler(25, 145, 0);
 
         //Value
-        cameraDistance = 4;
-        cameraDistanceLimit = new float[] { 6, 2 };
-        cameraHight = 3;
+        cameraDistance = 6;
+        lookHight = 3;
+        cameraDistanceLimit = new float[] { 10, 4 };
+        cameraHight = 1.0f;
         cameraHightLimit = new float[] { 8, 0.8f };
         lerpTime = 0.01f;
 
@@ -107,7 +109,7 @@ public class CameraControl : MonoBehaviour
         {
             targetObject = value;
             forwardVector = targetObject.forward;
-            lookAtPosition = targetObject.position + targetObject.GetComponent<CapsuleCollider>().center;
+            lookAtPosition = targetObject.position + Vector3.up * lookHight;
             targetPosition = lookAtPosition + Vector3.up * cameraHight - Vector3.Cross(transform.right, Vector3.up) * cameraDistance;
         }
     }
