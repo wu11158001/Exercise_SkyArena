@@ -15,6 +15,11 @@ namespace NumericalValueManagement
         public static int enemyExperience = 10;
         public static int upgradeExperience = 10;
         public static int raiseUpgradeExperience = 20;
+
+        //AFK
+        public static int afkRewardTiming = 5;
+        public static int akfExperienceReward = 1;
+        public static int akfGoldReward = 10;
     }
 
     /// <summary>

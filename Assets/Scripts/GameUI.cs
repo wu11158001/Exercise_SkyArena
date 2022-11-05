@@ -38,7 +38,9 @@ public class GameUI : MonoBehaviour
     [Tooltip("AFKRewardBackground_Image")] Transform afkRewardBackground_Image;
     [Tooltip("AFKReward_Button")] Button afkReward_Button;
     [Tooltip("RewardTime_Text")] TMP_Text rewardTime_Text;
-    [Tooltip("RewardConfirm_Button")] Button rewardConfirm_Button;    
+    [Tooltip("RewardConfirm_Button")] Button rewardConfirm_Button;
+    [Tooltip("RewardExperience_Text")] TMP_Text rewardExperience_Text;
+    [Tooltip("RewardGold_Text")] TMP_Text rewardGold_Text;
 
     private void Awake()
     {
@@ -129,6 +131,13 @@ public class GameUI : MonoBehaviour
         //AFK RewardConfirm_Button
         rewardConfirm_Button = FindChild.OnFindChild<Button>(transform, "RewardConfirm_Button");
         rewardConfirm_Button.onClick.AddListener(OnReceiveReward);
+
+        //RewardExperience_Text
+        rewardExperience_Text = FindChild.OnFindChild<TMP_Text>(transform, "RewardExperience_Text");
+
+        //RewardGold_Text
+        rewardGold_Text = FindChild.OnFindChild<TMP_Text>(transform, "RewardGold_Text");
+        
     }
 
     private void Update()
@@ -158,20 +167,31 @@ public class GameUI : MonoBehaviour
 
         int total = (int)(GameDataManagement.Instance.OnAFKRewardTime().TotalSeconds);
 
+        //Second
         if (total % 60 == 0) second = "00";
         else second = total - (60 * (int)GameDataManagement.Instance.OnAFKRewardTime().TotalMinutes) < 10 ?
                 $"0{ (total - (60 * (int)GameDataManagement.Instance.OnAFKRewardTime().TotalMinutes)).ToString()}" :
                 $"{(total - (60 * (int)GameDataManagement.Instance.OnAFKRewardTime().TotalMinutes)).ToString()}";
 
+        //Minute
         if ((int)GameDataManagement.Instance.OnAFKRewardTime().TotalMinutes == 0) minute = "00";
         else minute = (int)GameDataManagement.Instance.OnAFKRewardTime().TotalMinutes < 10 ?
                 $"0{(int)GameDataManagement.Instance.OnAFKRewardTime().TotalMinutes}"
                 : $"{(int)GameDataManagement.Instance.OnAFKRewardTime().TotalMinutes}";
 
+        //Hour
         if ((int)GameDataManagement.Instance.OnAFKRewardTime().TotalHours == 0) hour = "00";
         else hour = (int)GameDataManagement.Instance.OnAFKRewardTime().TotalHours < 10 ?
                 $"0{(int)GameDataManagement.Instance.OnAFKRewardTime().TotalHours}"
                 : $"{(int)GameDataManagement.Instance.OnAFKRewardTime().TotalHours}";
+
+        //Experience        
+        GameDataManagement.Instance.afkExperienceReward = (total / NumericalValueManagement.NumericalValue_Game.afkRewardTiming) * NumericalValueManagement.NumericalValue_Game.akfExperienceReward;
+        rewardExperience_Text.text = $"{GameDataManagement.Instance.afkExperienceReward}";
+
+        //RewardGold_Text
+        GameDataManagement.Instance.afkGoldReward = (total / NumericalValueManagement.NumericalValue_Game.afkRewardTiming) * NumericalValueManagement.NumericalValue_Game.akfGoldReward;
+        rewardGold_Text.text = $"{GameDataManagement.Instance.afkGoldReward}";
 
         rewardTime_Text.text = $"{hour} : {minute} : {second}";
     }

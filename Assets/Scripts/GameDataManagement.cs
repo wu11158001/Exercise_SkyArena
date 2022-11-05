@@ -11,7 +11,7 @@ public class GameDataManagement : MonoBehaviour
     public static GameDataManagement Instance => gameDataManagement;
 
     [Header("Plugin")]
-    [SerializeField] [Tooltip("SelectLevel")] public int selectLevel;////using for plugin
+    [SerializeField] [Tooltip("SelectLevel")] public int selectLevel;//using for plugin
 
     [Header("GameData")]
     [Tooltip("PlayerGrade")] public int playerGrade;
@@ -20,6 +20,8 @@ public class GameDataManagement : MonoBehaviour
 
     [Header("AFK")]
     [Tooltip("SrartTime")] public DateTime afkRewardStartTime;
+    [Tooltip("AFKExperienceReward")] public int afkExperienceReward;
+    [Tooltip("AFKGoldReward")] public int afkGoldReward;
 
     private void Awake()
     {
