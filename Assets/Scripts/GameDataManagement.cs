@@ -17,12 +17,16 @@ public class GameDataManagement : MonoBehaviour
     [Tooltip("PlayerGrade")] public int playerGrade;
     [Tooltip("PlayerExperience")] public int playerExperience;
     [Tooltip("PlayerGold")] public int playerGold;
-    [Tooltip("GameLevel")] public int gameLevel;
+    [Tooltip("GameLevel")] public int gameLevel;    
 
     [Header("AFK")]
     [Tooltip("SrartTime")] public DateTime afkRewardStartTime;
     [Tooltip("AFKExperienceReward")] public int afkExperienceReward;
     [Tooltip("AFKGoldReward")] public int afkGoldReward;
+
+    [Header("Skill")]
+    [Tooltip("EquipSkillNumber")] public int[] playEquipSkillNumber;
+    [Tooltip("AllSkillGrade")] public int[] allSkillGrade;
 
     private void Awake()
     {
@@ -53,7 +57,7 @@ public class GameDataManagement : MonoBehaviour
         TimeSpan timeSpan = currentTime.Subtract(afkRewardStartTime);
         return timeSpan;
     }
-
+    
     /// <summary>
     /// SaveJsonData
     /// </summary>
@@ -66,7 +70,9 @@ public class GameDataManagement : MonoBehaviour
             experience = playerExperience,
             gold = playerGold,
             gameLevel = gameLevel,
-            afkRewardStartTime = DateTime.Now.ToString()
+            afkRewardStartTime = DateTime.Now.ToString(),
+            allSkillGrade = allSkillGrade,
+            equipSkillNumber = playEquipSkillNumber
         };
 
         //Create Or Open File
@@ -94,6 +100,8 @@ public class GameDataManagement : MonoBehaviour
             if (!new FileInfo(filePath).Exists)
             {
                 afkRewardStartTime = DateTime.Now;
+                allSkillGrade = new int[] { 0, 0, 0, 0 };
+                playEquipSkillNumber = new int[] { -1, -1, -1, -1 };
                 return;
             }
 
@@ -109,6 +117,8 @@ public class GameDataManagement : MonoBehaviour
             playerGold = playerData.gold;
             gameLevel = playerData.gameLevel;
             afkRewardStartTime = Convert.ToDateTime(playerData.afkRewardStartTime);
+            allSkillGrade = playerData.allSkillGrade;
+            playEquipSkillNumber = playerData.equipSkillNumber;
         }
         catch (Exception ex)
         {
@@ -124,4 +134,6 @@ class PlayerData
     public int gold;
     public int gameLevel;
     public string afkRewardStartTime;
+    public int[] allSkillGrade;
+    public int[] equipSkillNumber;
 }

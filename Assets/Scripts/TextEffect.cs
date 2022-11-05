@@ -49,6 +49,8 @@ public class TextEffect : MonoBehaviour
     /// <param name="text"></param>
     public void OnSetText(Vector3 attackerForward, Vector3 position, Color color, string text, TextType type)
     {
+        if (GameUI.Instance.isOpenInterface) gameObject.SetActive(false); ;
+
         thisText.enabled = true;
         transform.SetParent(canvas.transform);
 
@@ -72,14 +74,9 @@ public class TextEffect : MonoBehaviour
     /// </summary>
     void OnTextBehavior()
     {
-        if (lifeTimeCountDown <= 0) return;
-
         //Life Time
         lifeTimeCountDown -= Time.deltaTime;
-        if(lifeTimeCountDown <= 0)
-        {
-            gameObject.SetActive(false);
-        }
+        if (lifeTimeCountDown <= 0) gameObject.SetActive(false); ;        
 
         //Text Move               
         if (textType == TextType.GetHit) OnGetHitTextBehavior();

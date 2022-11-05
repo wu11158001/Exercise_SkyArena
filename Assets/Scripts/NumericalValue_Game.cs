@@ -21,6 +21,10 @@ namespace NumericalValueManagement
         public static int afkRewardTiming = 5;
         public static int akfExperienceReward = 1;
         public static int akfGoldReward = 10;
+
+        //SkillCost
+        public static int skillinItialCost = 500;
+        public static int skillRaiseCost = 600;
     }
 
     /// <summary>

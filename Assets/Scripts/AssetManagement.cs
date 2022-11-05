@@ -20,8 +20,9 @@ public class AssetManagement : MonoBehaviour
     [Tooltip("BossObjects3")] public GameObject[] bossObjects3;
     [Tooltip("BossObjects4")] public GameObject[] bossObjects4;
 
-    [Header("AFK")]
+    [Header("Sprite")]
     [Tooltip("AFKButtonSprite")] public Sprite[] afkButtonSprite;
+    [Tooltip("SkillIconSprite")] public Sprite[] skillIconSprite;
 
     private void Awake()
     {
@@ -48,9 +49,9 @@ public class AssetManagement : MonoBehaviour
         OnLoadingGroupAsset(loadPath: "prefab/boss4", objs: out bossObjects4);
         boss_List = new List<GameObject[]>() { bossObjects1, bossObjects2, bossObjects3, bossObjects4};
 
-        //AFK
+        //Sprite
         OnLoadingSprite(loadPath: "ui/afkbutton", out afkButtonSprite);
-        
+        OnLoadingSprite(loadPath: "ui/skillicon", out skillIconSprite);
     }
 
     /// <summary>

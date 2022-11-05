@@ -46,6 +46,23 @@ public class Plugin : MonoBehaviour
     {
         OnSelectBossType();
         OnBossHp();
+        OnGold();
+    }
+
+    void OnGold()
+    {
+        if (thisInputField.text.StartsWith("gold"))
+        {
+            var split = thisInputField.text.Split('=');
+            try
+            {
+                GameDataManagement.Instance.playerGold = Int32.Parse(split[1]);
+            }
+            catch(Exception e)
+            {
+                Debug.LogError(e.Message);
+            }
+        }
     }
 
     /// <summary>

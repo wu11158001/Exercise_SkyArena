@@ -10,6 +10,9 @@ public class GameUI : MonoBehaviour
     static GameUI gameUI;
     public static GameUI Instance => gameUI;
 
+    [Header("Judge")]
+    [Tooltip("IsOpenInterface")] public bool isOpenInterface;
+
     [Header("FadeImage")]
     [Tooltip("FadeAlpha")] float fadeAlpha;
     [Tooltip("FadeSpeed")] float fadeSpeed;
@@ -27,7 +30,7 @@ public class GameUI : MonoBehaviour
     [Tooltip("PlayerExperienceBar_Image")] Image playerExperienceBar_Image;
     [Tooltip("PlayerExperienceBar_Text")] Text playerExperienceBar_Text;
     [Tooltip("GameLevel_Text")] Text gameLevel_Text;
-    [Tooltip("Gold_Text")] Text gold_Text;    
+    [Tooltip("Gold_Text")] Text gold_Text;
 
     [Header("BossUI")]
     [Tooltip("ChallengeBoss_Button")] Button challengeBoss_Button;
@@ -35,10 +38,9 @@ public class GameUI : MonoBehaviour
     [Tooltip("BossLifeBar")] Image bossLifeBar;
     [Tooltip("BossLifeBar_Text")] Text bossLifeBar_Text;
 
-    [Header("AFKReward")]
-    [Tooltip("AFKRewardBackground_Image")] Transform afkRewardBackground_Image;
-    [Tooltip("AFK_Button")] Button afk_Button;
-    [Tooltip("AFKButton_Image")] Image afkButton_Image;
+    [Header("AFK")]
+    [Tooltip("AFKInterface")] Transform akfInterface;
+    [Tooltip("AFK_Button")] Button afk_Button;    
     [Tooltip("RewardTime_Text")] TMP_Text rewardTime_Text;
     [Tooltip("RewardConfirm_Button")] Button rewardConfirm_Button;
     [Tooltip("RewardExperience_Text")] TMP_Text rewardExperience_Text;
@@ -48,6 +50,11 @@ public class GameUI : MonoBehaviour
     [Tooltip("AFKButtonAniamtionCountDown")] float afkButtonAniamtionCountDown;
     [Tooltip("AFKButtonAnimationChangeTime")] float afkButtonAnimationChangeTime;
     [Tooltip("NowSprite_AFKButton")] int nowSprite_AFKButton;
+
+    [Header("Skill")]
+    [Tooltip("Skill_Button")] Button skill_Button;
+    [Tooltip("SkillInterface")] Transform skillInterface;
+    [Tooltip("SkillCancel_Button")] Button skillCancel_Button;
 
     private void Awake()
     {
@@ -61,7 +68,7 @@ public class GameUI : MonoBehaviour
 
     private void Start()
     {
-        OnGetComponent();
+        OnGetUI();
 
         //FadeImage
         fadeAlpha = 1;
@@ -76,9 +83,9 @@ public class GameUI : MonoBehaviour
     }
 
     /// <summary>
-    /// GetComponent
+    /// GetUI
     /// </summary>
-    void OnGetComponent()
+    void OnGetUI()
     {
         //Fade_Image
         fade_Image = FindChild.OnFindChild<Image>(transform, "FadeOut_Image");
@@ -136,17 +143,16 @@ public class GameUI : MonoBehaviour
         #endregion
 
         #region AFK
-        //AFK RewardBackground_Image
-        afkRewardBackground_Image = FindChild.OnFindChild<Transform>(transform, "AFKRewardBackground_Image");
-        afkRewardBackground_Image.gameObject.SetActive(false);
+        //AFKInterface
+        akfInterface = FindChild.OnFindChild<Transform>(transform, "AFKInterface");
+        akfInterface.gameObject.SetActive(false);
 
         //AFK RewardTime_Text
         rewardTime_Text = FindChild.OnFindChild<TMP_Text>(transform, "RewardTime_Text");
 
         //AFK Button
         afk_Button = FindChild.OnFindChild<Button>(transform, "AFK_Button");
-        afk_Button.onClick.AddListener(OnOpenAFKReward);
-        afkButton_Image = FindChild.OnFindChild<Image>(transform, "AFK_Button");
+        afk_Button.onClick.AddListener(delegate { OnSwitchInterface(akfInterface.gameObject, true); });        
 
         //AFK RewardConfirm_Button
         rewardConfirm_Button = FindChild.OnFindChild<Button>(transform, "RewardConfirm_Button");
@@ -158,6 +164,20 @@ public class GameUI : MonoBehaviour
         //RewardGold_Text
         rewardGold_Text = FindChild.OnFindChild<TMP_Text>(transform, "RewardGold_Text");
         #endregion
+
+        #region Skill
+        //Skill_Button
+        skill_Button = FindChild.OnFindChild<Button>(transform, "Skill_Button");
+        skill_Button.onClick.AddListener(delegate { OnSwitchInterface(skillInterface.gameObject, true); });
+
+        //SkillInterface
+        skillInterface = FindChild.OnFindChild<Transform>(transform, "SkillInterface");
+        skillInterface.gameObject.SetActive(false);
+
+        //SkillCancel_Button
+        skillCancel_Button = FindChild.OnFindChild<Button>(transform, "SkillCancel_Button");
+        skillCancel_Button.onClick.AddListener(delegate { OnSwitchInterface(skillInterface.gameObject, false); });
+        #endregion
     }
 
     private void Update()
@@ -165,8 +185,8 @@ public class GameUI : MonoBehaviour
         OnScreenFadeOut();
         OnDeathTimeCountDown();
         OnSetRewardTime();
-        
-        OnUIAnimation(ref afkButtonAniamtionCountDown, afkButtonAnimationChangeTime, afkButton_Image, AssetManagement.Instance.afkButtonSprite, ref nowSprite_AFKButton);
+
+        OnUIAnimation(ref afkButtonAniamtionCountDown, afkButtonAnimationChangeTime, afk_Button.image, AssetManagement.Instance.afkButtonSprite, ref nowSprite_AFKButton);
     }
 
     /// <summary>
@@ -193,14 +213,16 @@ public class GameUI : MonoBehaviour
     /// </summary>
     void OnReceiveReward()
     {
-        afkRewardBackground_Image.gameObject.SetActive(false);
-        GameDataManagement.Instance.afkRewardStartTime = DateTime.Now;        
+        akfInterface.gameObject.SetActive(false);
+        GameDataManagement.Instance.afkRewardStartTime = DateTime.Now;
         GameDataManagement.Instance.playerExperience += GameDataManagement.Instance.afkExperienceReward;
         GameDataManagement.Instance.playerGold += GameDataManagement.Instance.afkGoldReward;
         GameDataManagement.Instance.OnSaveJsonData();
 
         OnSetPlayerExperience();
         OnSetPlayerGold();
+
+        isOpenInterface = false;
     }
 
     /// <summary>
@@ -239,15 +261,7 @@ public class GameUI : MonoBehaviour
 
         //Gold
         GameDataManagement.Instance.afkGoldReward = (total / NumericalValueManagement.NumericalValue_Game.afkRewardTiming) * NumericalValueManagement.NumericalValue_Game.akfGoldReward;
-        rewardGold_Text.text = $"Gold: {GameDataManagement.Instance.afkGoldReward}";        
-    }
-
-    /// <summary>
-    /// OpenAFKReward
-    /// </summary>
-    void OnOpenAFKReward()
-    {
-        afkRewardBackground_Image.gameObject.SetActive(true);        
+        rewardGold_Text.text = $"Gold: {GameDataManagement.Instance.afkGoldReward}";
     }
     #endregion
 
@@ -389,5 +403,16 @@ public class GameUI : MonoBehaviour
 
             tip_Text.text = $"{Convert.ToInt32(deathTimeCountDown).ToString()}";
         }
+    }
+
+    /// <summary>
+    /// SwitchInterface
+    /// </summary>
+    void OnSwitchInterface(GameObject item, bool isActive)
+    {
+        if (isActive == true && isOpenInterface == true) return;
+
+        isOpenInterface = isActive;
+        item.SetActive(isActive);
     }
 }
