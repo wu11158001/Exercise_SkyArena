@@ -94,7 +94,8 @@ public class AIPlayer : MonoBehaviour
         {
             GameUI.Instance.OnSetPlayerGrade();
             GameUI.Instance.OnSetPlayerExperience();
-            GameUI.Instance.OnSetGameLevel();
+            GameUI.Instance.OnSetPlayerGold();
+            GameUI.Instance.OnSetGameLevel();            
 
             OnUpdateValue();
         }
@@ -444,6 +445,7 @@ public class AIPlayer : MonoBehaviour
         if (race == Race.Enemy)
         {
             GameDataManagement.Instance.playerExperience += NumericalValueManagement.NumericalValue_Game.enemyExperience;
+            GameDataManagement.Instance.playerGold += NumericalValueManagement.NumericalValue_Game.enemyGold;
 
             if (GameDataManagement.Instance.playerExperience >=
                 ((GameDataManagement.Instance.playerGrade - 1) * NumericalValueManagement.NumericalValue_Game.raiseUpgradeExperience) + NumericalValueManagement.NumericalValue_Game.upgradeExperience)
@@ -451,7 +453,9 @@ public class AIPlayer : MonoBehaviour
                 OnPlayerUpgrade();
                 GameDataManagement.Instance.playerExperience = 0;
             }
+
             GameUI.Instance.OnSetPlayerExperience();
+            GameUI.Instance.OnSetPlayerGold();
             GameManagement.Instance.GetEnemyList.Remove(transform);
             GameDataManagement.Instance.OnSaveJsonData();
         }
@@ -464,11 +468,13 @@ public class AIPlayer : MonoBehaviour
     {
         //Boss
         if (GameManagement.Instance.isChallengeBoss && race == Race.Enemy)
-        {
-            GameManagement.Instance.isChallengeBoss = false;
+        {            
+            GameManagement.Instance.isChallengeBoss = false;            
             GameManagement.Instance.OnCleanBoss("BossObject", AssetManagement.Instance.boss_List);
             GameManagement.Instance.GetPlayerObject.OnUpdateValue();
+            GameManagement.Instance.attack_List.Clear();
             GameDataManagement.Instance.gameLevel++;
+            GameDataManagement.Instance.selectLevel = -1;
             GameUI.Instance.OnSetGameLevel();
             GameUI.Instance.OnUIActive(true);
         }

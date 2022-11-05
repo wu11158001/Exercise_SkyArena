@@ -265,6 +265,8 @@ public class GameManagement : MonoBehaviour
         isChallengeBoss = true;
         
         int bossType = GameDataManagement.Instance.selectLevel >= 0 ? GameDataManagement.Instance.selectLevel : UnityEngine.Random.Range(0, AssetManagement.Instance.boss_List.Count);
+        GameDataManagement.Instance.selectLevel = bossType;
+
         int bossNumber = UnityEngine.Random.Range(0, AssetManagement.Instance.boss_List[bossType].Length);
 
         GameObject boss = objectPool.OnActiveObject(OnSerchObjectPoolNumber($"BossObject{bossType}-{bossNumber}"));

@@ -16,6 +16,7 @@ public class GameDataManagement : MonoBehaviour
     [Header("GameData")]
     [Tooltip("PlayerGrade")] public int playerGrade;
     [Tooltip("PlayerExperience")] public int playerExperience;
+    [Tooltip("PlayerGold")] public int playerGold;
     [Tooltip("GameLevel")] public int gameLevel;
 
     [Header("AFK")]
@@ -63,6 +64,7 @@ public class GameDataManagement : MonoBehaviour
         {
             grade = playerGrade,
             experience = playerExperience,
+            gold = playerGold,
             gameLevel = gameLevel,
             afkRewardStartTime = DateTime.Now.ToString()
         };
@@ -104,6 +106,7 @@ public class GameDataManagement : MonoBehaviour
             //Set Value
             playerGrade = playerData.grade;
             playerExperience = playerData.experience;
+            playerGold = playerData.gold;
             gameLevel = playerData.gameLevel;
             afkRewardStartTime = Convert.ToDateTime(playerData.afkRewardStartTime);
         }
@@ -118,6 +121,7 @@ class PlayerData
 {
     public int grade;
     public int experience;
+    public int gold;
     public int gameLevel;
     public string afkRewardStartTime;
 }

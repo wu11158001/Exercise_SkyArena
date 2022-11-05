@@ -13,6 +13,7 @@ namespace NumericalValueManagement
         public static float deathTime = 3;
         public static float[] createEnemyTime = new float[] { 0.5f, 2 };
         public static int enemyExperience = 10;
+        public static int enemyGold = 50;
         public static int upgradeExperience = 10;
         public static int raiseUpgradeExperience = 20;
 
@@ -67,8 +68,8 @@ namespace NumericalValueManagement
     public class NumericalValue_Boss
     {
         public static float moveSpeed = 2f;
-        public static int initial_Hp = 5000;
-        public static int initial_AttackPower = 7;
+        public static int initial_Hp = 1000;
+        public static int initial_AttackPower = 70;
         public static int attackCount = 3;
         public static float attackRadius = 4.5f;
         public static float attackFrequency = 1;

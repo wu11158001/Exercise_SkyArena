@@ -27,6 +27,7 @@ public class GameUI : MonoBehaviour
     [Tooltip("PlayerExperienceBar_Image")] Image playerExperienceBar_Image;
     [Tooltip("PlayerExperienceBar_Text")] Text playerExperienceBar_Text;
     [Tooltip("GameLevel_Text")] Text gameLevel_Text;
+    [Tooltip("Gold_Text")] Text gold_Text;    
 
     [Header("BossUI")]
     [Tooltip("ChallengeBoss_Button")] Button challengeBoss_Button;
@@ -74,6 +75,7 @@ public class GameUI : MonoBehaviour
         tip_Text = FindChild.OnFindChild<Text>(transform, "Tip_Text");
         tip_Text.enabled = false;
 
+        #region Player UI
         //PlayerLevel_Text
         playerLevel_Text = FindChild.OnFindChild<Text>(transform, "Level_Text");
 
@@ -100,6 +102,11 @@ public class GameUI : MonoBehaviour
         //GameLevel_Text
         gameLevel_Text = FindChild.OnFindChild<Text>(transform, "GameLevel_Text");
 
+        //Gold_Text
+        gold_Text = FindChild.OnFindChild<Text>(transform, "Gold_Text");
+        #endregion
+
+        #region Boss UI
         //ChallengeBoss_Button
         challengeBoss_Button = FindChild.OnFindChild<Button>(transform, "ChallengeBoss_Button");
         challengeBoss_Button.onClick.AddListener(OnChallengeBossButtonFunction);
@@ -116,7 +123,9 @@ public class GameUI : MonoBehaviour
 
         //BossLifeBar_Text
         bossLifeBar_Text = FindChild.OnFindChild<Text>(transform, "BossLifeBar_Text");
+        #endregion
 
+        #region AFK
         //AFK RewardBackground_Image
         afkRewardBackground_Image = FindChild.OnFindChild<Transform>(transform, "AFKRewardBackground_Image");
         afkRewardBackground_Image.gameObject.SetActive(false);
@@ -126,7 +135,7 @@ public class GameUI : MonoBehaviour
 
         //AFK Reward_Button
         afkReward_Button = FindChild.OnFindChild<Button>(transform, "AFKReward_Button");
-        afkReward_Button.onClick.AddListener(OnReceiveAFKReward);
+        afkReward_Button.onClick.AddListener(OnOpenAFKReward);
 
         //AFK RewardConfirm_Button
         rewardConfirm_Button = FindChild.OnFindChild<Button>(transform, "RewardConfirm_Button");
@@ -137,7 +146,7 @@ public class GameUI : MonoBehaviour
 
         //RewardGold_Text
         rewardGold_Text = FindChild.OnFindChild<TMP_Text>(transform, "RewardGold_Text");
-        
+        #endregion
     }
 
     private void Update()
@@ -154,7 +163,9 @@ public class GameUI : MonoBehaviour
     void OnReceiveReward()
     {
         afkRewardBackground_Image.gameObject.SetActive(false);
-        GameDataManagement.Instance.afkRewardStartTime = DateTime.Now;
+        GameDataManagement.Instance.afkRewardStartTime = DateTime.Now;        
+        GameDataManagement.Instance.playerExperience += GameDataManagement.Instance.afkExperienceReward;
+        GameDataManagement.Instance.playerGold += GameDataManagement.Instance.afkGoldReward;
         GameDataManagement.Instance.OnSaveJsonData();
     }
 
@@ -185,23 +196,26 @@ public class GameUI : MonoBehaviour
                 $"0{(int)GameDataManagement.Instance.OnAFKRewardTime().TotalHours}"
                 : $"{(int)GameDataManagement.Instance.OnAFKRewardTime().TotalHours}";
 
+        //Afk Time
+        rewardTime_Text.text = $"{hour} : {minute} : {second}";
+
         //Experience        
         GameDataManagement.Instance.afkExperienceReward = (total / NumericalValueManagement.NumericalValue_Game.afkRewardTiming) * NumericalValueManagement.NumericalValue_Game.akfExperienceReward;
         rewardExperience_Text.text = $"{GameDataManagement.Instance.afkExperienceReward}";
 
-        //RewardGold_Text
+        //Gold
         GameDataManagement.Instance.afkGoldReward = (total / NumericalValueManagement.NumericalValue_Game.afkRewardTiming) * NumericalValueManagement.NumericalValue_Game.akfGoldReward;
         rewardGold_Text.text = $"{GameDataManagement.Instance.afkGoldReward}";
 
-        rewardTime_Text.text = $"{hour} : {minute} : {second}";
+        
     }
 
     /// <summary>
-    /// ReceiveAFKReward
+    /// OpenAFKReward
     /// </summary>
-    void OnReceiveAFKReward()
+    void OnOpenAFKReward()
     {
-        afkRewardBackground_Image.gameObject.SetActive(true);
+        afkRewardBackground_Image.gameObject.SetActive(true);        
     }
     #endregion
 
@@ -265,6 +279,14 @@ public class GameUI : MonoBehaviour
         playerExperienceBar_Image.fillAmount = experienceRatio;
         playerExperienceBar_Text.text = $"Exp: {GameDataManagement.Instance.playerExperience} / " +
             $"{NumericalValueManagement.NumericalValue_Game.upgradeExperience + (NumericalValueManagement.NumericalValue_Game.raiseUpgradeExperience * (GameDataManagement.Instance.playerGrade - 1))}";
+    }
+
+    /// <summary>
+    /// SetPlayerGold
+    /// </summary>
+    public void OnSetPlayerGold()
+    {
+        gold_Text.text = $"Gold: {GameDataManagement.Instance.playerGold}";
     }
 
     /// <summary>
