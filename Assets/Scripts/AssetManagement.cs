@@ -8,17 +8,20 @@ public class AssetManagement : MonoBehaviour
     public static AssetManagement Instance => assetManagement;
 
     [Header("AssetObjects")]
-    [Tooltip("playerObject")] public GameObject playerObject;
-    [Tooltip("enemySoldierObjects")] public GameObject[] enemySoldierObjects;    
-    [Tooltip("hitTextObject")] public GameObject textEffectObject;
-    [Tooltip("effectObjects")] public GameObject[] effectObjects;
+    [Tooltip("PlayerObject")] public GameObject playerObject;
+    [Tooltip("EnemySoldierObjects")] public GameObject[] enemySoldierObjects;    
+    [Tooltip("HitTextObject")] public GameObject textEffectObject;
+    [Tooltip("EffectObjects")] public GameObject[] effectObjects;
 
     [Header("BossObject")]
-    [Tooltip("bossObjects")] public List<GameObject[]> boss_List = new List<GameObject[]>();
-    [Tooltip("bossObjects1")] public GameObject[] bossObjects1;
-    [Tooltip("bossObjects2")] public GameObject[] bossObjects2;
-    [Tooltip("bossObjects3")] public GameObject[] bossObjects3;
-    [Tooltip("bossObjects4")] public GameObject[] bossObjects4;
+    [Tooltip("BossObjects")] public List<GameObject[]> boss_List = new List<GameObject[]>();
+    [Tooltip("BossObjects1")] public GameObject[] bossObjects1;
+    [Tooltip("BossObjects2")] public GameObject[] bossObjects2;
+    [Tooltip("BossObjects3")] public GameObject[] bossObjects3;
+    [Tooltip("BossObjects4")] public GameObject[] bossObjects4;
+
+    [Header("AFK")]
+    [Tooltip("AFKButtonSprite")] public Sprite[] afkButtonSprite;
 
     private void Awake()
     {
@@ -33,25 +36,30 @@ public class AssetManagement : MonoBehaviour
     
     private void Start()
     {        
-        OnLoadinSingleAsset(loadPath:"prefab/player", objName:"Player", obj: out playerObject);
-        OnLoadinSingleAsset(loadPath: "prefab/texteffect", objName: "TextEffect", obj: out textEffectObject);
-        OnLoadinGroupAsset(loadPath: "prefab/enemysoldiers", obj: out enemySoldierObjects, null);                
-        OnLoadinGroupAsset(loadPath: "prefab/effect", obj: out effectObjects, null);
+        OnLoadingSingleAsset(loadPath:"prefab/player", objName:"Player", obj: out playerObject);
+        OnLoadingSingleAsset(loadPath: "prefab/texteffect", objName: "TextEffect", obj: out textEffectObject);
+        OnLoadingGroupAsset(loadPath: "prefab/enemysoldiers", objs: out enemySoldierObjects);                
+        OnLoadingGroupAsset(loadPath: "prefab/effect", objs: out effectObjects);
 
-        //boss
-        OnLoadinGroupAsset(loadPath: "prefab/boss1", obj: out bossObjects1, boss_List);
-        OnLoadinGroupAsset(loadPath: "prefab/boss2", obj: out bossObjects2, boss_List);
-        OnLoadinGroupAsset(loadPath: "prefab/boss3", obj: out bossObjects3, boss_List);
-        OnLoadinGroupAsset(loadPath: "prefab/boss4", obj: out bossObjects4, boss_List);
+        //Boss
+        OnLoadingGroupAsset(loadPath: "prefab/boss1", objs: out bossObjects1);
+        OnLoadingGroupAsset(loadPath: "prefab/boss2", objs: out bossObjects2);
+        OnLoadingGroupAsset(loadPath: "prefab/boss3", objs: out bossObjects3);
+        OnLoadingGroupAsset(loadPath: "prefab/boss4", objs: out bossObjects4);
+        boss_List = new List<GameObject[]>() { bossObjects1, bossObjects2, bossObjects3, bossObjects4};
+
+        //AFK
+        OnLoadingSprite(loadPath: "ui/afkbutton", out afkButtonSprite);
+        
     }
 
     /// <summary>
-    /// LoadinSingleAsset
+    /// LoadingSingleAsset
     /// </summary>
     /// <param name="loadPath"></param>
     /// <param name="objName"></param>
     /// <param name="obj"></param>
-    void OnLoadinSingleAsset(string loadPath, string objName, out GameObject obj)
+    void OnLoadingSingleAsset(string loadPath, string objName, out GameObject obj)
     {
         string path = $"{Application.streamingAssetsPath}/MyAssetBundle/{loadPath}";
 
@@ -60,17 +68,28 @@ public class AssetManagement : MonoBehaviour
     }
 
     /// <summary>
-    /// LoadinGroupAsset
+    /// LoadingGroupAsset
     /// </summary>
     /// <param name="loadPath"></param>
-    /// <param name="obj"></param>
-    void OnLoadinGroupAsset(string loadPath, out GameObject[] obj, List<GameObject[]> list)
+    /// <param name="objs"></param>
+    void OnLoadingGroupAsset(string loadPath, out GameObject[] objs)
     {
         string path = $"{Application.streamingAssetsPath}/MyAssetBundle/{loadPath}";
 
         AssetBundle ab = AssetBundle.LoadFromFile(path);
-        obj = ab.LoadAllAssets<GameObject>() as GameObject[];
+        objs = ab.LoadAllAssets<GameObject>() as GameObject[];          
+    }
 
-        if (list != null) list.Add(obj);
+    /// <summary>
+    /// LoadingSprite
+    /// </summary>
+    /// <param name="loadPath"></param>
+    /// <param name="objs"></param>
+    void OnLoadingSprite(string loadPath, out Sprite[] objs)
+    {
+        string path = $"{Application.streamingAssetsPath}/MyAssetBundle/{loadPath}";
+
+        AssetBundle ab = AssetBundle.LoadFromFile(path);
+        objs = ab.LoadAllAssets<Sprite>() as Sprite[];
     }
 }

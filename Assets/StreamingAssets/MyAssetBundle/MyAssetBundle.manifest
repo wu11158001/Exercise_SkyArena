@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 3997547326
+CRC: 3326155891
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -25,4 +25,7 @@ AssetBundleManifest:
       Dependencies: {}
     Info_7:
       Name: prefab/texteffect
+      Dependencies: {}
+    Info_8:
+      Name: ui/afkbutton
       Dependencies: {}

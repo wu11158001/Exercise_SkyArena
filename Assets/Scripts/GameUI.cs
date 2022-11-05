@@ -17,7 +17,7 @@ public class GameUI : MonoBehaviour
     [Tooltip("Fade_Image")] Image fade_Image;
 
     [Header("TipText")]
-    [SerializeField] [Tooltip("DeathTimeCountDown")] float deathTimeCountDown;
+    [Tooltip("DeathTimeCountDown")] float deathTimeCountDown;
     [Tooltip("Tip_Text")] Text tip_Text;
 
     [Header("PlayerUI")]
@@ -37,11 +37,17 @@ public class GameUI : MonoBehaviour
 
     [Header("AFKReward")]
     [Tooltip("AFKRewardBackground_Image")] Transform afkRewardBackground_Image;
-    [Tooltip("AFKReward_Button")] Button afkReward_Button;
+    [Tooltip("AFK_Button")] Button afk_Button;
+    [Tooltip("AFKButton_Image")] Image afkButton_Image;
     [Tooltip("RewardTime_Text")] TMP_Text rewardTime_Text;
     [Tooltip("RewardConfirm_Button")] Button rewardConfirm_Button;
     [Tooltip("RewardExperience_Text")] TMP_Text rewardExperience_Text;
     [Tooltip("RewardGold_Text")] TMP_Text rewardGold_Text;
+
+    [Header("UIAnimation")]
+    [Tooltip("AFKButtonAniamtionCountDown")] float afkButtonAniamtionCountDown;
+    [Tooltip("AFKButtonAnimationChangeTime")] float afkButtonAnimationChangeTime;
+    [Tooltip("NowSprite_AFKButton")] int nowSprite_AFKButton;
 
     private void Awake()
     {
@@ -57,10 +63,14 @@ public class GameUI : MonoBehaviour
     {
         OnGetComponent();
 
+        //FadeImage
         fadeAlpha = 1;
         fade_Image.color = new Color(0, 0, 0, fadeAlpha);
         fadeSpeed = 0.3f;
         deathAlpha = 0.85f;
+
+        //UIAnimation
+        afkButtonAnimationChangeTime = 0.1f;
 
         deathTimeCountDown = NumericalValueManagement.NumericalValue_Game.deathTime;
     }
@@ -133,9 +143,10 @@ public class GameUI : MonoBehaviour
         //AFK RewardTime_Text
         rewardTime_Text = FindChild.OnFindChild<TMP_Text>(transform, "RewardTime_Text");
 
-        //AFK Reward_Button
-        afkReward_Button = FindChild.OnFindChild<Button>(transform, "AFKReward_Button");
-        afkReward_Button.onClick.AddListener(OnOpenAFKReward);
+        //AFK Button
+        afk_Button = FindChild.OnFindChild<Button>(transform, "AFK_Button");
+        afk_Button.onClick.AddListener(OnOpenAFKReward);
+        afkButton_Image = FindChild.OnFindChild<Image>(transform, "AFK_Button");
 
         //AFK RewardConfirm_Button
         rewardConfirm_Button = FindChild.OnFindChild<Button>(transform, "RewardConfirm_Button");
@@ -154,6 +165,26 @@ public class GameUI : MonoBehaviour
         OnScreenFadeOut();
         OnDeathTimeCountDown();
         OnSetRewardTime();
+        
+        OnUIAnimation(ref afkButtonAniamtionCountDown, afkButtonAnimationChangeTime, afkButton_Image, AssetManagement.Instance.afkButtonSprite, ref nowSprite_AFKButton);
+    }
+
+    /// <summary>
+    /// UIAnimation
+    /// </summary>
+    /// <param name="countDownTime"></param>
+    /// <param name="changeTime"></param>
+    /// <param name="image"></param>
+    /// <param name="sprites"></param>
+    void OnUIAnimation(ref float countDownTime, float changeTime, Image image, Sprite[] assetBundleObject, ref int nowSprite)
+    {
+        countDownTime -= Time.deltaTime;
+        if (countDownTime <= 0)
+        {
+            countDownTime = changeTime;
+            nowSprite = nowSprite > assetBundleObject.Length - 2 ? 0 : ++nowSprite;
+            image.sprite = assetBundleObject[nowSprite];
+        }
     }
 
     #region AFK
@@ -167,6 +198,9 @@ public class GameUI : MonoBehaviour
         GameDataManagement.Instance.playerExperience += GameDataManagement.Instance.afkExperienceReward;
         GameDataManagement.Instance.playerGold += GameDataManagement.Instance.afkGoldReward;
         GameDataManagement.Instance.OnSaveJsonData();
+
+        OnSetPlayerExperience();
+        OnSetPlayerGold();
     }
 
     /// <summary>
@@ -201,13 +235,11 @@ public class GameUI : MonoBehaviour
 
         //Experience        
         GameDataManagement.Instance.afkExperienceReward = (total / NumericalValueManagement.NumericalValue_Game.afkRewardTiming) * NumericalValueManagement.NumericalValue_Game.akfExperienceReward;
-        rewardExperience_Text.text = $"{GameDataManagement.Instance.afkExperienceReward}";
+        rewardExperience_Text.text = $"EP: {GameDataManagement.Instance.afkExperienceReward}";
 
         //Gold
         GameDataManagement.Instance.afkGoldReward = (total / NumericalValueManagement.NumericalValue_Game.afkRewardTiming) * NumericalValueManagement.NumericalValue_Game.akfGoldReward;
-        rewardGold_Text.text = $"{GameDataManagement.Instance.afkGoldReward}";
-
-        
+        rewardGold_Text.text = $"Gold: {GameDataManagement.Instance.afkGoldReward}";        
     }
 
     /// <summary>

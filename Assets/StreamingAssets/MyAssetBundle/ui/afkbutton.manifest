@@ -1,0 +1,24 @@
+ManifestFileVersion: 0
+CRC: 122034481
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: fc0347cf7a3fd2e03dd09910e25dec39
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: c21d61fe394c58399df3c6fb5c7c99b3
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/UI/AFK/star coin rotate 1.png
+- Assets/UI/AFK/star coin rotate 2.png
+- Assets/UI/AFK/star coin rotate 4.png
+- Assets/UI/AFK/star coin rotate 6.png
+- Assets/UI/AFK/star coin rotate 5.png
+- Assets/UI/AFK/star coin rotate 3.png
+Dependencies: []
