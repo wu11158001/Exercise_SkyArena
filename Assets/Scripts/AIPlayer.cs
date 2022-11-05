@@ -94,6 +94,7 @@ public class AIPlayer : MonoBehaviour
         {
             GameUI.Instance.OnSetPlayerGrade();
             GameUI.Instance.OnSetPlayerExperience();
+            GameUI.Instance.OnSetGameLevel();
 
             OnUpdateValue();
         }
@@ -478,11 +479,10 @@ public class AIPlayer : MonoBehaviour
     /// PlayerUpgrade
     /// </summary>
     void OnPlayerUpgrade()
-    {
-        
+    {        
         GameDataManagement.Instance.playerGrade++;
         GameManagement.Instance.GetPlayerObject.OnUpdateValue();
-        GameManagement.Instance.OnCreateUpGradeEffect(targetObject.position);
+        GameManagement.Instance.OnCreateUpGradeEffect(GameManagement.Instance.GetPlayerObject.transform);
         GameManagement.Instance.OnCreateTextEffect(attacker: GameManagement.Instance.GetPlayerObject.transform,
                                                    position: GameManagement.Instance.GetPlayerObject.transform.position + Vector3.up * 1.5f,
                                                    color: Color.yellow,

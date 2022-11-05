@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using TMPro;
 
 public class GameUI : MonoBehaviour
 {
@@ -10,9 +11,9 @@ public class GameUI : MonoBehaviour
     public static GameUI Instance => gameUI;
 
     [Header("FadeImage")]
-    [SerializeField] [Tooltip("FadeAlpha")] float fadeAlpha;
-    [SerializeField] [Tooltip("FadeSpeed")] float fadeSpeed;
-    [SerializeField] [Tooltip("DeathAlpha")] float deathAlpha;
+    [Tooltip("FadeAlpha")] float fadeAlpha;
+    [Tooltip("FadeSpeed")] float fadeSpeed;
+    [Tooltip("DeathAlpha")] float deathAlpha;
     [Tooltip("Fade_Image")] Image fade_Image;
 
     [Header("TipText")]
@@ -20,19 +21,24 @@ public class GameUI : MonoBehaviour
     [Tooltip("Tip_Text")] Text tip_Text;
 
     [Header("PlayerUI")]
-    [SerializeField] [Tooltip("PlayerLevel_Text")] Text playerLevel_Text;
-    [SerializeField] [Tooltip("PlayerLifeBar_Image")] Image playerLifeBar_Image;
-    [SerializeField] [Tooltip("PlayerLifeBar_Text")] Text playerLifeBar_Text;
-    [SerializeField] [Tooltip("PlayerExperienceBar_Image")] Image playerExperienceBar_Image;
-    [SerializeField] [Tooltip("PlayerExperienceBar_Text")] Text playerExperienceBar_Text;
-    [SerializeField] [Tooltip("GameLevel_Text")] Text gameLevel_Text;
+    [Tooltip("PlayerLevel_Text")] Text playerLevel_Text;
+    [Tooltip("PlayerLifeBar_Image")] Image playerLifeBar_Image;
+    [Tooltip("PlayerLifeBar_Text")] Text playerLifeBar_Text;
+    [Tooltip("PlayerExperienceBar_Image")] Image playerExperienceBar_Image;
+    [Tooltip("PlayerExperienceBar_Text")] Text playerExperienceBar_Text;
+    [Tooltip("GameLevel_Text")] Text gameLevel_Text;
 
     [Header("BossUI")]
-    [SerializeField] [Tooltip("ChallengeBoss_Button")] Button challengeBoss_Button;
-    [SerializeField] [Tooltip("BossUI_Transform")] Transform bossUI_Transform;
-    [SerializeField] [Tooltip("BossLifeBar")] Image bossLifeBar;
-    [SerializeField] [Tooltip("BossLifeBar_Text")] Text bossLifeBar_Text;
+    [Tooltip("ChallengeBoss_Button")] Button challengeBoss_Button;
+    [Tooltip("BossUI_Transform")] Transform bossUI_Transform;
+    [Tooltip("BossLifeBar")] Image bossLifeBar;
+    [Tooltip("BossLifeBar_Text")] Text bossLifeBar_Text;
 
+    [Header("AFKReward")]
+    [Tooltip("AFKRewardBackground_Image")] Transform afkRewardBackground_Image;
+    [Tooltip("AFKReward_Button")] Button afkReward_Button;
+    [Tooltip("RewardTime_Text")] TMP_Text rewardTime_Text;
+    [Tooltip("RewardConfirm_Button")] Button rewardConfirm_Button;    
 
     private void Awake()
     {
@@ -91,7 +97,6 @@ public class GameUI : MonoBehaviour
 
         //GameLevel_Text
         gameLevel_Text = FindChild.OnFindChild<Text>(transform, "GameLevel_Text");
-        OnSetGameLevel();
 
         //ChallengeBoss_Button
         challengeBoss_Button = FindChild.OnFindChild<Button>(transform, "ChallengeBoss_Button");
@@ -109,16 +114,79 @@ public class GameUI : MonoBehaviour
 
         //BossLifeBar_Text
         bossLifeBar_Text = FindChild.OnFindChild<Text>(transform, "BossLifeBar_Text");
+
+        //AFK RewardBackground_Image
+        afkRewardBackground_Image = FindChild.OnFindChild<Transform>(transform, "AFKRewardBackground_Image");
+        afkRewardBackground_Image.gameObject.SetActive(false);
+
+        //AFK RewardTime_Text
+        rewardTime_Text = FindChild.OnFindChild<TMP_Text>(transform, "RewardTime_Text");
+
+        //AFK Reward_Button
+        afkReward_Button = FindChild.OnFindChild<Button>(transform, "AFKReward_Button");
+        afkReward_Button.onClick.AddListener(OnReceiveAFKReward);
+
+        //AFK RewardConfirm_Button
+        rewardConfirm_Button = FindChild.OnFindChild<Button>(transform, "RewardConfirm_Button");
+        rewardConfirm_Button.onClick.AddListener(OnReceiveReward);
     }
 
     private void Update()
     {
         OnScreenFadeOut();
         OnDeathTimeCountDown();
+        OnSetRewardTime();
+    }
+
+    #region AFK
+    /// <summary>
+    /// ReceiveReward
+    /// </summary>
+    void OnReceiveReward()
+    {
+        afkRewardBackground_Image.gameObject.SetActive(false);
+        GameDataManagement.Instance.afkRewardStartTime = DateTime.Now;
+        GameDataManagement.Instance.OnSaveJsonData();
     }
 
     /// <summary>
-    ///nUIActive
+    /// SetRewardTime
+    /// </summary>
+    void OnSetRewardTime()
+    {
+        string hour = "", minute = "", second = "";
+
+        int total = (int)(GameDataManagement.Instance.OnAFKRewardTime().TotalSeconds);
+
+        if (total % 60 == 0) second = "00";
+        else second = total - (60 * (int)GameDataManagement.Instance.OnAFKRewardTime().TotalMinutes) < 10 ?
+                $"0{ (total - (60 * (int)GameDataManagement.Instance.OnAFKRewardTime().TotalMinutes)).ToString()}" :
+                $"{(total - (60 * (int)GameDataManagement.Instance.OnAFKRewardTime().TotalMinutes)).ToString()}";
+
+        if ((int)GameDataManagement.Instance.OnAFKRewardTime().TotalMinutes == 0) minute = "00";
+        else minute = (int)GameDataManagement.Instance.OnAFKRewardTime().TotalMinutes < 10 ?
+                $"0{(int)GameDataManagement.Instance.OnAFKRewardTime().TotalMinutes}"
+                : $"{(int)GameDataManagement.Instance.OnAFKRewardTime().TotalMinutes}";
+
+        if ((int)GameDataManagement.Instance.OnAFKRewardTime().TotalHours == 0) hour = "00";
+        else hour = (int)GameDataManagement.Instance.OnAFKRewardTime().TotalHours < 10 ?
+                $"0{(int)GameDataManagement.Instance.OnAFKRewardTime().TotalHours}"
+                : $"{(int)GameDataManagement.Instance.OnAFKRewardTime().TotalHours}";
+
+        rewardTime_Text.text = $"{hour} : {minute} : {second}";
+    }
+
+    /// <summary>
+    /// ReceiveAFKReward
+    /// </summary>
+    void OnReceiveAFKReward()
+    {
+        afkRewardBackground_Image.gameObject.SetActive(true);
+    }
+    #endregion
+
+    /// <summary>
+    ///UIActive
     /// </summary>
     /// <param name="isActive"></param>
     public void OnUIActive(bool isActive)
@@ -148,7 +216,7 @@ public class GameUI : MonoBehaviour
     /// </summary>
     /// <param name="hp"></param>
     public void OnSetBossLifeBar(int hp)
-    {        
+    {
         bossLifeBar.fillAmount = (float)hp /
             (float)(NumericalValueManagement.NumericalValue_Boss.initial_Hp + (NumericalValueManagement.NumericalValue_Boss.raiseUpgradeHp * (GameDataManagement.Instance.gameLevel - 1)));
         bossLifeBar_Text.text = $"Hp: {hp} / " +
@@ -161,7 +229,7 @@ public class GameUI : MonoBehaviour
     /// <param name="hp"></param>
     public void OnSetPlayerLifeBar(int hp)
     {
-        playerLifeBar_Image.fillAmount = (float)hp / 
+        playerLifeBar_Image.fillAmount = (float)hp /
             (float)(NumericalValueManagement.NumericalValue_Player.initial_Hp + (NumericalValueManagement.NumericalValue_Player.raiseUpgradeHp * (GameDataManagement.Instance.playerGrade - 1)));
         playerLifeBar_Text.text = $"Hp: {hp} / " +
             $"{NumericalValueManagement.NumericalValue_Player.initial_Hp + (NumericalValueManagement.NumericalValue_Player.raiseUpgradeHp * (GameDataManagement.Instance.playerGrade - 1))}";
@@ -184,7 +252,7 @@ public class GameUI : MonoBehaviour
     /// </summary>
     public void OnSetPlayerGrade()
     {
-        playerLevel_Text.text = $"Grade: {GameDataManagement.Instance.playerGrade}";        
+        playerLevel_Text.text = $"Grade: {GameDataManagement.Instance.playerGrade}";
     }
 
     /// <summary>

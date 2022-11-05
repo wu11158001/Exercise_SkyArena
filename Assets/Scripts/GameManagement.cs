@@ -330,14 +330,16 @@ public class GameManagement : MonoBehaviour
     /// <summary>
     /// CreateUpGradeEffect
     /// </summary>
-    public void OnCreateUpGradeEffect(Vector3 position)
+    /// <param name="parent">parent</param>
+    public void OnCreateUpGradeEffect(Transform parent)
     {
         GameObject effect = OnSearchEffect("UpGrade");
         if (effect == null) return;
 
         //Add EffectCollisionAttack
         if (!effect.TryGetComponent<EffectLifeTime>(out EffectLifeTime effectLifeTime)) effectLifeTime = effect.AddComponent<EffectLifeTime>();
-        effect.transform.position = position;
+        effect.transform.SetParent(parent);
+        effect.transform.localPosition = Vector3.zero;
     }
 
     /// <summary>
