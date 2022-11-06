@@ -52,9 +52,13 @@ public class GameUI : MonoBehaviour
     [Tooltip("NowSprite_AFKButton")] int nowSprite_AFKButton;
 
     [Header("Skill")]
+    [SerializeField] [Tooltip("UsingSkillBoxSprite")] Sprite usingSkillBoxSprite;
+    [Tooltip("UsingSkills_Image")] Image[] usingSkills_Image;
+    [Tooltip("UsingSkills_Text")] TMP_Text[] usingSkills_Text;
     [Tooltip("Skill_Button")] Button skill_Button;
     [Tooltip("SkillInterface")] Transform skillInterface;
-    [Tooltip("SkillCancel_Button")] Button skillCancel_Button;
+    [Tooltip("SkillCancel_Button")] Button skillCancel_Button;        
+    
 
     private void Awake()
     {
@@ -177,6 +181,16 @@ public class GameUI : MonoBehaviour
         //SkillCancel_Button
         skillCancel_Button = FindChild.OnFindChild<Button>(transform, "SkillCancel_Button");
         skillCancel_Button.onClick.AddListener(delegate { OnSwitchInterface(skillInterface.gameObject, false); });
+
+        //UsingSkills(Image Text)
+        usingSkills_Image = new Image[GameDataManagement.Instance.playEquipSkillNumber.Length];
+        usingSkills_Text = new TMP_Text[GameDataManagement.Instance.playEquipSkillNumber.Length];
+        for (int i = 0; i < GameDataManagement.Instance.playEquipSkillNumber.Length; i++)
+        {
+            usingSkills_Image[i] = FindChild.OnFindChild<Image>(transform, $"UsingSkill{i + 1}_Image");
+            usingSkills_Text[i] = FindChild.OnFindChild<TMP_Text>(transform, $"UsingSkill{i + 1}_Text");
+        }
+        OnSetPlayerUsingSkill(usingSkills_Image, usingSkills_Text);
         #endregion
     }
 
@@ -187,6 +201,28 @@ public class GameUI : MonoBehaviour
         OnSetRewardTime();
 
         OnUIAnimation(ref afkButtonAniamtionCountDown, afkButtonAnimationChangeTime, afk_Button.image, AssetManagement.Instance.afkButtonSprite, ref nowSprite_AFKButton);
+    }
+
+    /// <summary>
+    /// SetPlayerUsingSkill
+    /// </summary>
+    /// <param name="images"></param>
+    /// <param name="texts"></param>
+    public void OnSetPlayerUsingSkill(Image[] images, TMP_Text[] texts)
+    {
+        for (int i = 0; i < GameDataManagement.Instance.playEquipSkillNumber.Length; i++)
+        {
+            if (GameDataManagement.Instance.playEquipSkillNumber[i] >= 0)
+            {
+                images[i].sprite = AssetManagement.Instance.skillIconSprite[GameDataManagement.Instance.playEquipSkillNumber[i]];
+                texts[i].text = GameDataManagement.Instance.allSkillGrade[GameDataManagement.Instance.playEquipSkillNumber[i]].ToString();
+            }
+            else
+            {
+                images[i].sprite = usingSkillBoxSprite;
+                texts[i].text = "";
+            }
+        }
     }
 
     /// <summary>
@@ -411,8 +447,10 @@ public class GameUI : MonoBehaviour
     void OnSwitchInterface(GameObject item, bool isActive)
     {
         if (isActive == true && isOpenInterface == true) return;
-
+        
         isOpenInterface = isActive;
         item.SetActive(isActive);
+
+        OnSetPlayerUsingSkill(usingSkills_Image, usingSkills_Text);
     }
 }

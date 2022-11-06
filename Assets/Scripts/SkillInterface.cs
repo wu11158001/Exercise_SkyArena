@@ -7,10 +7,11 @@ using TMPro;
 public class SkillInterface : MonoBehaviour
 {
     [Header("Value")]
-    [Tooltip("SkillsString")] readonly string[] skillsString = new string[] { "Skill_1", "Skill_2", "Skill_3", "Skill_4" };
     [SerializeField] [Tooltip("SelectSkillNumber")] int selectSkillNumber;
+    [Tooltip("SkillsString")] readonly string[] skillsString = new string[] { "Skill_1", "Skill_2", "Skill_3", "Skill_4" };    
 
     [Header("UI")]
+    [SerializeField] [Tooltip("InitialPlayerEquipSkillsSprite")] Sprite initialPlayerEquipSkillsSprite;
     [Tooltip("SkillButtons")] Button[] skillButtons;
     [Tooltip("IllustrateSkill_Text")] TMP_Text illustrateSkill_Text;
     [Tooltip("SelectSkill_Image")] Image selectSkill_Image;
@@ -19,8 +20,9 @@ public class SkillInterface : MonoBehaviour
     [Tooltip("SkillTip_Text")] TMP_Text skillTip_Text;
     [Tooltip("EquipSkill_Button")] Button equipSkill_Button;
     [Tooltip("PlayerEquipSkills_Button")] Button[] playerEquipSkills_Button;
-    [Tooltip("UnEquipSkill_Button")] Button unEquipSkill_Button;
-    [SerializeField] [Tooltip("InitialPlayerEquipSkillsSprite")] Sprite initialPlayerEquipSkillsSprite;
+    [Tooltip("PlayerEquipSkills_Image")] Image[] PlayerEquipSkills_Image;
+    [Tooltip("PlayerEquipSkills_Text")] TMP_Text[] PlayerEquipSkills_Text;
+    [Tooltip("UnEquipSkill_Button")] Button unEquipSkill_Button;    
 
     private void Start()
     {
@@ -68,16 +70,17 @@ public class SkillInterface : MonoBehaviour
         equipSkill_Button.onClick.AddListener(OnEquipSkill);
 
         //PlayerEquipSkills_Button
-        playerEquipSkills_Button = new Button[skillsString.Length];
+        playerEquipSkills_Button = new Button[GameDataManagement.Instance.playEquipSkillNumber.Length];
+        PlayerEquipSkills_Image = new Image[GameDataManagement.Instance.playEquipSkillNumber.Length];
+        PlayerEquipSkills_Text = new TMP_Text[GameDataManagement.Instance.playEquipSkillNumber.Length];
         for (int i = 0; i < playerEquipSkills_Button.Length; i++)
         {
             playerEquipSkills_Button[i] = FindChild.OnFindChild<Button>(transform, $"PlayerEquipSkill{i + 1}_Button");
-            if (GameDataManagement.Instance.playEquipSkillNumber[i] >= 0)
-            {
-                playerEquipSkills_Button[i].image.sprite = AssetManagement.Instance.skillIconSprite[GameDataManagement.Instance.playEquipSkillNumber[i]];
-            }
+            PlayerEquipSkills_Image[i] = playerEquipSkills_Button[i].image;
+            PlayerEquipSkills_Text[i] = playerEquipSkills_Button[i].GetComponentInChildren<TMP_Text>();
+            OnSetEquipSkillButtonFunction(playerEquipSkills_Button[i], i);
         }
-        OnPlayerEquipSkillsText();
+        GameUI.Instance.OnSetPlayerUsingSkill(PlayerEquipSkills_Image, PlayerEquipSkills_Text);
 
         //UnEquipSkill_Button
         unEquipSkill_Button = FindChild.OnFindChild<Button>(transform, "UnEquipSkill_Button");
@@ -126,11 +129,12 @@ public class SkillInterface : MonoBehaviour
         {
             if(GameDataManagement.Instance.playEquipSkillNumber[i] == selectSkillNumber)
             {
-                GameDataManagement.Instance.playEquipSkillNumber[i] = -1;
-                playerEquipSkills_Button[i].image.sprite = initialPlayerEquipSkillsSprite;
+                GameDataManagement.Instance.playEquipSkillNumber[i] = -1;                
                 break;
             }
-        }        
+        }
+
+        GameUI.Instance.OnSetPlayerUsingSkill(PlayerEquipSkills_Image, PlayerEquipSkills_Text);
     }
 
     /// <summary>
@@ -139,12 +143,8 @@ public class SkillInterface : MonoBehaviour
     /// <param name="number"></param>
     void OnClickEquipPlayerEquipSkills(int number)
     {
-        for (int i = 0; i < playerEquipSkills_Button.Length; i++)
-        {
-            
-        }
+        OnClickSkill(number);        
     }
-
     /// <summary>
     /// SetEquipSkillButtonFunction
     /// </summary>
@@ -195,7 +195,7 @@ public class SkillInterface : MonoBehaviour
         GameDataManagement.Instance.allSkillGrade[selectSkillNumber]++;
         skillButtons[selectSkillNumber].GetComponentInChildren<TMP_Text>().text = GameDataManagement.Instance.allSkillGrade[selectSkillNumber].ToString();
         OnSkillButtonText();
-        OnPlayerEquipSkillsText();
+        GameUI.Instance.OnSetPlayerUsingSkill(PlayerEquipSkills_Image, PlayerEquipSkills_Text);
     }
 
     /// <summary>
@@ -214,6 +214,8 @@ public class SkillInterface : MonoBehaviour
     /// <param name="number"></param>
     void OnClickSkill(int number)
     {
+        if (number < 0) return;
+
         selectSkillNumber = number;
 
         //UpGradeSkill && EquipSkill Button
@@ -235,21 +237,6 @@ public class SkillInterface : MonoBehaviour
         //UpGrade Skill Cost
         upGradeSkill_Button.GetComponentInChildren<TMP_Text>().text =
             $"{NumericalValueManagement.NumericalValue_Game.skillinItialCost + (GameDataManagement.Instance.allSkillGrade[selectSkillNumber] * NumericalValueManagement.NumericalValue_Game.skillRaiseCost)}\nUpgrade";
-    }
-
-    /// <summary>
-    /// PlayerEquipSkillsText
-    /// </summary>
-    void OnPlayerEquipSkillsText()
-    {
-        //PlayerEquipSkills_Button
-        for (int i = 0; i < GameDataManagement.Instance.playEquipSkillNumber.Length; i++)
-        {
-            if (GameDataManagement.Instance.playEquipSkillNumber[i] >= 0)
-            {
-                playerEquipSkills_Button[i].GetComponentInChildren<TMP_Text>().text = GameDataManagement.Instance.allSkillGrade[i].ToString();
-            }
-        }
     }
 
     /// <summary>
