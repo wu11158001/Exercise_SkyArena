@@ -45,8 +45,11 @@ public class AIEnemySoldier : AIPlayer
     /// </summary>
     public override void OnUpdateValue()
     {
-        Hp = NumericalValueManagement.NumericalValue_EnemySoldier.initial_Hp + 
+        MaxHp = NumericalValueManagement.NumericalValue_EnemySoldier.initial_Hp + 
             (NumericalValueManagement.NumericalValue_EnemySoldier.raiseUpgradeHp * (GameDataManagement.Instance.gameLevel - 1));
+
+        Hp = MaxHp;
+
         attackPower = NumericalValueManagement.NumericalValue_EnemySoldier.initial_AttackPower +
             (NumericalValueManagement.NumericalValue_EnemySoldier.raiseUpgradeAttack * (GameDataManagement.Instance.gameLevel - 1));
     }

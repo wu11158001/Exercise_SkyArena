@@ -103,8 +103,7 @@ public class Plugin : MonoBehaviour
                     return;
                 }
 
-                GameDataManagement.Instance.selectLevel = selectLevel;
-                Debug.LogError($"selectLevel{selectLevel}");
+                GameDataManagement.Instance.selectBossType = selectLevel;                
             }
             catch
             {

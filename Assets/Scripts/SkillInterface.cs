@@ -10,8 +10,7 @@ public class SkillInterface : MonoBehaviour
     [SerializeField] [Tooltip("SelectSkillNumber")] int selectSkillNumber;
     [Tooltip("SkillsString")] readonly string[] skillsString = new string[] { "Skill_1", "Skill_2", "Skill_3", "Skill_4" };    
 
-    [Header("UI")]
-    [SerializeField] [Tooltip("InitialPlayerEquipSkillsSprite")] Sprite initialPlayerEquipSkillsSprite;
+    [Header("UI")]    
     [Tooltip("SkillButtons")] Button[] skillButtons;
     [Tooltip("IllustrateSkill_Text")] TMP_Text illustrateSkill_Text;
     [Tooltip("SelectSkill_Image")] Image selectSkill_Image;
@@ -35,7 +34,7 @@ public class SkillInterface : MonoBehaviour
     void OnGetUI()
     {
         //SkillButtons
-        skillButtons = new Button[skillsString.Length];
+        skillButtons = new Button[GameDataManagement.Instance.allSkillGrade.Length];
         for (int i = 0; i < skillButtons.Length; i++)
         {
             skillButtons[i] = FindChild.OnFindChild<Button>(transform, $"Skill{i + 1}_Button");
@@ -90,13 +89,13 @@ public class SkillInterface : MonoBehaviour
 
     private void Update()
     {
-        OnKeeyUpdateUI();        
+        OnKeepUpdateUI();        
     }
 
     /// <summary>
-    /// KeeyUpdateUI
+    /// KeepUpdateUI
     /// </summary>
-    void OnKeeyUpdateUI()
+    void OnKeepUpdateUI()
     {
         //Player Gold
         skillGold_Text.text = $"Gold: {GameDataManagement.Instance.playerGold.ToString()}";
@@ -145,6 +144,7 @@ public class SkillInterface : MonoBehaviour
     {
         OnClickSkill(number);        
     }
+
     /// <summary>
     /// SetEquipSkillButtonFunction
     /// </summary>
@@ -165,10 +165,10 @@ public class SkillInterface : MonoBehaviour
             {
                 GameDataManagement.Instance.playEquipSkillNumber[i] = selectSkillNumber;
                 playerEquipSkills_Button[i].image.sprite = AssetManagement.Instance.skillIconSprite[selectSkillNumber];
-                playerEquipSkills_Button[i].GetComponentInChildren<TMP_Text>().text = GameDataManagement.Instance.allSkillGrade[selectSkillNumber].ToString();
+                playerEquipSkills_Button[i].GetComponentInChildren<TMP_Text>().text = GameDataManagement.Instance.allSkillGrade[selectSkillNumber].ToString();                                
                 break;
             }
-        }
+        }        
     }
 
     /// <summary>
@@ -196,6 +196,8 @@ public class SkillInterface : MonoBehaviour
         skillButtons[selectSkillNumber].GetComponentInChildren<TMP_Text>().text = GameDataManagement.Instance.allSkillGrade[selectSkillNumber].ToString();
         OnSkillButtonText();
         GameUI.Instance.OnSetPlayerUsingSkill(PlayerEquipSkills_Image, PlayerEquipSkills_Text);
+
+        OnUpdateSkillImformation();
     }
 
     /// <summary>
@@ -211,19 +213,30 @@ public class SkillInterface : MonoBehaviour
     /// <summary>
     /// OnClickSkill
     /// </summary>
-    /// <param name="number"></param>
-    void OnClickSkill(int number)
+    /// <param name="skillNumber"></param>
+    void OnClickSkill(int skillNumber)
     {
-        if (number < 0) return;
+        if (skillNumber < 0) return;
 
-        selectSkillNumber = number;
+        selectSkillNumber = skillNumber;
 
         //UpGradeSkill && EquipSkill Button
-        upGradeSkill_Button.gameObject.SetActive(true);        
+        upGradeSkill_Button.gameObject.SetActive(true);
 
-        illustrateSkill_Text.text = skillsString[number];
-        selectSkill_Image.sprite = AssetManagement.Instance.skillIconSprite[number];
+        selectSkill_Image.sprite = AssetManagement.Instance.skillIconSprite[skillNumber];
+
+        OnUpdateSkillImformation();
         OnSkillButtonText();
+    }
+
+    /// <summary>
+    /// UpdateSkillImformation
+    /// </summary>    
+    void OnUpdateSkillImformation()
+    {
+        illustrateSkill_Text.text = $"CD: {NumericalValueManagement.NumbericalValue_PlayerSkill.playerSkillsCD[selectSkillNumber]}\n" +
+                                    $"{NumericalValueManagement.NumbericalValue_PlayerSkill.skillInformation[selectSkillNumber]}" +
+                                    $"{GameDataManagement.Instance.OnCalculateSkillValues(selectSkillNumber)}";
     }
 
     /// <summary>
@@ -235,8 +248,9 @@ public class SkillInterface : MonoBehaviour
         selectSkill_Image.GetComponentInChildren<TMP_Text>().text = GameDataManagement.Instance.allSkillGrade[selectSkillNumber].ToString();
 
         //UpGrade Skill Cost
+        string text = GameDataManagement.Instance.allSkillGrade[selectSkillNumber] == 0 ? "Learning" : "UpGrade";
         upGradeSkill_Button.GetComponentInChildren<TMP_Text>().text =
-            $"{NumericalValueManagement.NumericalValue_Game.skillinItialCost + (GameDataManagement.Instance.allSkillGrade[selectSkillNumber] * NumericalValueManagement.NumericalValue_Game.skillRaiseCost)}\nUpgrade";
+            $"{NumericalValueManagement.NumericalValue_Game.skillinItialCost + (GameDataManagement.Instance.allSkillGrade[selectSkillNumber] * NumericalValueManagement.NumericalValue_Game.skillRaiseCost)}\n{text}";
     }
 
     /// <summary>

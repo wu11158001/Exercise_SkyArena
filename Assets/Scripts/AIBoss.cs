@@ -30,8 +30,11 @@ public class AIBoss : AIEnemySoldier
     /// </summary>
     public override void OnUpdateValue()
     {
-        Hp = NumericalValueManagement.NumericalValue_Boss.initial_Hp +
+        MaxHp = NumericalValueManagement.NumericalValue_Boss.initial_Hp +
             (NumericalValueManagement.NumericalValue_Boss.raiseUpgradeHp * (GameDataManagement.Instance.gameLevel - 1));
+
+        Hp = MaxHp;
+
         attackPower = NumericalValueManagement.NumericalValue_Boss.initial_AttackPower +
             (NumericalValueManagement.NumericalValue_Boss.raiseUpgradeAttack * (GameDataManagement.Instance.gameLevel - 1));
     }

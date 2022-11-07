@@ -80,7 +80,6 @@ public class ObjectPool
     /// <param name="number"></param>
     public void OnCleanObject(int number)
     {
-        //¨¾§b
         if (number < 0 || number > allObjectPool_List.Count)
         {
             Debug.LogError("number is mistake");

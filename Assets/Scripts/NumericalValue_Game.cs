@@ -48,7 +48,7 @@ namespace NumericalValueManagement
         public static float attackRadius = 1.6f;
         public static float attackFrequency = 0.1f;
         public static int raiseUpgradeHp = 100;
-        public static int raiseUpgradeAttack = 70;
+        public static int raiseUpgradeAttack = 5;
     }
 
     /// <summary>
@@ -78,8 +78,40 @@ namespace NumericalValueManagement
         public static float attackRadius = 4.5f;
         public static float attackFrequency = 1;
         public static int raiseUpgradeHp = 500;
-        public static int raiseUpgradeAttack = 70;
+        public static int raiseUpgradeAttack = 30;
         public static float attackDistance = 2f;
         public static float damageOverTimeRadius = 1.0f;
+    }
+
+    /// <summary>
+    /// PlayerSkill
+    /// </summary>
+    public class NumbericalValue_PlayerSkill
+    {
+        public static float[] playerSkillsCD = new float[] { 5, 8, 4, 5 };
+
+        public static int[] initialSkillValue = new int[] { 10, 11, 12, 13 };
+        public static int[] raiseSkillValue = new int[] { 5, 6, 7, 8 };
+
+        [Tooltip("RecoverHp")]
+        public static int initialRecoverHpValue = 10;
+        public static int raiseRecoverHpValue = 5;
+
+        [Tooltip("Tornado")]
+        public static int initialTornadoDamage = 11;
+        public static int raiseTornado = 5;
+
+        [Tooltip("SkillInformation")]
+        public static string[] skillInformation = new string[]
+        {
+            //Skill_1
+            $"'Recover HP'\nRecover Hp: ",
+            //Skill_2
+            "'Tornado'\nDamage Over Time, Damage:",
+            //Skill_3
+            "Skill3:",
+            //Skill_4
+            "Skill4:"
+        };
     }
 }

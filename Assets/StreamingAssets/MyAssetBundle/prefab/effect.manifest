@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 3832916492
+CRC: 4091787088
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: b347e6a71ab2ec9b48cdad3d8d904b4b
+    Hash: 8333bc78437415748d3455f0295f1068
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 7fea876e12a7faa9b2be7c8b4ed9ee2e
+    Hash: 83fe68101eeed5e5e5c1a42a2b046ce5
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -32,6 +32,8 @@ ClassTypes:
 - Class: 108
   Script: {instanceID: 0}
 - Class: 114
+  Script: {fileID: 11500000, guid: b78c1ba9facacbd48b8e1d9a4fb3ee0d, type: 3}
+- Class: 114
   Script: {fileID: 11500000, guid: 6fd2e8874f60266498a388d7229a1bac, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 9205bc1bbacc90040a998067b5643d16, type: 3}
@@ -53,7 +55,9 @@ SerializeReferenceClassIdentifiers:
 - AssemblyName: CFXRRuntime
   ClassName: CartoonFX.CFXR_Effect/CameraShake
 Assets:
-- Assets/Prefabs/Effects/BasicGetHit_2.prefab
+- Assets/Prefabs/Effects/Player/Skill/Tornado.prefab
+- Assets/Prefabs/Effects/Common/BasicGetHit_2.prefab
+- Assets/Prefabs/Effects/Common/RecoverHp.prefab
 - Assets/Prefabs/Effects/Boss2/Boss2Attack3.prefab
 - Assets/Prefabs/Effects/Boss3/Boss3Attack3.prefab
 - Assets/Prefabs/Effects/Boss2/Boss2Attack2.prefab
@@ -61,10 +65,10 @@ Assets:
 - Assets/Prefabs/Effects/Boss3/Boss3Attack1.prefab
 - Assets/Prefabs/Effects/Boss4/Boss4Attack2.prefab
 - Assets/Prefabs/Effects/Boss4/Boss4Attack3.prefab
-- Assets/Prefabs/Effects/BasicGetHit_1.prefab
+- Assets/Prefabs/Effects/Common/BasicGetHit_1.prefab
 - Assets/Prefabs/Effects/Boss1/Boss1Attack2.prefab
 - Assets/Prefabs/Effects/Boss4/Boss4Attack3-2.prefab
 - Assets/Prefabs/Effects/Boss3/Boss3Attack2.prefab
-- Assets/Prefabs/Effects/TrackAttackExplosions.prefab
+- Assets/Prefabs/Effects/Common/TrackAttackExplosions.prefab
 - Assets/Prefabs/Effects/Player/UpGrade.prefab
 Dependencies: []

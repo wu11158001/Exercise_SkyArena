@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class TextEffect : MonoBehaviour
 {
-    public enum TextType { GetHit, UpGrade}
+    public enum TextType { GoBack, Up}
     TextType textType;
 
     Text thisText;
@@ -79,8 +79,8 @@ public class TextEffect : MonoBehaviour
         if (lifeTimeCountDown <= 0) gameObject.SetActive(false); ;        
 
         //Text Move               
-        if (textType == TextType.GetHit) OnGetHitTextBehavior();
-        if (textType == TextType.UpGrade) OnUpGradeTextBehavior();
+        if (textType == TextType.GoBack) OnGetHitTextBehavior();
+        if (textType == TextType.Up) OnUpGradeTextBehavior();
 
         //Judge Canvas
         Camera camera = canvas.worldCamera;
@@ -100,7 +100,7 @@ public class TextEffect : MonoBehaviour
     /// </summary>
     void OnGetHitTextBehavior()
     {
-        if (textType == TextType.GetHit)
+        if (textType == TextType.GoBack)
         {
             if (lifeTimeCountDown / lifeTime > 0.85f)
             {
@@ -124,7 +124,7 @@ public class TextEffect : MonoBehaviour
     /// </summary>
     void OnUpGradeTextBehavior()
     {
-        if(textType == TextType.UpGrade)
+        if(textType == TextType.Up)
         {
             if (lifeTimeCountDown / lifeTime > 0.75f)
             {

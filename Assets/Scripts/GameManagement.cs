@@ -142,21 +142,8 @@ public class GameManagement : MonoBehaviour
 
     private void Update()
     {
-        OnCreateEnenySoldier();
-        OnDamageOverTime();
-    }
-
-    /// <summary>
-    /// DamageOverTime
-    /// </summary>
-    void OnDamageOverTime()
-    {
-        for (int i = 0; i < attack_List.Count; i++)
-        {
-            attack_List[i].OnDamageOverTime();
-        }
-    }
-    
+        OnCreateEnenySoldier();        
+    }   
 
     /// <summary>
     /// GetPlayerObject
@@ -221,7 +208,7 @@ public class GameManagement : MonoBehaviour
     /// </summary>
     public void OnRespawnPlayer()
     {
-        attack_List.Clear();
+        //attack_List.Clear();
 
         GameObject player = objectPool.OnActiveObject(OnSerchObjectPoolNumber("PlayerObject"));
         player.layer = LayerMask.NameToLayer("Player");
@@ -264,10 +251,13 @@ public class GameManagement : MonoBehaviour
 
         isChallengeBoss = true;
         
-        int bossType = GameDataManagement.Instance.selectLevel >= 0 ? GameDataManagement.Instance.selectLevel : UnityEngine.Random.Range(0, AssetManagement.Instance.boss_List.Count);
-        GameDataManagement.Instance.selectLevel = bossType;
+        int bossType = GameDataManagement.Instance.selectBossType >= 0 ? 
+            GameDataManagement.Instance.selectBossType : UnityEngine.Random.Range(0, AssetManagement.Instance.boss_List.Count);
+        GameDataManagement.Instance.selectBossType = bossType;
 
-        int bossNumber = UnityEngine.Random.Range(0, AssetManagement.Instance.boss_List[bossType].Length);
+        int bossNumber = GameDataManagement.Instance.selectBossNumber >= 0 ? 
+            GameDataManagement.Instance.selectBossNumber : UnityEngine.Random.Range(0, AssetManagement.Instance.boss_List[bossType].Length);
+        GameDataManagement.Instance.selectBossNumber = bossNumber;
 
         GameObject boss = objectPool.OnActiveObject(OnSerchObjectPoolNumber($"BossObject{bossType}-{bossNumber}"));
         boss.layer = LayerMask.NameToLayer("Enemy");

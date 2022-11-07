@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 492483947
+CRC: 3626158066
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 9e78bb4da75b39d0719fda8d85d88687
+    Hash: 61a00063f0eb77705cb32b999284b0c5
   TypeTreeHash:
     serializedVersion: 2
     Hash: c21d61fe394c58399df3c6fb5c7c99b3
@@ -15,8 +15,8 @@ ClassTypes:
   Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers: []
 Assets:
-- Assets/UI/Skill/SkillIcon/Icon1.png
-- Assets/UI/Skill/SkillIcon/Icon2.png
-- Assets/UI/Skill/SkillIcon/Icon3.png
-- Assets/UI/Skill/SkillIcon/Icon4.png
+- Assets/UI/Skill/SkillIcon/Skill1.png
+- Assets/UI/Skill/SkillIcon/Skill2.png
+- Assets/UI/Skill/SkillIcon/Skill4.png
+- Assets/UI/Skill/SkillIcon/Skill3.png
 Dependencies: []

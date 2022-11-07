@@ -10,8 +10,9 @@ public class GameDataManagement : MonoBehaviour
     static GameDataManagement gameDataManagement;
     public static GameDataManagement Instance => gameDataManagement;
 
-    [Header("Plugin")]
-    [SerializeField] [Tooltip("SelectLevel")] public int selectLevel;//using for plugin
+    [Header("Boss")]
+    [SerializeField] [Tooltip("SelectBossType")] public int selectBossType;
+    [SerializeField] [Tooltip("SelectBossNumber")] public int selectBossNumber;
 
     [Header("GameData")]
     [Tooltip("PlayerGrade")] public int playerGrade;
@@ -25,8 +26,10 @@ public class GameDataManagement : MonoBehaviour
     [Tooltip("AFKGoldReward")] public int afkGoldReward;
 
     [Header("Skill")]
-    [Tooltip("EquipSkillNumber")] public int[] playEquipSkillNumber;
-    [Tooltip("AllSkillGrade")] public int[] allSkillGrade;
+    [Tooltip("PlayerEquipSkillNumber")] public int[] playEquipSkillNumber;
+    [Tooltip("AllSkillGrade")] public int[] allSkillGrade;    
+    [Tooltip("PlayerEquipSkills")]PlayerSkillBehavior[] playerEquipSkills_Array = 
+        new PlayerSkillBehavior[] { new PlayerSkillBehavior(), new PlayerSkillBehavior() , new PlayerSkillBehavior() , new PlayerSkillBehavior() };
 
     private void Awake()
     {
@@ -39,13 +42,50 @@ public class GameDataManagement : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         //Plugin
-        selectLevel = -1;//using for plugin
+        selectBossType = -1;//using for plugin
 
         //GameData
         playerGrade = 1;
         gameLevel = 1;
 
         OnLoadJsonData();
+    }
+
+    private void Update()
+    {
+        OnPlayerImplementSkill();
+    }
+
+    /// <summary>
+    /// PlayerImplementSkill
+    /// </summary>
+    void OnPlayerImplementSkill()
+    {
+        if(GameManagement.Instance != null && GameManagement.Instance.GetPlayerObject != null)
+        {
+            for (int i = 0; i < playerEquipSkills_Array.Length; i++)
+            {
+                if (playEquipSkillNumber[i] >= 0)
+                {
+                    playerEquipSkills_Array[i].OnSkillCD(skillNumber: playEquipSkillNumber[i],
+                                                         cd: NumericalValueManagement.NumbericalValue_PlayerSkill.playerSkillsCD[i]);
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// CalculateSkillValues
+    /// </summary>
+    /// <param name="skillNumber"></param>
+    public int OnCalculateSkillValues(int skillNumber)
+    {
+        int value = 0;
+        int grade = allSkillGrade[skillNumber] - 1 <= 0 ? 0 : allSkillGrade[skillNumber] - 1;
+        value = NumericalValueManagement.NumbericalValue_PlayerSkill.initialSkillValue[skillNumber] +
+                       (grade * NumericalValueManagement.NumbericalValue_PlayerSkill.raiseSkillValue[skillNumber]);
+
+        return value;
     }
 
     /// <summary>

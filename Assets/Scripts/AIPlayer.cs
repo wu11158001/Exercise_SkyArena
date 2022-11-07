@@ -15,6 +15,7 @@ public class AIPlayer : MonoBehaviour
 
     [Header("Value")]
     [SerializeField] [Tooltip("Hp")] protected int Hp;
+    [SerializeField] [Tooltip("MaxHp")] protected int MaxHp;
     [SerializeField] [Tooltip("AttackPower")] protected int attackPower;
 
     [Header("Component")]
@@ -37,8 +38,7 @@ public class AIPlayer : MonoBehaviour
 
     [Header("BossExclusive")]
     [SerializeField] [Tooltip("AttackDistance")] protected float attackDistance;
-    [SerializeField] [Tooltip("DamageOverTimeRadius")] protected float damageOverTimeRadius;
-    [SerializeField] [Tooltip("AttackBehaviorInUse")] protected AttackBehavior attackBehavioInUse;
+    [SerializeField] [Tooltip("DamageOverTimeRadius")] protected float damageOverTimeRadius;    
     [SerializeField] [Tooltip("CollisionAttackObjects")] protected List<EffectLifeTime> collisionAttackObject_List = new List<EffectLifeTime>();
 
     protected void Awake()
@@ -77,8 +77,11 @@ public class AIPlayer : MonoBehaviour
     /// </summary>
     public virtual void OnUpdateValue()
     {
-        Hp = NumericalValueManagement.NumericalValue_Player.initial_Hp +
+        MaxHp = NumericalValueManagement.NumericalValue_Player.initial_Hp +
             (NumericalValueManagement.NumericalValue_Player.raiseUpgradeHp * (GameDataManagement.Instance.playerGrade - 1));
+
+        Hp = MaxHp;
+
         attackPower = NumericalValueManagement.NumericalValue_Player.initial_AttackPower +
             (NumericalValueManagement.NumericalValue_Player.raiseUpgradeAttack * (GameDataManagement.Instance.playerGrade - 1));
 
@@ -140,30 +143,37 @@ public class AIPlayer : MonoBehaviour
     }
 
     /// <summary>
-    /// DamageOverTimAttack
+    /// SetDamageOverTimeAttack_Boss
     /// </summary>
     /// <param name="effectName"></param>
-    void OnDamageOverTimAttack(string effectName)
+    void OnSetDamageOverTimeAttack_Boss(string effectName)
     {
         if (!OnJudgeTargetObjectIsActive()) return;
 
-        AttackBehavior attackBehavior = new AttackBehavior()
-        {
-            target = targetObject,
-            attacker = transform,
-            attackerRace = race,
-            attackPower = attackPower,
-            attackDistance = attackDistance,
-            damageOverTimeRadius = damageOverTimeRadius
-        };
-
-        if (GameManagement.Instance.OnCreateEffect_DamageOverTime(targetObject, effectName).TryGetComponent<EffectLifeTime>(out EffectLifeTime effectLifeTime))
-        {
-            collisionAttackObject_List.Add(effectLifeTime);
-        }
-        GameManagement.Instance.attack_List.Add(attackBehavior);
-        attackBehavioInUse = attackBehavior;
+        GameObject effect = GameManagement.Instance.OnCreateEffect_DamageOverTime(targetObject, effectName);
+        if (!effect.TryGetComponent<EffectDamageOverTime>(out EffectDamageOverTime effectDamageOverTime)) effectDamageOverTime = effect.AddComponent<EffectDamageOverTime>();
+        effectDamageOverTime.timeCountDown = 0;
+        effectDamageOverTime.attacker = transform;
+        effectDamageOverTime.attackerRace = race;
+        effectDamageOverTime.attackPower = attackPower;
     }
+
+    /// <summary>
+    ///nSetDamageOverTimeAttack_Player
+    /// </summary>
+    /// <param name="effectName"></param>
+    /// <param name="damage"></param>
+    public void OnSetDamageOverTimeAttack_Skill(string effectName, int damage)
+    {
+        if (!OnJudgeTargetObjectIsActive()) return;
+
+        GameObject effect = GameManagement.Instance.OnCreateEffect_DamageOverTime(targetObject, effectName);
+        if(!effect.TryGetComponent<EffectDamageOverTime>(out EffectDamageOverTime effectDamageOverTime)) effectDamageOverTime = effect.AddComponent<EffectDamageOverTime>();
+        effectDamageOverTime.timeCountDown = 0;
+        effectDamageOverTime.attacker = transform;
+        effectDamageOverTime.attackerRace = race;
+        effectDamageOverTime.attackPower = damage;    
+    }      
 
     /// <summary>
     /// CollisionAttack
@@ -216,7 +226,6 @@ public class AIPlayer : MonoBehaviour
     /// </summary>
     void OnRemoveAttackList()
     {
-        GameManagement.Instance.attack_List.Remove(attackBehavioInUse);
         if (collisionAttackObject_List.Count > 0)
         {
             foreach (var item in collisionAttackObject_List)
@@ -380,10 +389,10 @@ public class AIPlayer : MonoBehaviour
 
         //TextEffect
         GameManagement.Instance.OnCreateTextEffect(attacker: attacker,
-                                                   position: transform.position + thisCollider.center,
+                                                   position: transform.position + (thisCollider.center * transform.localScale.x),
                                                    color: race == Race.Player ? Color.red : Color.white,
                                                    text: attack.ToString(),
-                                                   type: TextEffect.TextType.GetHit);
+                                                   type: TextEffect.TextType.GoBack);
 
         //Effect
         if (!string.IsNullOrEmpty(effectName)) GameManagement.Instance.OnCreateEffect_Generally( position: transform.position + (thisCollider.center * transform.localScale.x),
@@ -471,15 +480,37 @@ public class AIPlayer : MonoBehaviour
         {            
             GameManagement.Instance.isChallengeBoss = false;            
             GameManagement.Instance.OnCleanBoss("BossObject", AssetManagement.Instance.boss_List);
-            GameManagement.Instance.GetPlayerObject.OnUpdateValue();
-            GameManagement.Instance.attack_List.Clear();
+            GameManagement.Instance.GetPlayerObject.OnUpdateValue();            
             GameDataManagement.Instance.gameLevel++;
-            GameDataManagement.Instance.selectLevel = -1;
+            GameDataManagement.Instance.selectBossType = -1;
             GameUI.Instance.OnSetGameLevel();
             GameUI.Instance.OnUIActive(true);
         }
     }
     #endregion
+
+    /// <summary>
+    /// RecoverHp
+    /// </summary>
+    /// <param name="recoverValue"></param>
+    public void OnRecoverHp(int recoverValue)
+    {
+        Hp += recoverValue;
+
+        if (Hp >= MaxHp) Hp = MaxHp;
+
+        //TextEffect
+        GameManagement.Instance.OnCreateTextEffect(attacker: transform,
+                                                   position: transform.position + (thisCollider.center * transform.localScale.x),
+                                                   color: Color.green,
+                                                   text: recoverValue.ToString(),
+                                                   type: TextEffect.TextType.Up);
+
+        //Effect
+        GameManagement.Instance.OnCreateEffect_Generally(position: transform.position + (thisCollider.center * transform.localScale.x),
+                                                         forward: transform.forward,
+                                                         effectName: "RecoverHp");
+    }
 
     /// <summary>
     /// PlayerUpgrade
@@ -493,7 +524,7 @@ public class AIPlayer : MonoBehaviour
                                                    position: GameManagement.Instance.GetPlayerObject.transform.position + Vector3.up * 1.5f,
                                                    color: Color.yellow,
                                                    text: "Level UP!",
-                                                   type: TextEffect.TextType.UpGrade);
+                                                   type: TextEffect.TextType.Up);
         GameUI.Instance.OnSetPlayerGrade();
     }
 
@@ -523,10 +554,10 @@ public class AIPlayer : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
+        /*Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position + (thisCollider.center * transform.localScale.x) , attackRadius);
 
-        /*Gizmos.color = Color.green;
+        Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position + (thisCollider.center * transform.localScale.x) + transform.forward * attackDistance, damageOverTimeRadius);*/
     }
 }
