@@ -11,7 +11,7 @@ namespace NumericalValueManagement
     public class NumericalValue_Game 
     {
         public static float deathTime = 3;
-        public static float[] createEnemyTime = new float[] { 0.5f, 2 };
+        public static float[] createEnemyTime = new float[] { 0.5f, 2.0f };
         public static int enemyExperience = 10;
         public static int enemyGold = 50;
         public static int upgradeExperience = 10;
@@ -88,9 +88,9 @@ namespace NumericalValueManagement
     /// </summary>
     public class NumbericalValue_PlayerSkill
     {
-        public static float[] playerSkillsCD = new float[] { 5, 8, 4, 5 };
+        public static float[] playerSkillsCD = new float[] { 5, 8, 3, 5 };
 
-        public static int[] initialSkillValue = new int[] { 10, 11, 12, 13 };
+        public static int[] initialSkillValue = new int[] { 10, 11, 120, 13 };
         public static int[] raiseSkillValue = new int[] { 5, 6, 7, 8 };
 
         [Tooltip("RecoverHp")]
@@ -105,11 +105,11 @@ namespace NumericalValueManagement
         public static string[] skillInformation = new string[]
         {
             //Skill_1
-            $"'Recover HP'\nRecover Hp: ",
+            $"\n'Recover HP'\nRecover Hp: ",
             //Skill_2
-            "'Tornado'\nDamage Over Time, Damage:",
+            "\n'Tornado'\nDamage Over Time, Damage: ",
             //Skill_3
-            "Skill3:",
+            "\n'LightningBall'\n:Bounce Attack 3 Time, Damage: ",
             //Skill_4
             "Skill4:"
         };

@@ -435,6 +435,22 @@ public class GameManagement : MonoBehaviour
         effectObjectTrackAttack.attackerRace = attackerRace;
         effectObjectTrackAttack.attackPower = attackPower;
     }
+
+    /// <summary>
+    /// CreateEffect_Loop
+    /// </summary>
+    /// <param name="position"></param>
+    /// <param name="effectName"></param>
+    /// <returns></returns>
+    public GameObject OnCreateEffect_Loop(Vector3 position, string effectName)
+    {
+        GameObject effect = OnSearchEffect(effectName);
+        if (effect == null) return null;
+
+        effect.transform.position = position;
+
+        return effect;
+    }
     #endregion
 }
 

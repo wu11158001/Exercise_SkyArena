@@ -19,7 +19,7 @@ public class EffectDamageOverTime : MonoBehaviour
             if (other.TryGetComponent<AIPlayer>(out AIPlayer aIPlayer)) aIPlayer.OnGetHit(attacker: attacker,
                                                                                           attackerRace: attackerRace,
                                                                                           attack: attackPower,
-                                                                                          effectName: "");
+                                                                                          effectName: "BasicGetHit_1");
         }
     }
 }

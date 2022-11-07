@@ -14,7 +14,7 @@ public class PlayerSkillBehavior
     public void OnSkillCD(int skillNumber,float cd)
     {
         countDownTime -= Time.deltaTime;
-
+        
         if(countDownTime <= 0)
         {
             countDownTime = cd;
@@ -28,7 +28,7 @@ public class PlayerSkillBehavior
                     OnSkillNumber_1_Tornado(value);
                     break;
                 case 2:
-                    OnSkillNumber_2();
+                    OnSkillNumber_2_LightningBall(value);
                     break;
                 case 3:
                     OnSkillNumber_3();
@@ -57,11 +57,13 @@ public class PlayerSkillBehavior
     }
 
     /// <summary>
-    /// SkillNumber_2
+    /// SkillNumber_2_LightningBall
     /// </summary>
-    void OnSkillNumber_2()
+    /// <param name="value"></param>
+    void OnSkillNumber_2_LightningBall(int value)
     {
-
+        GameManagement.Instance.GetPlayerObject.OnSetBounceAttack(effectName: "LightningBall",
+                                                                  damage: value);
     }
 
     /// <summary>

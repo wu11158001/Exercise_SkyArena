@@ -159,7 +159,7 @@ public class AIPlayer : MonoBehaviour
     }
 
     /// <summary>
-    ///nSetDamageOverTimeAttack_Player
+    /// SetDamageOverTimeAttack_Player
     /// </summary>
     /// <param name="effectName"></param>
     /// <param name="damage"></param>
@@ -172,8 +172,23 @@ public class AIPlayer : MonoBehaviour
         effectDamageOverTime.timeCountDown = 0;
         effectDamageOverTime.attacker = transform;
         effectDamageOverTime.attackerRace = race;
-        effectDamageOverTime.attackPower = damage;    
-    }      
+        effectDamageOverTime.attackPower = damage;   
+    }
+
+    /// <summary>
+    /// SetBounceAttack
+    /// </summary>
+    /// <param name="effectName"></param>
+    /// <param name="damage"></param>
+    public void OnSetBounceAttack(string effectName, int damage)
+    {
+        GameObject effect = GameManagement.Instance.OnCreateEffect_Loop(transform.position + (thisCollider.center * transform.localScale.x), effectName);
+        if (!effect.TryGetComponent<EffectBounceAttack>(out EffectBounceAttack effectBounceAttack)) effectBounceAttack = effect.AddComponent<EffectBounceAttack>();
+        effectBounceAttack.attacker = transform;
+        effectBounceAttack.attackerRace = race;
+        effectBounceAttack.attackPower = damage;
+        effectBounceAttack.OnInitialValue();
+    }
 
     /// <summary>
     /// CollisionAttack

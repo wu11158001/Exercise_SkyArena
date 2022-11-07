@@ -61,14 +61,14 @@ public class GameDataManagement : MonoBehaviour
     /// </summary>
     void OnPlayerImplementSkill()
     {
-        if(GameManagement.Instance != null && GameManagement.Instance.GetPlayerObject != null)
+        if(GameManagement.Instance != null && GameManagement.Instance.GetPlayerObject != null && GameManagement.Instance.GetPlayerObject.gameObject.activeSelf)
         {
             for (int i = 0; i < playerEquipSkills_Array.Length; i++)
             {
                 if (playEquipSkillNumber[i] >= 0)
                 {
                     playerEquipSkills_Array[i].OnSkillCD(skillNumber: playEquipSkillNumber[i],
-                                                         cd: NumericalValueManagement.NumbericalValue_PlayerSkill.playerSkillsCD[i]);
+                                                         cd: NumericalValueManagement.NumbericalValue_PlayerSkill.playerSkillsCD[playEquipSkillNumber[i]]);
                 }
             }
         }
