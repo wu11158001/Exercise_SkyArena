@@ -76,6 +76,7 @@ public class CameraControl : MonoBehaviour
 
             OnCameraRotate();            
         }
+#endif
 
         //Zoom
         inputMouseScollWhell = Input.GetAxis("Mouse ScrollWheel");
@@ -87,7 +88,6 @@ public class CameraControl : MonoBehaviour
         targetPosition = lookAtPosition + Vector3.up * cameraHight - forwardVector * cameraDistance;
         transform.position = Vector3.Lerp(transform.position, targetPosition, lerpTime);
         transform.LookAt(targetObject);
-#endif
     }
 
     [Tooltip("TouchStartPosition")] Vector2 touchStartPosition;
@@ -106,7 +106,7 @@ public class CameraControl : MonoBehaviour
                     touchStartPosition = touch.position;
                     break;
                 case TouchPhase.Moved:
-                    inputMouseX += (touch.position - touchStartPosition).magnitude;
+                    inputMouseX += Mathf.Clamp01((touch.position - touchStartPosition).magnitude) * 0.01f;
                     OnCameraRotate();
                     break;
             }
