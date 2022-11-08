@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2314147785
+CRC: 2388077046
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: d15a7147da8fd80f96ac803a230d8107
+    Hash: d581db074cc4d19437571de8c80a2674
   TypeTreeHash:
     serializedVersion: 2
     Hash: c21d61fe394c58399df3c6fb5c7c99b3
@@ -18,5 +18,6 @@ Assets:
 - Assets/UI/Skill/SkillIcon/Skill2.png
 - Assets/UI/Skill/SkillIcon/Skill1.png
 - Assets/UI/Skill/SkillIcon/Skill3.png
+- Assets/UI/Skill/SkillIcon/Skill5.png
 - Assets/UI/Skill/SkillIcon/Skill4.png
 Dependencies: []

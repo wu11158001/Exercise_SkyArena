@@ -20,7 +20,7 @@ public class EffectObjectTrackAttack : MonoBehaviour
 
         if (target != null)
         {
-            transform.position = transform.position + transform.forward * NumericalValueManagement.NumericalValue_Commom.effectMoveSpeed * Time.deltaTime;
+            transform.position = transform.position + transform.forward * NumericalValueManagement.NumericalValue_Commom.effectTrackMoveSpeed * Time.deltaTime;
             transform.forward = Vector3.RotateTowards(transform.forward, target.position - transform.position, rotateSpeed, 0);
         }
         else gameObject.SetActive(false);

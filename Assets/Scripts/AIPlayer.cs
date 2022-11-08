@@ -248,6 +248,20 @@ public class AIPlayer : MonoBehaviour
     }
 
     /// <summary>
+    /// MoveForwardCollisionAttack
+    /// </summary>
+    /// <param name="effectName"></param>
+    /// <param name="damage"></param>
+    public void OnMoveForwardCollisionAttack(string effectName, int damage)
+    {
+        GameManagement.Instance.OnCreateEffect_MoveForward(position: transform.position + (thisCollider.center * transform.localScale.x),
+                                                           effectName: effectName,
+                                                           damage: damage,
+                                                           attacker: transform,
+                                                           attackerRace: race);
+    }
+
+    /// <summary>
     /// ISingleRandomAttack
     /// </summary>
     /// <param name="effectName"></param>

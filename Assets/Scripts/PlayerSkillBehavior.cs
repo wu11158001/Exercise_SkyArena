@@ -35,6 +35,9 @@ public class PlayerSkillBehavior
                 case 3:
                     OnSkillNumber_3_Splash(value);
                     break;
+                case 4:
+                    OnSkillNumber_4_Slicer(value);
+                    break;
             }
         }
     }
@@ -51,27 +54,36 @@ public class PlayerSkillBehavior
     /// <summary>
     /// OnSkillNumber_1_Tornado
     /// </summary>
-    /// <param name="value"></param>
-    void OnSkillNumber_1_Tornado(int value)
+    /// <param name="damage"></param>
+    void OnSkillNumber_1_Tornado(int damage)
     {
-       GameManagement.Instance.GetPlayerObject.OnSetDamageOverTimeAttack_Skill(effectName: "Tornado", damage: value);
+       GameManagement.Instance.GetPlayerObject.OnSetDamageOverTimeAttack_Skill(effectName: "Tornado", damage: damage);
     }
 
     /// <summary>
     /// SkillNumber_2_LightningBall
     /// </summary>
-    /// <param name="value"></param>
-    void OnSkillNumber_2_LightningBall(int value)
+    /// <param name="damage"></param>
+    void OnSkillNumber_2_LightningBall(int damage)
     {
-        GameManagement.Instance.GetPlayerObject.OnSetBounceAttack(effectName: "LightningBall", damage: value);
+        GameManagement.Instance.GetPlayerObject.OnSetBounceAttack(effectName: "LightningBall", damage: damage);
     }
 
     /// <summary>
     /// SkillNumber_3_Splash
     /// </summary>
-    /// <param name="value"></param>
-    void OnSkillNumber_3_Splash(int value)
+    /// <param name="damage"></param>
+    void OnSkillNumber_3_Splash(int damage)
     {
-        GameManagement.Instance.GetPlayerObject.OnSingleRandomAttack(effectName: "Splash", numberOfTime: 5 , damage: value);
+        GameManagement.Instance.GetPlayerObject.OnSingleRandomAttack(effectName: "Splash", numberOfTime: 5 , damage: damage);
+    }
+
+    /// <summary>
+    /// SkillNumber_4_Slicer
+    /// </summary>
+    /// <param name="damage"></param>
+    void OnSkillNumber_4_Slicer(int damage)
+    {
+        GameManagement.Instance.GetPlayerObject.OnMoveForwardCollisionAttack(effectName: "Slicer", damage: damage);
     }
 }

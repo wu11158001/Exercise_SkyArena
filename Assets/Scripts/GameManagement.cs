@@ -449,6 +449,27 @@ public class GameManagement : MonoBehaviour
 
         return effect;
     }
+
+    /// <summary>
+    /// CreateEffect_MoveForward
+    /// </summary>
+    /// <param name="position"></param>
+    /// <param name="effectName"></param>
+    /// <param name="damage"></param>
+    /// <param name="attacker"></param>
+    /// <param name="attackerRace"></param>
+    public void OnCreateEffect_MoveForward(Vector3 position,string effectName, int damage, Transform attacker, AIPlayer.Race attackerRace)
+    {
+        GameObject effect = OnSearchEffect(effectName);
+        if (effect == null) return;
+        if (!effect.TryGetComponent<EffectMoveForward>(out EffectMoveForward effectMoveForward)) effectMoveForward = effect.AddComponent<EffectMoveForward>();
+        effect.transform.position = position;
+        effect.transform.rotation = attacker.rotation;
+        effect.transform.forward = attacker.forward;
+        effectMoveForward.damage = damage;
+        effectMoveForward.attacker = attacker;
+        effectMoveForward.attackerRace = attackerRace;
+    }
     #endregion
 }
 

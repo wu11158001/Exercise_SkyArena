@@ -47,6 +47,9 @@ public class GameDataManagement : MonoBehaviour
         //GameData
         playerGrade = 1;
         gameLevel = 1;
+        afkRewardStartTime = DateTime.Now;
+        allSkillGrade = new int[] { 0, 0, 0, 0, 0 };
+        playEquipSkillNumber = new int[] { -1, -1, -1, -1 };
 
         OnLoadJsonData();
     }
@@ -141,10 +144,7 @@ public class GameDataManagement : MonoBehaviour
         try
         {
             if (!new FileInfo(filePath).Exists)
-            {
-                afkRewardStartTime = DateTime.Now;
-                allSkillGrade = new int[] { 0, 0, 0, 0 };
-                playEquipSkillNumber = new int[] { -1, -1, -1, -1 };
+            {                
                 return;
             }
 
@@ -159,9 +159,17 @@ public class GameDataManagement : MonoBehaviour
             playerExperience = playerData.experience;
             playerGold = playerData.gold;
             gameLevel = playerData.gameLevel;
-            afkRewardStartTime = Convert.ToDateTime(playerData.afkRewardStartTime);
-            allSkillGrade = playerData.allSkillGrade;
+            afkRewardStartTime = Convert.ToDateTime(playerData.afkRewardStartTime);            
             playEquipSkillNumber = playerData.equipSkillNumber;
+
+            if(allSkillGrade.Length != playerData.allSkillGrade.Length)
+            {
+                for (int i = 0; i < playerData.allSkillGrade.Length; i++)
+                {
+                    allSkillGrade[i] = playerData.allSkillGrade[i];
+                }
+            }
+            else allSkillGrade = playerData.allSkillGrade;
         }
         catch (Exception ex)
         {

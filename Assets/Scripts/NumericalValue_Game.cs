@@ -35,7 +35,8 @@ namespace NumericalValueManagement
     public class NumericalValue_Commom
     {        
         public static float commomValue_RotateSpeed = 0.1f;
-        public static float effectMoveSpeed = 20;
+        public static float effectTrackMoveSpeed = 20;
+        public static float effectMoveForwardSpeed = 8;
     }
 
     /// <summary>
@@ -90,9 +91,9 @@ namespace NumericalValueManagement
     /// </summary>
     public class NumbericalValue_PlayerSkill
     {
-        public static float[] playerSkillsCD = new float[] { 6.0f, 5.0f, 4.0f, 4.5f };
-        public static int[] initialSkillValue = new int[] { 100, 20, 120, 40 };
-        public static int[] raiseSkillValue = new int[] { 48, 9, 19, 8 };
+        public static float[] playerSkillsCD = new float[] { 6.0f, 5.0f, 4.0f, 4.5f, 3.3f };
+        public static int[] initialSkillValue = new int[] { 100, 20, 120, 40, 150 };
+        public static int[] raiseSkillValue = new int[] { 48, 9, 19, 8, 27 };
 
         [Tooltip("SkillInformation")]
         public static string[] skillInformation = new string[]
@@ -104,7 +105,9 @@ namespace NumericalValueManagement
             //Skill_3
             "\n'LightningBall'\n:Bounce attack 3 time, Damage: ",
             //Skill_4
-            "\n'Splash'\nRandom attack enemy 5 time, Damage: "
+            "\n'Splash'\nRandom attack enemy 5 time, Damage: ",
+            //Skill_5
+            "\n'Slicer'\nFire the cutter forward, Damage: "
         };
     }
 }

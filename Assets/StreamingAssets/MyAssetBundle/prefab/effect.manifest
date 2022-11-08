@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1668186001
+CRC: 3466580760
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: f1f63a7f91d07803f2029a3b67b24846
+    Hash: 25d1bb3a7429c3ae543738ea840fc50b
   TypeTreeHash:
     serializedVersion: 2
     Hash: 7fea876e12a7faa9b2be7c8b4ed9ee2e
@@ -53,6 +53,7 @@ SerializeReferenceClassIdentifiers:
 - AssemblyName: CFXRRuntime
   ClassName: CartoonFX.CFXR_Effect/CameraShake
 Assets:
+- Assets/Prefabs/Effects/Player/Skill/Slicer.prefab
 - Assets/Prefabs/Effects/Common/BasicGetHit_2.prefab
 - Assets/Prefabs/Effects/Common/RecoverHp.prefab
 - Assets/Prefabs/Effects/Player/Skill/Tornado.prefab
