@@ -14,15 +14,15 @@ public class AIPlayer : MonoBehaviour
     [SerializeField] [Tooltip("State")] protected State state;
 
     [Header("Value")]
-    [SerializeField] [Tooltip("Hp")] protected int Hp;
+    [SerializeField] [Tooltip("Hp")] public int Hp;
     [SerializeField] [Tooltip("MaxHp")] protected int MaxHp;
     [SerializeField] [Tooltip("AttackPower")] protected int attackPower;
 
     [Header("Component")]
-    [SerializeField] [Tooltip("Animator")] Animator animator;
-    [SerializeField] [Tooltip("AnimatorStateInfo")] AnimatorStateInfo info;
-    [SerializeField] [Tooltip("Collider")] CapsuleCollider thisCollider;
-    [SerializeField] [Tooltip("ShootingPosition")] Transform shootingPosition;
+    [Tooltip("Animator")] Animator animator;
+    [Tooltip("AnimatorStateInfo")] AnimatorStateInfo info;
+    [Tooltip("Collider")] CapsuleCollider thisCollider;
+    [Tooltip("ShootingPosition")] Transform shootingPosition;
 
     [Header("Move")]
     [SerializeField] [Tooltip("TargetObject")] protected Transform targetObject;

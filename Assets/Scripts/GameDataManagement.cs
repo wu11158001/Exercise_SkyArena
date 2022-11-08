@@ -61,7 +61,9 @@ public class GameDataManagement : MonoBehaviour
     /// </summary>
     void OnPlayerImplementSkill()
     {
-        if(GameManagement.Instance != null && GameManagement.Instance.GetPlayerObject != null && GameManagement.Instance.GetPlayerObject.gameObject.activeSelf)
+        if(GameManagement.Instance != null && 
+           GameManagement.Instance.GetPlayerObject != null &&
+           GameManagement.Instance.GetPlayerObject.Hp > 0)
         {
             for (int i = 0; i < playerEquipSkills_Array.Length; i++)
             {
