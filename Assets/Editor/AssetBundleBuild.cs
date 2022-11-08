@@ -14,6 +14,6 @@ public class AssetBundleBuild
     {
         string folder = Application.streamingAssetsPath + "/MyAssetBundle";
         if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
-        BuildPipeline.BuildAssetBundles(folder, BuildAssetBundleOptions.None, BuildTarget.StandaloneWindows);
+        BuildPipeline.BuildAssetBundles(folder, BuildAssetBundleOptions.None, BuildTarget.Android);
     }
 }

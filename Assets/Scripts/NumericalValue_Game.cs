@@ -11,7 +11,7 @@ namespace NumericalValueManagement
     public class NumericalValue_Game 
     {
         public static float deathTime = 3;
-        public static float[] createEnemyTime = new float[] { 0.5f, 2.0f };
+        public static float[] createEnemyTime = new float[] { 0.3f, 2.0f };
         public static int enemyExperience = 10;
         public static int enemyGold = 50;
         public static int upgradeExperience = 10;
@@ -45,7 +45,7 @@ namespace NumericalValueManagement
     public class NumericalValue_Player
     {
         public static float moveSpeed = 2.5f;
-        public static int initial_Hp = 500;
+        public static int initial_Hp = 1000;
         public static int raiseUpgradeHp = 100;
         public static int initial_AttackPower = 50;
         public static int raiseUpgradeAttack = 5;
@@ -75,7 +75,7 @@ namespace NumericalValueManagement
     public class NumericalValue_Boss
     {
         public static float moveSpeed = 2f;
-        public static int initial_Hp = 1000;
+        public static int initial_Hp = 1500;
         public static int raiseUpgradeHp = 600;
         public static int initial_AttackPower = 70;
         public static int raiseUpgradeAttack = 120;

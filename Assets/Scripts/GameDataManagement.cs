@@ -41,6 +41,8 @@ public class GameDataManagement : MonoBehaviour
         gameDataManagement = this;
         DontDestroyOnLoad(gameObject);
 
+        OnScreenOrientation();
+
         //Plugin
         selectBossType = -1;//using for plugin
 
@@ -52,6 +54,18 @@ public class GameDataManagement : MonoBehaviour
         playEquipSkillNumber = new int[] { -1, -1, -1, -1 };
 
         OnLoadJsonData();
+    }
+
+    /// <summary>
+    /// ScreenOrientation
+    /// </summary>
+    void OnScreenOrientation()
+    {
+        Screen.orientation = ScreenOrientation.AutoRotation;
+        Screen.autorotateToLandscapeLeft = true;
+        Screen.autorotateToLandscapeRight = true;
+        Screen.autorotateToPortrait = false;
+        Screen.autorotateToPortraitUpsideDown = false;
     }
 
     private void Update()
