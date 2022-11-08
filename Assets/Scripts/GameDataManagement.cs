@@ -67,7 +67,8 @@ public class GameDataManagement : MonoBehaviour
             {
                 if (playEquipSkillNumber[i] >= 0)
                 {
-                    playerEquipSkills_Array[i].OnSkillCD(skillNumber: playEquipSkillNumber[i],
+                    playerEquipSkills_Array[i].OnSkillCD(equipNumber: i,
+                                                         skillNumber: playEquipSkillNumber[i],
                                                          cd: NumericalValueManagement.NumbericalValue_PlayerSkill.playerSkillsCD[playEquipSkillNumber[i]]);
                 }
             }

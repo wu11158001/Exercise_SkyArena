@@ -9,13 +9,15 @@ public class PlayerSkillBehavior
     /// <summary>
     /// SkillCD
     /// </summary>
+    /// <param name="equipNumber"></param>
     /// <param name="skillNumber"></param>
     /// <param name="cd"></param>
-    public void OnSkillCD(int skillNumber,float cd)
+    public void OnSkillCD(int equipNumber , int skillNumber,float cd)
     {
         countDownTime -= Time.deltaTime;
-        
-        if(countDownTime <= 0)
+        GameUI.Instance.usingSkillsMask_Image[equipNumber].fillAmount = (float)countDownTime / (float)cd;
+
+        if (countDownTime <= 0)
         {
             countDownTime = cd;
             int value = GameDataManagement.Instance.OnCalculateSkillValues(skillNumber);

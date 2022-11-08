@@ -116,10 +116,10 @@ public class EffectBounceAttack : MonoBehaviour
                                   attack: attackPower,
                                   effectName: "BasicGetHit_1");
                 
-                bounceCount++;                
+                bounceCount++;
+                attackedTarget_List.Add(other.transform);
+                OnFimdTarget();                
             }
-        }
-        attackedTarget_List.Add(other.transform);
-        OnFimdTarget();
+        }        
     }
 }

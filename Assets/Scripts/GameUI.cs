@@ -40,7 +40,7 @@ public class GameUI : MonoBehaviour
 
     [Header("AFK")]
     [Tooltip("AFKInterface")] Transform akfInterface;
-    [Tooltip("AFK_Button")] Button afk_Button;    
+    [Tooltip("AFK_Button")] Button afk_Button;
     [Tooltip("RewardTime_Text")] TMP_Text rewardTime_Text;
     [Tooltip("RewardConfirm_Button")] Button rewardConfirm_Button;
     [Tooltip("RewardExperience_Text")] TMP_Text rewardExperience_Text;
@@ -57,8 +57,8 @@ public class GameUI : MonoBehaviour
     [Tooltip("UsingSkills_Text")] TMP_Text[] usingSkills_Text;
     [Tooltip("Skill_Button")] Button skill_Button;
     [Tooltip("SkillInterface")] Transform skillInterface;
-    [Tooltip("SkillCancel_Button")] Button skillCancel_Button;        
-    
+    [Tooltip("SkillCancel_Button")] Button skillCancel_Button;
+    [Tooltip("UsingSkillsMask_Image")] public Image[] usingSkillsMask_Image;
 
     private void Awake()
     {
@@ -182,13 +182,15 @@ public class GameUI : MonoBehaviour
         skillCancel_Button = FindChild.OnFindChild<Button>(transform, "SkillCancel_Button");
         skillCancel_Button.onClick.AddListener(delegate { OnSwitchInterface(skillInterface.gameObject, false); });
 
-        //UsingSkills(Image Text)
+        //UsingSkills(Image Text Mask)
         usingSkills_Image = new Image[GameDataManagement.Instance.playEquipSkillNumber.Length];
-        usingSkills_Text = new TMP_Text[GameDataManagement.Instance.playEquipSkillNumber.Length];
+        usingSkillsMask_Image = new Image[GameDataManagement.Instance.playEquipSkillNumber.Length];
+        usingSkills_Text = new TMP_Text[GameDataManagement.Instance.playEquipSkillNumber.Length];        
         for (int i = 0; i < GameDataManagement.Instance.playEquipSkillNumber.Length; i++)
         {
             usingSkills_Image[i] = FindChild.OnFindChild<Image>(transform, $"UsingSkill{i + 1}_Image");
-            usingSkills_Text[i] = FindChild.OnFindChild<TMP_Text>(transform, $"UsingSkill{i + 1}_Text");
+            usingSkillsMask_Image[i] = FindChild.OnFindChild<Image>(transform, $"UsingSkillMask{i + 1}_Image");
+            usingSkills_Text[i] = FindChild.OnFindChild<TMP_Text>(transform, $"UsingSkill{i + 1}_Text");            
         }
         OnSetPlayerUsingSkill(usingSkills_Image, usingSkills_Text);
         #endregion
@@ -201,7 +203,7 @@ public class GameUI : MonoBehaviour
         OnSetRewardTime();
 
         OnUIAnimation(ref afkButtonAniamtionCountDown, afkButtonAnimationChangeTime, afk_Button.image, AssetManagement.Instance.afkButtonSprite, ref nowSprite_AFKButton);
-    }
+    }   
 
     /// <summary>
     /// SetPlayerUsingSkill
@@ -269,6 +271,7 @@ public class GameUI : MonoBehaviour
         string hour = "", minute = "", second = "";
 
         int total = (int)(GameDataManagement.Instance.OnAFKRewardTime().TotalSeconds);
+        if (total > 86400) total = 86400;
 
         //Second
         if (total % 60 == 0) second = "00";
