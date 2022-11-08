@@ -237,6 +237,40 @@ public class AIPlayer : MonoBehaviour
     }
 
     /// <summary>
+    /// SingleRandomAttack
+    /// </summary>
+    /// <param name="effectName"></param>
+    /// <param name="numberOfTime"></param>
+    /// <param name="damage"></param>
+    public void OnSingleRandomAttack(string effectName, int numberOfTime, int damage)
+    {       
+        StartCoroutine(ISingleRandomAttack(effectName, numberOfTime, damage));
+    }
+
+    /// <summary>
+    /// ISingleRandomAttack
+    /// </summary>
+    /// <param name="effectName"></param>
+    /// <param name="numberOfTime"></param>
+    /// <param name="damage"></param>
+    /// <returns></returns>
+    IEnumerator ISingleRandomAttack(string effectName, int numberOfTime, int damage)
+    {
+        for (int i = 0; i < numberOfTime; i++)
+        {
+            if (GameManagement.Instance.GetEnemyList.Count <= 0) break;
+
+            new AttackBehavior().OnSingleAttack(attacker: transform,
+                                                attackerRace: race,
+                                                target: GameManagement.Instance.GetEnemyList[UnityEngine.Random.Range(0, GameManagement.Instance.GetEnemyList.Count)],
+                                                attackPower: damage,
+                                                effectName: effectName);
+            
+            yield return new WaitForSeconds(NumericalValueManagement.NumericalValue_Game.attackFrequency);
+        }
+    }
+
+    /// <summary>
     /// RemoveAttackList
     /// </summary>
     void OnRemoveAttackList()
@@ -492,12 +526,14 @@ public class AIPlayer : MonoBehaviour
     {
         //Boss
         if (GameManagement.Instance.isChallengeBoss && race == Race.Enemy)
-        {            
+        {                       
             GameManagement.Instance.isChallengeBoss = false;            
             GameManagement.Instance.OnCleanBoss("BossObject", AssetManagement.Instance.boss_List);
             GameManagement.Instance.GetPlayerObject.OnUpdateValue();            
             GameDataManagement.Instance.gameLevel++;
             GameDataManagement.Instance.selectBossType = -1;
+            GameDataManagement.Instance.playerGold += NumericalValueManagement.NumericalValue_Game.bossBonus * GameDataManagement.Instance.gameLevel;
+            GameUI.Instance.OnSetPlayerGold();
             GameUI.Instance.OnSetGameLevel();
             GameUI.Instance.OnUIActive(true);
         }

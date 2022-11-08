@@ -346,9 +346,7 @@ public class GameManagement : MonoBehaviour
 
         //Add EffectCollisionAttack
         if (!effect.TryGetComponent<EffectLifeTime>(out EffectLifeTime effectLifeTime)) effectLifeTime = effect.AddComponent<EffectLifeTime>();
-        effect.transform.position = position;
-        effect.transform.rotation = Quaternion.Euler(Vector3.zero);
-        effect.transform.forward = forward;
+        effect.transform.position = position;        
     }
 
     /// <summary>

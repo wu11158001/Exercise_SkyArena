@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class EffectDamageOverTime : MonoBehaviour
 {
-    [Tooltip("TimeCountDown")] public float timeCountDown;
-    [Tooltip("DamageTime")] const float damageTime = 0.2f;
+    [Tooltip("TimeCountDown")] public float timeCountDown;    
     [Tooltip("Target")] public Transform attacker;
     [Tooltip("Race")] public AIPlayer.Race attackerRace;
     [Tooltip("AttackPower")] public int attackPower;
@@ -15,7 +14,7 @@ public class EffectDamageOverTime : MonoBehaviour
         timeCountDown -= Time.deltaTime;
         if (timeCountDown <= 0)
         {
-            timeCountDown = damageTime;            
+            timeCountDown = NumericalValueManagement.NumericalValue_Game.attackFrequency;            
             if (other.TryGetComponent<AIPlayer>(out AIPlayer aIPlayer)) aIPlayer.OnGetHit(attacker: attacker,
                                                                                           attackerRace: attackerRace,
                                                                                           attack: attackPower,

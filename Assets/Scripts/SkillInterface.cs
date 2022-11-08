@@ -128,7 +128,8 @@ public class SkillInterface : MonoBehaviour
         {
             if(GameDataManagement.Instance.playEquipSkillNumber[i] == selectSkillNumber)
             {
-                GameDataManagement.Instance.playEquipSkillNumber[i] = -1;                
+                GameDataManagement.Instance.playEquipSkillNumber[i] = -1;
+                GameUI.Instance.usingSkillsMask_Image[i].fillAmount = 1;
                 break;
             }
         }

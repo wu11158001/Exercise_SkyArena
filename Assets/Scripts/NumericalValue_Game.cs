@@ -16,6 +16,8 @@ namespace NumericalValueManagement
         public static int enemyGold = 50;
         public static int upgradeExperience = 10;
         public static int raiseUpgradeExperience = 20;
+        public static float attackFrequency = 0.2f;
+        public static int bossBonus = 1000;
 
         //AFK
         public static int afkRewardTiming = 5;
@@ -43,12 +45,12 @@ namespace NumericalValueManagement
     {
         public static float moveSpeed = 2.5f;
         public static int initial_Hp = 500;
+        public static int raiseUpgradeHp = 100;
         public static int initial_AttackPower = 50;
+        public static int raiseUpgradeAttack = 5;
         public static int attackCount = 3;
         public static float attackRadius = 1.6f;
-        public static float attackFrequency = 0.1f;
-        public static int raiseUpgradeHp = 100;
-        public static int raiseUpgradeAttack = 5;
+        public static float attackFrequency = 0.1f;               
     }
 
     /// <summary>
@@ -58,12 +60,12 @@ namespace NumericalValueManagement
     {
         public static float moveSpeed = 1f;
         public static int initial_Hp = 100;
+        public static int raiseUpgradeHp = 50;
         public static int initial_AttackPower = 5;
+        public static int raiseUpgradeAttack = 5;
         public static int attackCount = 1;
         public static float attackRadius = 1.6f;
         public static float attackFrequency = 1;
-        public static int raiseUpgradeHp = 50;
-        public static int raiseUpgradeAttack = 5;
     }
 
     /// <summary>
@@ -73,12 +75,12 @@ namespace NumericalValueManagement
     {
         public static float moveSpeed = 2f;
         public static int initial_Hp = 1000;
+        public static int raiseUpgradeHp = 600;
         public static int initial_AttackPower = 70;
+        public static int raiseUpgradeAttack = 120;
         public static int attackCount = 3;
         public static float attackRadius = 4.5f;
-        public static float attackFrequency = 1;
-        public static int raiseUpgradeHp = 500;
-        public static int raiseUpgradeAttack = 30;
+        public static float attackFrequency = 1;                
         public static float attackDistance = 2f;
         public static float damageOverTimeRadius = 1.0f;
     }
@@ -88,18 +90,9 @@ namespace NumericalValueManagement
     /// </summary>
     public class NumbericalValue_PlayerSkill
     {
-        public static float[] playerSkillsCD = new float[] { 5, 8, 3, 5 };
-
-        public static int[] initialSkillValue = new int[] { 10, 11, 120, 13 };
-        public static int[] raiseSkillValue = new int[] { 5, 6, 7, 8 };
-
-        [Tooltip("RecoverHp")]
-        public static int initialRecoverHpValue = 10;
-        public static int raiseRecoverHpValue = 5;
-
-        [Tooltip("Tornado")]
-        public static int initialTornadoDamage = 11;
-        public static int raiseTornado = 5;
+        public static float[] playerSkillsCD = new float[] { 6.0f, 5.0f, 4.0f, 4.5f };
+        public static int[] initialSkillValue = new int[] { 100, 20, 120, 40 };
+        public static int[] raiseSkillValue = new int[] { 48, 9, 19, 8 };
 
         [Tooltip("SkillInformation")]
         public static string[] skillInformation = new string[]
@@ -107,11 +100,11 @@ namespace NumericalValueManagement
             //Skill_1
             $"\n'Recover HP'\nRecover Hp: ",
             //Skill_2
-            "\n'Tornado'\nDamage Over Time, Damage: ",
+            "\n'Tornado'\nDamage over time, damage: ",
             //Skill_3
-            "\n'LightningBall'\n:Bounce Attack 3 Time, Damage: ",
+            "\n'LightningBall'\n:Bounce attack 3 time, Damage: ",
             //Skill_4
-            "Skill4:"
+            "\n'Splash'\nRandom attack enemy 5 time, Damage: "
         };
     }
 }

@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 4136667831
+CRC: 1668186001
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 0921ac407355ca7ea76a4e66b26a3ca2
+    Hash: f1f63a7f91d07803f2029a3b67b24846
   TypeTreeHash:
     serializedVersion: 2
     Hash: 7fea876e12a7faa9b2be7c8b4ed9ee2e
@@ -58,6 +58,7 @@ Assets:
 - Assets/Prefabs/Effects/Player/Skill/Tornado.prefab
 - Assets/Prefabs/Effects/Boss2/Boss2Attack3.prefab
 - Assets/Prefabs/Effects/Boss3/Boss3Attack3.prefab
+- Assets/Prefabs/Effects/Player/Skill/Splash.prefab
 - Assets/Prefabs/Effects/Boss2/Boss2Attack2.prefab
 - Assets/Prefabs/Effects/Boss1/Boss1Attack3.prefab
 - Assets/Prefabs/Effects/Player/Skill/LightningBall.prefab

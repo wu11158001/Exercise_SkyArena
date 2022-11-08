@@ -33,7 +33,7 @@ public class PlayerSkillBehavior
                     OnSkillNumber_2_LightningBall(value);
                     break;
                 case 3:
-                    OnSkillNumber_3();
+                    OnSkillNumber_3_Splash(value);
                     break;
             }
         }
@@ -54,8 +54,7 @@ public class PlayerSkillBehavior
     /// <param name="value"></param>
     void OnSkillNumber_1_Tornado(int value)
     {
-       GameManagement.Instance.GetPlayerObject.OnSetDamageOverTimeAttack_Skill(effectName: "Tornado",
-                                                                               damage: value);
+       GameManagement.Instance.GetPlayerObject.OnSetDamageOverTimeAttack_Skill(effectName: "Tornado", damage: value);
     }
 
     /// <summary>
@@ -64,15 +63,15 @@ public class PlayerSkillBehavior
     /// <param name="value"></param>
     void OnSkillNumber_2_LightningBall(int value)
     {
-        GameManagement.Instance.GetPlayerObject.OnSetBounceAttack(effectName: "LightningBall",
-                                                                  damage: value);
+        GameManagement.Instance.GetPlayerObject.OnSetBounceAttack(effectName: "LightningBall", damage: value);
     }
 
     /// <summary>
-    /// SkillNumber_3
+    /// SkillNumber_3_Splash
     /// </summary>
-    void OnSkillNumber_3()
+    /// <param name="value"></param>
+    void OnSkillNumber_3_Splash(int value)
     {
-
+        GameManagement.Instance.GetPlayerObject.OnSingleRandomAttack(effectName: "Splash", numberOfTime: 5 , damage: value);
     }
 }
