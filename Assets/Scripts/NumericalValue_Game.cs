@@ -34,7 +34,7 @@ namespace NumericalValueManagement
     /// </summary>
     public class NumericalValue_Commom
     {        
-        public static float commomValue_RotateSpeed = 0.1f;
+        public static float commomValue_RotateSpeed = 0.25f;
         public static float effectTrackMoveSpeed = 20;
         public static float effectMoveForwardSpeed = 8;
     }

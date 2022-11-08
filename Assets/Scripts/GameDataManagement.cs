@@ -4,6 +4,7 @@ using UnityEngine;
 using System.IO;
 using UnityEditor;
 using System;
+using UnityEngine.Networking;
 
 public class GameDataManagement : MonoBehaviour
 {
@@ -54,6 +55,10 @@ public class GameDataManagement : MonoBehaviour
         playEquipSkillNumber = new int[] { -1, -1, -1, -1 };
 
         OnLoadJsonData();
+
+#if UNITY_ANDROID
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
+#endif
     }
 
     /// <summary>
@@ -135,10 +140,14 @@ public class GameDataManagement : MonoBehaviour
             equipSkillNumber = playEquipSkillNumber
         };
 
-        //Create Or Open File
-        string filePath = Application.dataPath + "/JsonSaveFile";
+        FileInfo fileInfo = null;
+#if UNITY_EDITOR_WIN
+        string filePath = Application.streamingAssetsPath + "/JsonSaveFile";
         if (!Directory.Exists(filePath)) Directory.CreateDirectory(filePath);
-        FileInfo fileInfo = new FileInfo(filePath + "/JsonSave.json");
+        fileInfo = new FileInfo(filePath + "/JsonData.json");       
+#elif UNITY_ANDROID
+        fileInfo = new FileInfo(Application.persistentDataPath + "/JsonData.json");        
+#endif
         if (fileInfo.Exists) fileInfo.Delete();
         StreamWriter sw = fileInfo.CreateText();
 
@@ -153,16 +162,21 @@ public class GameDataManagement : MonoBehaviour
     /// </summary>
     public void OnLoadJsonData()
     {
-        string filePath = Application.dataPath + "/JsonSaveFile/JsonSave.json";
-
+        StreamReader sr = null;
+        string filePath = "";
+#if UNITY_EDITOR_WIN
+        filePath = Application.streamingAssetsPath + "/JsonSaveFile";
+#elif PLATFORM_ANDROID
+        filePath = filePath = Application.persistentDataPath + "/JsonData.json";
+#endif
         try
         {
             if (!new FileInfo(filePath).Exists)
-            {                
+            {
                 return;
             }
 
-            StreamReader sr = new StreamReader(filePath);
+            sr = new StreamReader(filePath);
             string jsonStaring = sr.ReadToEnd();
             sr.Close();
 
@@ -173,10 +187,10 @@ public class GameDataManagement : MonoBehaviour
             playerExperience = playerData.experience;
             playerGold = playerData.gold;
             gameLevel = playerData.gameLevel;
-            afkRewardStartTime = Convert.ToDateTime(playerData.afkRewardStartTime);            
+            afkRewardStartTime = Convert.ToDateTime(playerData.afkRewardStartTime);
             playEquipSkillNumber = playerData.equipSkillNumber;
 
-            if(allSkillGrade.Length != playerData.allSkillGrade.Length)
+            if (allSkillGrade.Length != playerData.allSkillGrade.Length)
             {
                 for (int i = 0; i < playerData.allSkillGrade.Length; i++)
                 {

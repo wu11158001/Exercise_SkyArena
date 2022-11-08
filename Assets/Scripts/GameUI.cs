@@ -52,6 +52,7 @@ public class GameUI : MonoBehaviour
     [Tooltip("NowSprite_AFKButton")] int nowSprite_AFKButton;
 
     [Header("Skill")]
+    [SerializeField] [Tooltip("SkillInterfaceBackground")] Image skillInterfaceBackground;
     [SerializeField] [Tooltip("UsingSkillBoxSprite")] Sprite usingSkillBoxSprite;
     [Tooltip("UsingSkills_Image")] Image[] usingSkills_Image;
     [Tooltip("UsingSkills_Text")] TMP_Text[] usingSkills_Text;
@@ -72,6 +73,7 @@ public class GameUI : MonoBehaviour
 
     private void Start()
     {
+        OnSetUISize(skillInterfaceBackground);
         OnGetUI();
 
         //FadeImage
@@ -84,6 +86,16 @@ public class GameUI : MonoBehaviour
         afkButtonAnimationChangeTime = 0.1f;
 
         deathTimeCountDown = NumericalValueManagement.NumericalValue_Game.deathTime;
+    }
+
+    /// <summary>
+    /// SetUISize
+    /// </summary>
+    /// <param name="image"></param>
+    void OnSetUISize(Image image)
+    {
+        if (image == null) return;
+        image.rectTransform.sizeDelta = new Vector2(Screen.width, Screen.height);
     }
 
     /// <summary>
@@ -256,7 +268,7 @@ public class GameUI : MonoBehaviour
         GameDataManagement.Instance.playerExperience += GameDataManagement.Instance.afkExperienceReward;
         GameDataManagement.Instance.playerGold += GameDataManagement.Instance.afkGoldReward;
         GameDataManagement.Instance.OnSaveJsonData();
-
+ 
         OnSetPlayerExperience();
         OnSetPlayerGold();
 

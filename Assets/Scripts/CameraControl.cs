@@ -66,26 +66,15 @@ public class CameraControl : MonoBehaviour
     /// </summary>
     void OnCameraFollow()
     {
+        OnTouch();
+#if UNITY_EDITOR_WIN
+        //Rotate
         if (Input.GetMouseButton(1))
         {
             inputMouseX = Input.GetAxis("Mouse X");
             inputMouseY = Input.GetAxis("Mouse Y");
 
-            //Horizontal Rotate
-            if (Mathf.Abs(inputMouseX) > inputMoreThanTheValue)
-            {
-                lookAtPosition = targetObject.position + targetObject.GetComponent<CapsuleCollider>().center;
-                transform.RotateAround(lookAtPosition, Vector3.up, rotateSpeed * inputMouseX);
-                forwardVector = Vector3.Cross(transform.right, Vector3.up);
-            }
-
-            //Vertical Rotate
-            if (Mathf.Abs(inputMouseY) > inputMoreThanTheValue)
-            {
-                cameraHight += -inputMouseY * rotateSpeed;
-                if (cameraHight >= cameraHightLimit[0]) cameraHight = cameraHightLimit[0];
-                if (cameraHight <= cameraHightLimit[1]) cameraHight = cameraHightLimit[1];
-            }
+            OnCameraRotate();            
         }
 
         //Zoom
@@ -98,6 +87,53 @@ public class CameraControl : MonoBehaviour
         targetPosition = lookAtPosition + Vector3.up * cameraHight - forwardVector * cameraDistance;
         transform.position = Vector3.Lerp(transform.position, targetPosition, lerpTime);
         transform.LookAt(targetObject);
+#endif
+    }
+
+    [Tooltip("TouchStartPosition")] Vector2 touchStartPosition;
+    /// <summary>
+    /// Touch
+    /// </summary>
+    void OnTouch()
+    {
+#if UNITY_ANDROID
+        if(Input.touchCount == 1)
+        {
+            Touch touch = Input.GetTouch(0);
+            switch(touch.phase)
+            {
+                case TouchPhase.Began:
+                    touchStartPosition = touch.position;
+                    break;
+                case TouchPhase.Moved:
+                    inputMouseX += (touch.position - touchStartPosition).magnitude;
+                    OnCameraRotate();
+                    break;
+            }
+        }
+#endif
+    }
+
+    /// <summary>
+    /// OnCameraRotate
+    /// </summary>
+    void OnCameraRotate()
+    {
+        //Horizontal Rotate
+        if (Mathf.Abs(inputMouseX) > inputMoreThanTheValue)
+        {
+            lookAtPosition = targetObject.position + targetObject.GetComponent<CapsuleCollider>().center;
+            transform.RotateAround(lookAtPosition, Vector3.up, rotateSpeed * inputMouseX);
+            forwardVector = Vector3.Cross(transform.right, Vector3.up);
+        }
+
+        //Vertical Rotate
+        if (Mathf.Abs(inputMouseY) > inputMoreThanTheValue)
+        {
+            cameraHight += -inputMouseY * rotateSpeed;
+            if (cameraHight >= cameraHightLimit[0]) cameraHight = cameraHightLimit[0];
+            if (cameraHight <= cameraHightLimit[1]) cameraHight = cameraHightLimit[1];
+        }
     }
 
     /// <summary>
