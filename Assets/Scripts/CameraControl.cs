@@ -16,8 +16,8 @@ public class CameraControl : MonoBehaviour
     [SerializeField] [Tooltip("LerpTime")] float lerpTime;
 
     [Header("Input")]
-    [SerializeField] [Tooltip("InputMouseX")] float inputMouseX;
-    [SerializeField] [Tooltip("InputMouseY")] float inputMouseY;
+    [SerializeField] [Tooltip("InputMouseX")] float inputX;
+    [SerializeField] [Tooltip("InputMouseY")] float inputY;
     [SerializeField] [Tooltip("InputMouseScollWhell")] float inputMouseScollWhell;
     [SerializeField] [Tooltip("InputMoreThanTheValue")] float inputMoreThanTheValue;
     [SerializeField] [Tooltip("UpAngle")] float upAngle;
@@ -65,18 +65,8 @@ public class CameraControl : MonoBehaviour
     /// CameraFollow
     /// </summary>
     void OnCameraFollow()
-    {
-        OnTouch();
-#if UNITY_EDITOR_WIN
-        //Rotate
-        if (Input.GetMouseButton(1))
-        {
-            inputMouseX = Input.GetAxis("Mouse X");
-            inputMouseY = Input.GetAxis("Mouse Y");
-
-            OnCameraRotate();            
-        }
-#endif
+    {           
+        OnCameraRotate();
 
         //Zoom
         inputMouseScollWhell = Input.GetAxis("Mouse ScrollWheel");
@@ -88,30 +78,73 @@ public class CameraControl : MonoBehaviour
         targetPosition = lookAtPosition + Vector3.up * cameraHight - forwardVector * cameraDistance;
         transform.position = Vector3.Lerp(transform.position, targetPosition, lerpTime);
         transform.LookAt(targetObject);
+
+#if UNITY_EDITOR_WIN
+        OnMouseControl();
+#elif UNITY_ANDROID
+        OnTouch();
+#endif
     }
 
-    [Tooltip("TouchStartPosition")] Vector2 touchStartPosition;
+    /// <summary>
+    /// MouseControl
+    /// </summary>
+    void OnMouseControl()
+    {
+        if (Input.GetMouseButton(1))
+        {
+            inputX = Input.GetAxis("Mouse X");
+            inputY = Input.GetAxis("Mouse Y");
+        }
+        else
+        {
+            inputX = 0;
+            inputY = 0;
+        }
+    }
+
+    [Tooltip("TouchBeganPosition")] Vector2 touchBeganPosition;
+    [Tooltip("TouchRotateSpeedX")] const float touchRotateSpeedX = 1;
+    [Tooltip("TouchRotateSpeedY")] const float touchRotateSpeedY = 5;
+    [Tooltip("Touch")]
     /// <summary>
     /// Touch
     /// </summary>
     void OnTouch()
-    {
-#if UNITY_ANDROID
-        if(Input.touchCount == 1)
+    {        
+        Touch touch = Input.GetTouch(0);
+        
+        if (Input.touchCount == 1)
         {
-            Touch touch = Input.GetTouch(0);
-            switch(touch.phase)
+            switch (touch.phase)
             {
                 case TouchPhase.Began:
-                    touchStartPosition = touch.position;
+                    touchBeganPosition = touch.position;
                     break;
                 case TouchPhase.Moved:
-                    inputMouseX += Mathf.Clamp01((touch.position - touchStartPosition).magnitude) * 0.01f;
-                    OnCameraRotate();
+                    Vector2 pos = touch.position;
+                    float distanceX = Mathf.Abs((touchBeganPosition.x - pos.x));
+                    float distanceY = Mathf.Abs((touchBeganPosition.y - pos.y));
+                    if (distanceX > 100)
+                    {
+                        if (touchBeganPosition.x > pos.x) inputX = touchRotateSpeedX;
+                        if (touchBeganPosition.x < pos.x) inputX = -touchRotateSpeedX;
+                    }
+                    if (distanceY > 100)
+                    {
+                        if (touchBeganPosition.y < pos.y) inputY = touchRotateSpeedY * 2;
+                        if (touchBeganPosition.y > pos.y) inputY = -touchRotateSpeedY * 2;
+                    }
+                    break;
+                case TouchPhase.Stationary:
+                    touchBeganPosition = touch.position;                    
+                    break;
+                case TouchPhase.Ended:
+                    inputX = 0;
+                    inputY = 0;
                     break;
             }
         }
-#endif
     }
 
     /// <summary>
@@ -120,17 +153,17 @@ public class CameraControl : MonoBehaviour
     void OnCameraRotate()
     {
         //Horizontal Rotate
-        if (Mathf.Abs(inputMouseX) > inputMoreThanTheValue)
+        if (Mathf.Abs(inputX) > inputMoreThanTheValue)
         {
             lookAtPosition = targetObject.position + targetObject.GetComponent<CapsuleCollider>().center;
-            transform.RotateAround(lookAtPosition, Vector3.up, rotateSpeed * inputMouseX);
+            transform.RotateAround(lookAtPosition, Vector3.up, rotateSpeed * inputX);
             forwardVector = Vector3.Cross(transform.right, Vector3.up);
         }
 
         //Vertical Rotate
-        if (Mathf.Abs(inputMouseY) > inputMoreThanTheValue)
+        if (Mathf.Abs(inputY) > inputMoreThanTheValue)
         {
-            cameraHight += -inputMouseY * rotateSpeed;
+            cameraHight += -inputY * rotateSpeed;
             if (cameraHight >= cameraHightLimit[0]) cameraHight = cameraHightLimit[0];
             if (cameraHight <= cameraHightLimit[1]) cameraHight = cameraHightLimit[1];
         }

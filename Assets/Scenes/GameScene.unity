@@ -5846,8 +5846,8 @@ MonoBehaviour:
   cameraHight: 0
   cameraHightLimit: []
   lerpTime: 0
-  inputMouseX: 0
-  inputMouseY: 0
+  inputX: 0
+  inputY: 0
   inputMouseScollWhell: 0
   inputMoreThanTheValue: 0
   upAngle: 0
