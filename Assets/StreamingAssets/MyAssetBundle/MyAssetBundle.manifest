@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 225041857
+CRC: 795083460
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -31,4 +31,7 @@ AssetBundleManifest:
       Dependencies: {}
     Info_9:
       Name: ui/skillicon
+      Dependencies: {}
+    Info_10:
+      Name: sound/soundeffect
       Dependencies: {}

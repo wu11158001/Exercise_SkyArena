@@ -24,6 +24,9 @@ public class AssetManagement : MonoBehaviour
     [Tooltip("AFKButtonSprite")] public Sprite[] afkButtonSprite;
     [Tooltip("SkillIconSprite")] public Sprite[] skillIconSprite;
 
+    [Header("Sound")]
+    [Tooltip("SoundEffect")] public AudioClip[] soundEffects;
+
     private void Awake()
     {
         if(assetManagement != null)
@@ -52,6 +55,9 @@ public class AssetManagement : MonoBehaviour
         //Sprite
         OnLoadingSprite(loadPath: "ui/afkbutton", out afkButtonSprite);
         OnLoadingSprite(loadPath: "ui/skillicon", out skillIconSprite);
+
+        //Sound
+        OnLoadingAudioClip(loadPath: "sound/soundeffect", out soundEffects);
     }
 
     /// <summary>
@@ -92,5 +98,39 @@ public class AssetManagement : MonoBehaviour
 
         AssetBundle ab = AssetBundle.LoadFromFile(path);
         objs = ab.LoadAllAssets<Sprite>() as Sprite[];
+    }
+
+    /// <summary>
+    /// LoadingAudioClip
+    /// </summary>
+    /// <param name="loadPath"></param>
+    /// <param name="objs"></param>
+    void OnLoadingAudioClip(string loadPath, out AudioClip[] objs)
+    {
+        string path = $"{Application.streamingAssetsPath}/MyAssetBundle/{loadPath}";
+
+        AssetBundle ab = AssetBundle.LoadFromFile(path);
+        objs = ab.LoadAllAssets<AudioClip>() as AudioClip[];
+    }
+
+    /// <summary>
+    /// SearchSound
+    /// </summary>
+    /// <param name="searchName"></param>
+    /// <param name="searchArray"></param>
+    /// <returns></returns>
+    public AudioClip OnSearchSound(string searchName, AudioClip[] searchArray)
+    {
+        if (searchArray == null) return default;
+                
+        for (int i = 0; i < searchArray.Length; i++)
+        {
+            if(searchArray[i].name == searchName)
+            {
+                return searchArray[i];
+            }
+        }
+
+        return default;
     }
 }

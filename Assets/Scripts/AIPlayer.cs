@@ -23,6 +23,7 @@ public class AIPlayer : MonoBehaviour
     [Tooltip("AnimatorStateInfo")] AnimatorStateInfo info;
     [Tooltip("Collider")] CapsuleCollider thisCollider;
     [Tooltip("ShootingPosition")] Transform shootingPosition;
+    [Tooltip("ThisAudioSource")] AudioSource thisAudioSource;
 
     [Header("Move")]
     [SerializeField] [Tooltip("TargetObject")] protected Transform targetObject;
@@ -47,6 +48,7 @@ public class AIPlayer : MonoBehaviour
         animator = GetComponent<Animator>();
         thisCollider = GetComponent<CapsuleCollider>();
         shootingPosition = FindChild.OnFindChild<Transform>(transform, "ShootingPosition");
+        thisAudioSource = GetComponent<AudioSource>();
     }
 
     private void Start()
@@ -448,6 +450,13 @@ public class AIPlayer : MonoBehaviour
             OnEnemyDeath();
             OnPlayerDeath();
             if (attacker.TryGetComponent<AIPlayer>(out AIPlayer aIPlayer)) aIPlayer.OnSearchTarget();
+        }
+
+        //SoundEffect
+        if(thisAudioSource)
+        {
+            thisAudioSource.clip = AssetManagement.Instance.OnSearchSound("GetHit", AssetManagement.Instance.soundEffects);
+            if (!thisAudioSource.isPlaying) thisAudioSource.Play();            
         }
 
         //TextEffect
