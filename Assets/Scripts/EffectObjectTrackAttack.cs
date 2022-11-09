@@ -36,7 +36,7 @@ public class EffectObjectTrackAttack : MonoBehaviour
                                   attackerRace: attackerRace,
                                   attack: attackPower,
                                   effectName: "TrackAttackExplosions",
-                                  soundEffectName: "Bomb");
+                                  soundEffectName: "GetHit");
 
                 gameObject.SetActive(false);
             }

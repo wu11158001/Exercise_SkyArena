@@ -159,7 +159,7 @@ public class AIPlayer : MonoBehaviour
         effectDamageOverTime.timeCountDown = 0;
         effectDamageOverTime.attacker = transform;
         effectDamageOverTime.attackerRace = race;
-        effectDamageOverTime.attackPower = attackPower;
+        effectDamageOverTime.attackPower = attackPower / 5;
     }
 
     /// <summary>
@@ -459,7 +459,7 @@ public class AIPlayer : MonoBehaviour
         }
 
         //SoundEffect
-        if(thisAudioSource)
+        if(thisAudioSource && race == Race.Enemy)
         {
             string soundEffect = soundEffectName == "" ? "GetHit" : soundEffectName;
             thisAudioSource.clip = AssetManagement.Instance.OnSearchSound(soundEffect, AssetManagement.Instance.soundEffects);
