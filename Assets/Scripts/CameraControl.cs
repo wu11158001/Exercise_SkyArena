@@ -10,10 +10,10 @@ public class CameraControl : MonoBehaviour
     [Header("Value")]
     [SerializeField] [Tooltip("CameraDistance")] float cameraDistance;
     [SerializeField] [Tooltip("LookHight")] float lookHight;
-    [SerializeField] [Tooltip("CameraDistanceLimit(max, min)")] float[] cameraDistanceLimit;
+    [SerializeField] [Tooltip("CameraDistanceLimit(max, min)")] readonly float[] cameraDistanceLimit = new float[] { 8, 4 };
     [SerializeField] [Tooltip("CameraHight")] float cameraHight;
-    [SerializeField] [Tooltip("CameraHightLimit(max, min)")] float[] cameraHightLimit;
-    [SerializeField] [Tooltip("LerpTime")] float lerpTime;
+    [SerializeField] [Tooltip("CameraHightLimit(max, min)")] readonly float[] cameraHightLimit = new float[] { 6.5f, -0.5f };
+    [SerializeField] [Tooltip("LerpTime")] const float lerpTime = 0.01f;
 
     [Header("Input")]
     [SerializeField] [Tooltip("InputMouseX")] float inputX;
@@ -29,6 +29,15 @@ public class CameraControl : MonoBehaviour
     [Tooltip("forwardVector")] Vector3 forwardVector;
     [Tooltip("LookAtPosition")] Vector3 lookAtPosition;
 
+    [Header("Touch")]
+    [Tooltip("TouchBeganPosition")] Vector2 touchBeganPosition;
+    [Tooltip("TouchRotateSpeedX")] const float touchRotateSpeedX = 1.55f;
+    [Tooltip("TouchRotateSpeedY")] const float touchRotateSpeedY = 4.5f;
+    [Tooltip("TouchStartActionDistance")] const float touchStartActionDistance = 80;
+    [Tooltip("IsZoom")] bool isZoom;
+    [Tooltip("DoubleTouchLastDistance")] float DoubleTouchLastDistance;
+    [Tooltip("TouchZoomSpeed")] float touchZoomSpeed = 4.5f;
+
     private void Awake()
     {
         if (cameraFollow != null)
@@ -42,11 +51,8 @@ public class CameraControl : MonoBehaviour
 
         //Value
         cameraDistance = 6;
-        lookHight = 3;
-        cameraDistanceLimit = new float[] { 10, 4 };
+        lookHight = 3;        
         cameraHight = 1.0f;
-        cameraHightLimit = new float[] { 8, 0.8f };
-        lerpTime = 0.01f;
 
         //Input
         inputMoreThanTheValue = 0.2f;
@@ -68,8 +74,7 @@ public class CameraControl : MonoBehaviour
     {           
         OnCameraRotate();
 
-        //Zoom
-        inputMouseScollWhell = Input.GetAxis("Mouse ScrollWheel");
+        //Zoom        
         cameraDistance += -inputMouseScollWhell * rotateSpeed;
         if (cameraDistance >= cameraDistanceLimit[0]) cameraDistance = cameraDistanceLimit[0];
         if (cameraDistance <= cameraDistanceLimit[1]) cameraDistance = cameraDistanceLimit[1];
@@ -101,40 +106,36 @@ public class CameraControl : MonoBehaviour
             inputX = 0;
             inputY = 0;
         }
+
+        inputMouseScollWhell = Input.GetAxis("Mouse ScrollWheel");
     }
 
-    [Tooltip("TouchBeganPosition")] Vector2 touchBeganPosition;
-    [Tooltip("TouchRotateSpeedX")] const float touchRotateSpeedX = 1;
-    [Tooltip("TouchRotateSpeedY")] const float touchRotateSpeedY = 5;
-    [Tooltip("Touch")]
     /// <summary>
     /// Touch
     /// </summary>
     void OnTouch()
-    {        
-        Touch touch = Input.GetTouch(0);
+    {
+        if (Input.touchCount <= 0) return;
         
+        //Rotate
         if (Input.touchCount == 1)
         {
+            Touch touch = Input.GetTouch(0);
+
             switch (touch.phase)
             {
                 case TouchPhase.Began:
                     touchBeganPosition = touch.position;
                     break;
                 case TouchPhase.Moved:
-                    Vector2 pos = touch.position;
-                    float distanceX = Mathf.Abs((touchBeganPosition.x - pos.x));
-                    float distanceY = Mathf.Abs((touchBeganPosition.y - pos.y));
-                    if (distanceX > 100)
+                    if (Mathf.Abs(touch.position.x - touchBeganPosition.x) > touchStartActionDistance)
                     {
-                        if (touchBeganPosition.x > pos.x) inputX = touchRotateSpeedX;
-                        if (touchBeganPosition.x < pos.x) inputX = -touchRotateSpeedX;
+                        inputX = Mathf.Clamp(touch.position.x - touchBeganPosition.x, -touchRotateSpeedX, touchRotateSpeedX);
                     }
-                    if (distanceY > 100)
+                    if (Mathf.Abs(touch.position.y - touchBeganPosition.y) > touchStartActionDistance)
                     {
-                        if (touchBeganPosition.y < pos.y) inputY = touchRotateSpeedY * 2;
-                        if (touchBeganPosition.y > pos.y) inputY = -touchRotateSpeedY * 2;
-                    }
+                        inputY = Mathf.Clamp(touch.position.y - touchBeganPosition.y, -touchRotateSpeedY, touchRotateSpeedY);
+                    }                
                     break;
                 case TouchPhase.Stationary:
                     touchBeganPosition = touch.position;                    
@@ -144,6 +145,36 @@ public class CameraControl : MonoBehaviour
                     inputY = 0;
                     break;
             }
+        }
+        
+        //Zoom
+        if (Input.touchCount == 2)
+        {
+            Touch touch1 = Input.GetTouch(0);
+            Touch touch2 = Input.GetTouch(1);
+
+            if (touch1.phase == TouchPhase.Moved || touch2.phase == TouchPhase.Moved)
+            {
+                float currentDistance = Vector2.Distance(touch1.position, touch2.position);
+
+                if(!isZoom)
+                {
+                    DoubleTouchLastDistance = currentDistance;
+                    isZoom = true;
+                }
+
+                float distance = currentDistance - DoubleTouchLastDistance;                
+                if (Mathf.Abs(distance) > 10)
+                {                    
+                    inputMouseScollWhell = Mathf.Clamp(distance, -touchZoomSpeed, touchZoomSpeed);
+                }
+                DoubleTouchLastDistance = currentDistance;                
+            }
+        }
+        else
+        {
+            inputMouseScollWhell = 0;
+            isZoom = false;
         }
     }
 

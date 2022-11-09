@@ -12,19 +12,23 @@ namespace NumericalValueManagement
     {
         public static float deathTime = 3;
         public static float[] createEnemyTime = new float[] { 0.3f, 2.0f };
+
+        [Tooltip("Experience")]
         public static int enemyExperience = 10;
-        public static int enemyGold = 50;
         public static int upgradeExperience = 10;
         public static int raiseUpgradeExperience = 20;
         public static float attackFrequency = 0.2f;
+
+        [Tooltip("Bonus")]
+        public static int enemyBonus = 100;
         public static int bossBonus = 1000;
 
-        //AFK
+        [Tooltip("AFK")]
         public static int afkRewardTiming = 5;
         public static int akfExperienceReward = 1;
         public static int akfGoldReward = 10;
 
-        //SkillCost
+        [Tooltip("SkillCost")]
         public static int skillinItialCost = 500;
         public static int skillRaiseCost = 600;
     }
@@ -45,7 +49,7 @@ namespace NumericalValueManagement
     public class NumericalValue_Player
     {
         public static float moveSpeed = 2.5f;
-        public static int initial_Hp = 1000;
+        public static int initial_Hp = 500;
         public static int raiseUpgradeHp = 100;
         public static int initial_AttackPower = 50;
         public static int raiseUpgradeAttack = 5;

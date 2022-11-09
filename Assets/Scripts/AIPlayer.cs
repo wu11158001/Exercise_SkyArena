@@ -505,7 +505,8 @@ public class AIPlayer : MonoBehaviour
         if (race == Race.Player)
         {
             GameManagement.Instance.isPlayerDeath = true;
-            GameUI.Instance.OnUIActive(false);
+            GameUI.Instance.challengeBoss_Button.gameObject.SetActive(false);
+            GameUI.Instance.bossUI_Transform.gameObject.SetActive(false);
         }
     }
 
@@ -517,7 +518,7 @@ public class AIPlayer : MonoBehaviour
         if (race == Race.Enemy)
         {
             GameDataManagement.Instance.playerExperience += NumericalValueManagement.NumericalValue_Game.enemyExperience;
-            GameDataManagement.Instance.playerGold += NumericalValueManagement.NumericalValue_Game.enemyGold;
+            GameDataManagement.Instance.playerGold += NumericalValueManagement.NumericalValue_Game.enemyBonus;
 
             if (GameDataManagement.Instance.playerExperience >=
                 ((GameDataManagement.Instance.playerGrade - 1) * NumericalValueManagement.NumericalValue_Game.raiseUpgradeExperience) + NumericalValueManagement.NumericalValue_Game.upgradeExperience)
@@ -549,7 +550,8 @@ public class AIPlayer : MonoBehaviour
             GameDataManagement.Instance.playerGold += NumericalValueManagement.NumericalValue_Game.bossBonus * GameDataManagement.Instance.gameLevel;
             GameUI.Instance.OnSetPlayerGold();
             GameUI.Instance.OnSetGameLevel();
-            GameUI.Instance.OnUIActive(true);
+            GameUI.Instance.challengeBoss_Button.gameObject.SetActive(true);
+            GameUI.Instance.bossUI_Transform.gameObject.SetActive(false);
         }
     }
     #endregion

@@ -33,8 +33,8 @@ public class GameUI : MonoBehaviour
     [Tooltip("Gold_Text")] Text gold_Text;
 
     [Header("BossUI")]
-    [Tooltip("ChallengeBoss_Button")] Button challengeBoss_Button;
-    [Tooltip("BossUI_Transform")] Transform bossUI_Transform;
+    [Tooltip("ChallengeBoss_Button")] public Button challengeBoss_Button;
+    [Tooltip("BossUI_Transform")] public Transform bossUI_Transform;
     [Tooltip("BossLifeBar")] Image bossLifeBar;
     [Tooltip("BossLifeBar_Text")] Text bossLifeBar_Text;
 
@@ -315,17 +315,7 @@ public class GameUI : MonoBehaviour
         rewardGold_Text.text = $"Gold: {GameDataManagement.Instance.afkGoldReward}";
     }
     #endregion
-
-    /// <summary>
-    ///UIActive
-    /// </summary>
-    /// <param name="isActive"></param>
-    public void OnUIActive(bool isActive)
-    {
-        challengeBoss_Button.gameObject.SetActive(isActive);
-        bossUI_Transform.gameObject.SetActive(!isActive);
-    }
-
+   
     /// <summary>
     /// ChallengeBossButtonFunction
     /// </summary>
@@ -335,7 +325,7 @@ public class GameUI : MonoBehaviour
         GameManagement.Instance.OnCleanEnemySoldier("EnemySoldierObject", AssetManagement.Instance.enemySoldierObjects);
         GameManagement.Instance.OnCreateBoss();
         GameManagement.Instance.GetPlayerObject.OnUpdateValue();
-        OnUIActive(false);
+        challengeBoss_Button.gameObject.SetActive(false);
         bossUI_Transform.gameObject.SetActive(true);
         bossLifeBar.fillAmount = 1;
         int boosHp = NumericalValueManagement.NumericalValue_Boss.initial_Hp + (NumericalValueManagement.NumericalValue_Boss.raiseUpgradeHp * (GameDataManagement.Instance.gameLevel - 1));
@@ -442,7 +432,8 @@ public class GameUI : MonoBehaviour
                 GameManagement.Instance.OnCleanEnemySoldier("EnemySoldierObject", AssetManagement.Instance.enemySoldierObjects);
                 GameManagement.Instance.OnRespawnPlayer();
                 GameManagement.Instance.GetPlayerObject.OnUpdateValue();
-                OnUIActive(true);
+
+                challengeBoss_Button.gameObject.SetActive(true);
 
                 //Challenge Boss
                 if (GameManagement.Instance.isChallengeBoss)

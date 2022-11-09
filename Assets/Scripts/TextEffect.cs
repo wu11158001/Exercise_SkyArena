@@ -5,34 +5,38 @@ using UnityEngine.UI;
 
 public class TextEffect : MonoBehaviour
 {
-    public enum TextType { GoBack, Up}
+    public enum TextType { GoBack, Up }
     TextType textType;
 
-    Text thisText;
-    Canvas canvas;
-    Vector3 attackerForward;
-    Vector3 initialPosition;
-    Vector3 textPosition;
-    float lifeTime;
-    float lifeTimeCountDown;    
-    float upSpeed;
-    float downSpeed;
-    float backSpeed;
-    float addBackSpeed;
-    float addDownSpeed;
-    float loseAlphaSpeed;
-    float AlphaSpeed;
+    [Tooltip("ThisText")] Text thisText;
+    [Tooltip("Canvas")] Canvas canvas;
+
+    [Tooltip("InitialTextSize")] const int initialTextSize = 40;
+    [Tooltip("AttackerForward")] Vector3 attackerForward;
+    [Tooltip("InitialPosition")] Vector3 initialPosition;
+    [Tooltip("TextPosition")] Vector3 textPosition;
+
+    [Tooltip("LifeTime")] const float lifeTime = 0.75f;
+    [Tooltip("LifeTimeCountDown")] float lifeTimeCountDown;
+
+    [Tooltip("UpSpeed")] float upSpeed;
+    [Tooltip("DownSpeed")] const float downSpeed = 4;
+    [Tooltip("BackSpeed")] const float backSpeed = 0.5f;
+    [Tooltip("AddBackSpeed")] float addBackSpeed;
+    [Tooltip("AddDownSpeed")] float addDownSpeed;
+    [Tooltip("LoseAlphaSpeed")] float loseAlphaSpeed;
+    [Tooltip("AlphaSpeed")] const float alphaSpeed = 3;
+
+    [Header("FontSize")]
+    [Tooltip("InitialCameraDistance")] const float initialCameraDistance = 6.0f;
+    [Tooltip("SizeChangeValue")] const float sizeChangeValue = 7;
 
     private void Awake()
     {
         thisText = GetComponent<Text>();
         canvas = GameObject.FindObjectOfType<Canvas>();
 
-        thisText.fontSize = 40;
-        lifeTime = 0.75f;
-        downSpeed = 4;
-        backSpeed = 0.5f;
-        AlphaSpeed = 3;
+        thisText.fontSize = initialTextSize;
     }
 
     private void Update()
@@ -74,6 +78,10 @@ public class TextEffect : MonoBehaviour
     /// </summary>
     void OnTextBehavior()
     {
+        //Size
+        float cameraDistance = (CameraControl.Instance.gameObject.transform.position - GameManagement.Instance.GetPlayerObject.transform.position).magnitude;        
+        thisText.fontSize = initialTextSize + (int)((initialCameraDistance - cameraDistance) * sizeChangeValue);
+
         //Life Time
         lifeTimeCountDown -= Time.deltaTime;
         if (lifeTimeCountDown <= 0) gameObject.SetActive(false); ;        
@@ -109,7 +117,7 @@ public class TextEffect : MonoBehaviour
             else
             {
                 addDownSpeed += downSpeed * Time.deltaTime;
-                loseAlphaSpeed += AlphaSpeed * Time.deltaTime;
+                loseAlphaSpeed += alphaSpeed * Time.deltaTime;
                 upSpeed -= addDownSpeed * Time.deltaTime;
 
                 thisText.color = new Color(thisText.color.r, thisText.color.g, thisText.color.b, 1 - loseAlphaSpeed);

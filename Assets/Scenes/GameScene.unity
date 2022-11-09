@@ -5842,10 +5842,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraDistance: 0
   lookHight: 0
-  cameraDistanceLimit: []
   cameraHight: 0
-  cameraHightLimit: []
-  lerpTime: 0
   inputX: 0
   inputY: 0
   inputMouseScollWhell: 0
@@ -9687,6 +9684,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isOpenInterface: 0
+  challengeBoss_Button: {fileID: 0}
+  bossUI_Transform: {fileID: 0}
   skillInterfaceBackground: {fileID: 0}
   usingSkillBoxSprite: {fileID: 21300000, guid: 1f1d5baae1d26404a8a639a07e5c7766, type: 3}
   usingSkillsMask_Image: []
@@ -10708,7 +10707,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3201316790093605036, guid: 4a769d0345654f345be733003b50a3e2, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 3201316790093605036, guid: 4a769d0345654f345be733003b50a3e2, type: 3}
       propertyPath: m_LocalScale.y
@@ -10716,7 +10715,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3201316790093605036, guid: 4a769d0345654f345be733003b50a3e2, type: 3}
       propertyPath: m_LocalScale.z
-      value: 2
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 3201316790093605036, guid: 4a769d0345654f345be733003b50a3e2, type: 3}
       propertyPath: m_LocalPosition.x
