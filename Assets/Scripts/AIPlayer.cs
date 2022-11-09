@@ -49,6 +49,7 @@ public class AIPlayer : MonoBehaviour
         thisCollider = GetComponent<CapsuleCollider>();
         shootingPosition = FindChild.OnFindChild<Transform>(transform, "ShootingPosition");
         thisAudioSource = GetComponent<AudioSource>();
+        thisAudioSource.volume = 0.75f;
     }
 
     private void Start()
@@ -560,7 +561,7 @@ public class AIPlayer : MonoBehaviour
             GameUI.Instance.OnSetPlayerGold();
             GameUI.Instance.OnSetGameLevel();
             GameUI.Instance.challengeBoss_Button.gameObject.SetActive(true);
-            GameUI.Instance.bossUI_Transform.gameObject.SetActive(false);
+            GameUI.Instance.bossUI_Transform.gameObject.SetActive(false);            
         }
     }
     #endregion
@@ -615,6 +616,14 @@ public class AIPlayer : MonoBehaviour
             if (info.IsTag("Death"))
             {
                 gameObject.SetActive(false);
+
+                //Change Music
+                if(GameManagement.Instance.isChallengeBoss)
+                {
+                    AudioManagement.Instance.audioSource.clip = AssetManagement.Instance.OnSearchSound("BackgroundMusic", AssetManagement.Instance.backgroundMusic);
+                    AudioManagement.Instance.audioSource.Play();
+                }
+
                 OnBossDeath();
             }
         }

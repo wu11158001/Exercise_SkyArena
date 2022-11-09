@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class StartSceneUI : MonoBehaviour
 {
@@ -14,13 +15,15 @@ public class StartSceneUI : MonoBehaviour
     [SerializeField] [Tooltip("TipTextFlickerValue")] float tipTextFlickerValue;
     [SerializeField] [Tooltip("TipTextFlickerSpeed")] float tipTextFlickerSpeed;
 
-    [Header("TipText ")]
+    [Header("Fade")]
     [SerializeField] [Tooltip("FadeSpeed")] float fadeSpeed;
     [SerializeField] [Tooltip("TipTextFadeFlickerSpeed")] float tipTextFadeFlickerSpeed;
 
     [Header("Judge")]
     [SerializeField] [Tooltip("IsFadeScene")] bool isFadeScene;
     [SerializeField] [Tooltip("IsLoadingScene")] bool isLoadingScene;
+
+    [SerializeField] [Tooltip("Title_Text")] TMP_Text title_Text;
 
     private void Start()
     {
@@ -59,10 +62,11 @@ public class StartSceneUI : MonoBehaviour
     /// </summary>
     void OnScreenFabe()
     {
-        if(isFadeScene)
+        if (isFadeScene)
         {
             backgroundObject.color = OnFadeObject(backgroundObject.color);
             tipTextObject.color = OnFadeObject(tipTextObject.color);
+            title_Text.color = OnFadeObject(title_Text.color);
 
             OnLoadingScene();
         }
@@ -74,11 +78,11 @@ public class StartSceneUI : MonoBehaviour
     /// <param name="objColor"></param>
     /// <returns></returns>
     Color OnFadeObject(Color objColor)
-    {        
+    {
         Color color = objColor;
         color.r -= fadeSpeed * Time.deltaTime;
         color.g -= fadeSpeed * Time.deltaTime;
-        color.b -= fadeSpeed * Time.deltaTime;        
+        color.b -= fadeSpeed * Time.deltaTime;
         return color;
     }
 
@@ -86,7 +90,7 @@ public class StartSceneUI : MonoBehaviour
     /// PlayerClick
     /// </summary>
     void OnPlayerClick()
-    {  
+    {
         if (Input.anyKeyDown)
         {
             isFadeScene = true;

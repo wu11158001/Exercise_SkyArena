@@ -330,6 +330,8 @@ public class GameUI : MonoBehaviour
         bossLifeBar.fillAmount = 1;
         int boosHp = NumericalValueManagement.NumericalValue_Boss.initial_Hp + (NumericalValueManagement.NumericalValue_Boss.raiseUpgradeHp * (GameDataManagement.Instance.gameLevel - 1));
         bossLifeBar_Text.text = $"Hp: {boosHp} / {boosHp}";
+        AudioManagement.Instance.audioSource.clip = AssetManagement.Instance.OnSearchSound("ChallengeBossMusic", AssetManagement.Instance.backgroundMusic);
+        AudioManagement.Instance.audioSource.Play();
     }
 
     /// <summary>

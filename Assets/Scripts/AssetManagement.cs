@@ -26,6 +26,7 @@ public class AssetManagement : MonoBehaviour
 
     [Header("Sound")]
     [Tooltip("SoundEffect")] public AudioClip[] soundEffects;
+    [Tooltip("BackgroundMusic")] public AudioClip[] backgroundMusic;
 
     private void Awake()
     {
@@ -36,13 +37,18 @@ public class AssetManagement : MonoBehaviour
         }
         assetManagement = this;
         DontDestroyOnLoad(gameObject);
+
+        OnLoadAsset();
     }
-    
-    private void Start()
-    {        
-        OnLoadingSingleAsset(loadPath:"prefab/player", objName:"Player", obj: out playerObject);
+
+    /// <summary>
+    /// LoadAsset
+    /// </summary>
+    void OnLoadAsset()
+    {
+        OnLoadingSingleAsset(loadPath: "prefab/player", objName: "Player", obj: out playerObject);
         OnLoadingSingleAsset(loadPath: "prefab/texteffect", objName: "TextEffect", obj: out textEffectObject);
-        OnLoadingGroupAsset(loadPath: "prefab/enemysoldiers", objs: out enemySoldierObjects);                
+        OnLoadingGroupAsset(loadPath: "prefab/enemysoldiers", objs: out enemySoldierObjects);
         OnLoadingGroupAsset(loadPath: "prefab/effect", objs: out effectObjects);
 
         //Boss
@@ -50,7 +56,7 @@ public class AssetManagement : MonoBehaviour
         OnLoadingGroupAsset(loadPath: "prefab/boss2", objs: out bossObjects2);
         OnLoadingGroupAsset(loadPath: "prefab/boss3", objs: out bossObjects3);
         OnLoadingGroupAsset(loadPath: "prefab/boss4", objs: out bossObjects4);
-        boss_List = new List<GameObject[]>() { bossObjects1, bossObjects2, bossObjects3, bossObjects4};
+        boss_List = new List<GameObject[]>() { bossObjects1, bossObjects2, bossObjects3, bossObjects4 };
 
         //Sprite
         OnLoadingSprite(loadPath: "ui/afkbutton", out afkButtonSprite);
@@ -58,7 +64,8 @@ public class AssetManagement : MonoBehaviour
 
         //Sound
         OnLoadingAudioClip(loadPath: "sound/soundeffect", out soundEffects);
-    }
+        OnLoadingAudioClip(loadPath: "sound/music", out backgroundMusic);
+    }   
 
     /// <summary>
     /// LoadingSingleAsset
