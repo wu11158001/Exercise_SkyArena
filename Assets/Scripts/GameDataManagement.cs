@@ -165,7 +165,7 @@ public class GameDataManagement : MonoBehaviour
         StreamReader sr = null;
         string filePath = "";
 #if UNITY_EDITOR_WIN
-        filePath = Application.streamingAssetsPath + "/JsonSaveFile";
+        filePath = Application.streamingAssetsPath + "/JsonSaveFile/JsonData.json";
 #elif PLATFORM_ANDROID
         filePath = filePath = Application.persistentDataPath + "/JsonData.json";
 #endif

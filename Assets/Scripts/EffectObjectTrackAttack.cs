@@ -35,7 +35,8 @@ public class EffectObjectTrackAttack : MonoBehaviour
                 aIPlayer.OnGetHit(attacker: attacker,
                                   attackerRace: attackerRace,
                                   attack: attackPower,
-                                  effectName: "TrackAttackExplosions");
+                                  effectName: "TrackAttackExplosions",
+                                  soundEffectName: "Bomb");
 
                 gameObject.SetActive(false);
             }

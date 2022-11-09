@@ -49,7 +49,7 @@ public class AIPlayer : MonoBehaviour
         thisCollider = GetComponent<CapsuleCollider>();
         shootingPosition = FindChild.OnFindChild<Transform>(transform, "ShootingPosition");
         thisAudioSource = GetComponent<AudioSource>();
-        thisAudioSource.volume = 0.75f;
+        thisAudioSource.volume = 0.5f;
     }
 
     private void Start()
@@ -134,7 +134,7 @@ public class AIPlayer : MonoBehaviour
     /// <summary>
     /// SingleAttackBehavior
     /// </summary>
-    /// <param name="effectName"></param>
+    /// <param name="effectName"></param>    
     void OnSingleAttackBehavior(string effectName)
     {
         if (!OnJudgeTargetObjectIsActive()) return;
@@ -142,7 +142,8 @@ public class AIPlayer : MonoBehaviour
                                             attackerRace: race,
                                             target: targetObject,
                                             attackPower: attackPower,
-                                            effectName: effectName);
+                                            effectName: effectName,
+                                            soundEffectName: "GetHit");
     }
 
     /// <summary>
@@ -245,23 +246,10 @@ public class AIPlayer : MonoBehaviour
     /// <param name="effectName"></param>
     /// <param name="numberOfTime"></param>
     /// <param name="damage"></param>
-    public void OnSingleRandomAttack(string effectName, int numberOfTime, int damage)
+    /// <param name="soundEffectName"></param>
+    public void OnSingleRandomAttack(string effectName, int numberOfTime, int damage, string soundEffectName)
     {       
-        StartCoroutine(ISingleRandomAttack(effectName, numberOfTime, damage));
-    }
-
-    /// <summary>
-    /// MoveForwardCollisionAttack
-    /// </summary>
-    /// <param name="effectName"></param>
-    /// <param name="damage"></param>
-    public void OnMoveForwardCollisionAttack(string effectName, int damage)
-    {
-        GameManagement.Instance.OnCreateEffect_MoveForward(position: transform.position + (thisCollider.center * transform.localScale.x),
-                                                           effectName: effectName,
-                                                           damage: damage,
-                                                           attacker: transform,
-                                                           attackerRace: race);
+        StartCoroutine(ISingleRandomAttack(effectName, numberOfTime, damage, soundEffectName));
     }
 
     /// <summary>
@@ -270,8 +258,9 @@ public class AIPlayer : MonoBehaviour
     /// <param name="effectName"></param>
     /// <param name="numberOfTime"></param>
     /// <param name="damage"></param>
+    /// <param name="soundEffectName"></param>
     /// <returns></returns>
-    IEnumerator ISingleRandomAttack(string effectName, int numberOfTime, int damage)
+    IEnumerator ISingleRandomAttack(string effectName, int numberOfTime, int damage, string soundEffectName)
     {
         for (int i = 0; i < numberOfTime; i++)
         {
@@ -281,11 +270,26 @@ public class AIPlayer : MonoBehaviour
                                                 attackerRace: race,
                                                 target: GameManagement.Instance.GetEnemyList[UnityEngine.Random.Range(0, GameManagement.Instance.GetEnemyList.Count)],
                                                 attackPower: damage,
-                                                effectName: effectName);
-            
+                                                effectName: effectName,
+                                                soundEffectName: soundEffectName);
+
             yield return new WaitForSeconds(NumericalValueManagement.NumericalValue_Game.attackFrequency);
         }
     }
+
+    /// <summary>
+    /// MoveForwardCollisionAttack
+    /// </summary>
+    /// <param name="effectName"></param>
+    /// <param name="damage"></param>    
+    public void OnMoveForwardCollisionAttack(string effectName, int damage)
+    {
+        GameManagement.Instance.OnCreateEffect_MoveForward(position: transform.position + (thisCollider.center * transform.localScale.x),
+                                                           effectName: effectName,
+                                                           damage: damage,
+                                                           attacker: transform,
+                                                           attackerRace: race);
+    }   
 
     /// <summary>
     /// RemoveAttackList
@@ -436,7 +440,8 @@ public class AIPlayer : MonoBehaviour
     /// <param name="attackerRace"></param>
     /// <param name="attack"></param>
     /// <param name="effectName"></param>
-    public void OnGetHit(Transform attacker, Race attackerRace, int attack, string effectName)
+    /// <param name="soundEffectName"></param>
+    public void OnGetHit(Transform attacker, Race attackerRace, int attack, string effectName, string soundEffectName)
     {
         if (attackerRace == race) return;
         if (Hp <= 0) return;
@@ -456,7 +461,8 @@ public class AIPlayer : MonoBehaviour
         //SoundEffect
         if(thisAudioSource)
         {
-            thisAudioSource.clip = AssetManagement.Instance.OnSearchSound("GetHit", AssetManagement.Instance.soundEffects);
+            string soundEffect = soundEffectName == "" ? "GetHit" : soundEffectName;
+            thisAudioSource.clip = AssetManagement.Instance.OnSearchSound(soundEffect, AssetManagement.Instance.soundEffects);
             if (!thisAudioSource.isPlaying) thisAudioSource.Play();            
         }
 

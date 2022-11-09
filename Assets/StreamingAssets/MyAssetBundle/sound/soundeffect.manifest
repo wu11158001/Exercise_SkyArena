@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 4059627632
+CRC: 2317295110
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 937fdf635d2cd4025d66737ea979b24a
+    Hash: af0ec92690eab9fb87461b971052e115
   TypeTreeHash:
     serializedVersion: 2
     Hash: 9a2ca7bdbd1871f7131daf57de908e0c
@@ -14,4 +14,5 @@ ClassTypes:
 SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/Sound/SoundEffect/GetHit.mp3
+- Assets/Sound/SoundEffect/Bomb.mp3
 Dependencies: []

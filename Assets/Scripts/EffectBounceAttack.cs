@@ -114,7 +114,8 @@ public class EffectBounceAttack : MonoBehaviour
                 aIPlayer.OnGetHit(attacker: attacker,
                                   attackerRace: attackerRace,
                                   attack: attackPower,
-                                  effectName: "BasicGetHit_1");
+                                  effectName: "BasicGetHit_1",
+                                  soundEffectName: "GetHit");
                 
                 bounceCount++;
                 attackedTarget_List.Add(other.transform);
