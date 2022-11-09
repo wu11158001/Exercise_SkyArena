@@ -1,10 +1,11 @@
 ManifestFileVersion: 0
-CRC: 3911835482
+CRC: 2571605256
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
       Name: prefab/effect
-      Dependencies: {}
+      Dependencies:
+        Dependency_0: sound/soundeffect
     Info_1:
       Name: prefab/enemysoldiers
       Dependencies: {}

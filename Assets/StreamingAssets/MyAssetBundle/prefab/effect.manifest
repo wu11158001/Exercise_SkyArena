@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2916484245
+CRC: 1962559520
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 147e176c4850cb58f7300be0e6183839
+    Hash: 1f9489876df026a1d385e1c49ce021de
   TypeTreeHash:
     serializedVersion: 2
     Hash: 09a5a2962ee441f91ac85b76279473f3
@@ -76,4 +76,5 @@ Assets:
 - Assets/Prefabs/Effects/Boss3/Boss3Attack2.prefab
 - Assets/Prefabs/Effects/Common/TrackAttackExplosions.prefab
 - Assets/Prefabs/Effects/Player/UpGrade.prefab
-Dependencies: []
+Dependencies:
+- D:/MyUnityExersice/Exercise_SkyArena/Assets/StreamingAssets/MyAssetBundle/sound/soundeffect

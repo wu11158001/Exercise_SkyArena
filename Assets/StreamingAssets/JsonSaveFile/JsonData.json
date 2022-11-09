@@ -1,19 +1,19 @@
 {
     "grade": 8,
-    "experience": 90,
-    "gold": 14000,
-    "gameLevel": 1,
-    "afkRewardStartTime": "2022/11/9 下午 11:34:57",
+    "experience": 130,
+    "gold": 7200,
+    "gameLevel": 2,
+    "afkRewardStartTime": "2022/11/10 上午 12:09:49",
     "allSkillGrade": [
-        0,
-        0,
         1,
         1,
-        1
+        0,
+        0,
+        0
     ],
     "equipSkillNumber": [
-        4,
-        3,
+        0,
+        1,
         -1,
         -1
     ]

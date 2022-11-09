@@ -75,7 +75,7 @@ public class PlayerSkillBehavior
     /// <param name="damage"></param>
     void OnSkillNumber_3_Splash(int damage)
     {
-        GameManagement.Instance.GetPlayerObject.OnSingleRandomAttack(effectName: "Splash", numberOfTime: 5 , damage: damage, soundEffectName: "Bomb");
+        GameManagement.Instance.GetPlayerObject.OnSingleRandomAttack(effectName: "Splash", numberOfTime: 5 , damage: damage, soundEffectName: "Splash");
     }
 
     /// <summary>
