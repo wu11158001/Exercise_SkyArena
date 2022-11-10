@@ -45,26 +45,26 @@ public class AssetManagement : MonoBehaviour
     /// LoadAsset
     /// </summary>
     void OnLoadAsset()
-    {
-        OnLoadingSingleAsset(loadPath: "prefab/player", objName: "Player", obj: out playerObject);
-        OnLoadingSingleAsset(loadPath: "prefab/texteffect", objName: "TextEffect", obj: out textEffectObject);
-        OnLoadingGroupAsset(loadPath: "prefab/enemysoldiers", objs: out enemySoldierObjects);
-        OnLoadingGroupAsset(loadPath: "prefab/effect", objs: out effectObjects);
+    {        
+        OnLoadingAsset_Single<GameObject>(loadPath: "prefab/player", objName: "Player", item: out playerObject);
+        OnLoadingAsset_Single<GameObject>(loadPath: "prefab/texteffect", objName: "TextEffect", item: out textEffectObject);
+        enemySoldierObjects = OnLoadingAssets_Group<GameObject>(loadPath: "prefab/enemysoldiers");
+        effectObjects = OnLoadingAssets_Group<GameObject>(loadPath: "prefab/effect");
 
         //Boss
-        OnLoadingGroupAsset(loadPath: "prefab/boss1", objs: out bossObjects1);
-        OnLoadingGroupAsset(loadPath: "prefab/boss2", objs: out bossObjects2);
-        OnLoadingGroupAsset(loadPath: "prefab/boss3", objs: out bossObjects3);
-        OnLoadingGroupAsset(loadPath: "prefab/boss4", objs: out bossObjects4);
+        bossObjects1 = OnLoadingAssets_Group<GameObject>(loadPath: "prefab/boss1");
+        bossObjects2 = OnLoadingAssets_Group<GameObject>(loadPath: "prefab/boss2");
+        bossObjects3 = OnLoadingAssets_Group<GameObject>(loadPath: "prefab/boss3");
+        bossObjects4 = OnLoadingAssets_Group<GameObject>(loadPath: "prefab/boss4");
         boss_List = new List<GameObject[]>() { bossObjects1, bossObjects2, bossObjects3, bossObjects4 };
 
-        //Sprite
-        OnLoadingSprite(loadPath: "ui/afkbutton", out afkButtonSprite);
-        OnLoadingSprite(loadPath: "ui/skillicon", out skillIconSprite);
+        //Sprite               
+        afkButtonSprite = OnLoadAssets_Sprite(loadPath: "ui/afkbutton");
+        skillIconSprite = OnLoadAssets_Sprite(loadPath: "ui/skillicon");
 
         //Sound
-        OnLoadingAudioClip(loadPath: "sound/soundeffect", out soundEffects);
-        OnLoadingAudioClip(loadPath: "sound/music", out backgroundMusic);
+        soundEffects = OnLoadingAssets_Group<AudioClip>(loadPath: "sound/soundeffect");
+        backgroundMusic = OnLoadingAssets_Group<AudioClip>(loadPath: "sound/music");
     }   
 
     /// <summary>
@@ -72,67 +72,72 @@ public class AssetManagement : MonoBehaviour
     /// </summary>
     /// <param name="loadPath"></param>
     /// <param name="objName"></param>
-    /// <param name="obj"></param>
-    void OnLoadingSingleAsset(string loadPath, string objName, out GameObject obj)
+    /// <param name="item"></param>
+    void OnLoadingAsset_Single<T>(string loadPath, string objName, out T item)where T : Object
     {
         string path = $"{Application.streamingAssetsPath}/MyAssetBundle/{loadPath}";
 
         AssetBundle ab = AssetBundle.LoadFromFile(path);
-        obj = ab.LoadAsset(objName) as GameObject;
+        item = ab.LoadAsset(objName) as T;
     }
 
     /// <summary>
-    /// LoadingGroupAsset
+    /// OnLoadingAssets_Group
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="loadPath"></param>
+    /// <param name="items"></param>
+    T[] OnLoadingAssets_Group<T>(string loadPath) where T : Object
+    {
+        string path = $"{Application.streamingAssetsPath}/MyAssetBundle/{loadPath}";
+
+        AssetBundle ab = AssetBundle.LoadFromFile(path);
+        object[] objs = ab.LoadAllAssets() as object[];
+        T[] temporaryItems = new T[objs.Length];
+        for (int i = 0; i < temporaryItems.Length; i++)
+        {
+            temporaryItems[i] = objs[i] as T;
+        }
+
+        return temporaryItems;
+    }
+
+    /// <summary>
+    /// LoadAssets_Sprite
     /// </summary>
     /// <param name="loadPath"></param>
-    /// <param name="objs"></param>
-    void OnLoadingGroupAsset(string loadPath, out GameObject[] objs)
+    /// <returns></returns>
+    Sprite[] OnLoadAssets_Sprite(string loadPath)
     {
         string path = $"{Application.streamingAssetsPath}/MyAssetBundle/{loadPath}";
-
         AssetBundle ab = AssetBundle.LoadFromFile(path);
-        objs = ab.LoadAllAssets<GameObject>() as GameObject[];          
+        object[] objs = ab.LoadAllAssets() as object[];       
+
+        Texture2D[] texture2Ds = new Texture2D[objs.Length];
+        Sprite[] sprites = new Sprite[objs.Length];
+        for (int i = 0; i < objs.Length; i++)
+        {
+            texture2Ds[i] = objs[i] as Texture2D;
+            sprites[i] = Sprite.Create(texture2Ds[i], new Rect(0, 0, texture2Ds[i].width, texture2Ds[i].height), Vector2.zero);
+        }
+
+        return sprites;
     }
 
     /// <summary>
-    /// LoadingSprite
+    /// SearchAssets
     /// </summary>
-    /// <param name="loadPath"></param>
-    /// <param name="objs"></param>
-    void OnLoadingSprite(string loadPath, out Sprite[] objs)
-    {
-        string path = $"{Application.streamingAssetsPath}/MyAssetBundle/{loadPath}";
-
-        AssetBundle ab = AssetBundle.LoadFromFile(path);
-        objs = ab.LoadAllAssets<Sprite>() as Sprite[];
-    }
-
-    /// <summary>
-    /// LoadingAudioClip
-    /// </summary>
-    /// <param name="loadPath"></param>
-    /// <param name="objs"></param>
-    void OnLoadingAudioClip(string loadPath, out AudioClip[] objs)
-    {
-        string path = $"{Application.streamingAssetsPath}/MyAssetBundle/{loadPath}";
-
-        AssetBundle ab = AssetBundle.LoadFromFile(path);
-        objs = ab.LoadAllAssets<AudioClip>() as AudioClip[];
-    }
-
-    /// <summary>
-    /// SearchSound
-    /// </summary>
+    /// <typeparam name="T"></typeparam>
     /// <param name="searchName"></param>
     /// <param name="searchArray"></param>
     /// <returns></returns>
-    public AudioClip OnSearchSound(string searchName, AudioClip[] searchArray)
+    public T OnSearchAssets<T>(string searchName, T[] searchArray)where T:Object
     {
         if (searchArray == null) return default;
-                
+
         for (int i = 0; i < searchArray.Length; i++)
         {
-            if(searchArray[i].name == searchName)
+            if (searchArray[i].name == searchName)
             {
                 return searchArray[i];
             }

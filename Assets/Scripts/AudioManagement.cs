@@ -27,7 +27,7 @@ public class AudioManagement : MonoBehaviour
         audioSource.volume = 0.25f;
         audioSource.playOnAwake = true;
         audioSource.loop = true;
-        audioSource.clip = AssetManagement.Instance.OnSearchSound("BackgroundMusic", AssetManagement.Instance.backgroundMusic);
+        audioSource.clip = AssetManagement.Instance.OnSearchAssets<AudioClip>("BackgroundMusic", AssetManagement.Instance.backgroundMusic);
         audioSource.Play();
     }
 }

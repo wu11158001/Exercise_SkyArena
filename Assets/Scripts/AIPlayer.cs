@@ -462,7 +462,7 @@ public class AIPlayer : MonoBehaviour
         if(thisAudioSource && race == Race.Enemy)
         {
             string soundEffect = soundEffectName == "" ? "GetHit" : soundEffectName;
-            thisAudioSource.clip = AssetManagement.Instance.OnSearchSound(soundEffect, AssetManagement.Instance.soundEffects);
+            thisAudioSource.clip = AssetManagement.Instance.OnSearchAssets<AudioClip>(soundEffect, AssetManagement.Instance.soundEffects);
             if (!thisAudioSource.isPlaying) thisAudioSource.Play();            
         }
 
@@ -626,7 +626,7 @@ public class AIPlayer : MonoBehaviour
                 //Change Music
                 if(GameManagement.Instance.isChallengeBoss)
                 {
-                    AudioManagement.Instance.audioSource.clip = AssetManagement.Instance.OnSearchSound("BackgroundMusic", AssetManagement.Instance.backgroundMusic);
+                    AudioManagement.Instance.audioSource.clip = AssetManagement.Instance.OnSearchAssets<AudioClip>("BackgroundMusic", AssetManagement.Instance.backgroundMusic);
                     AudioManagement.Instance.audioSource.Play();
                 }
 
