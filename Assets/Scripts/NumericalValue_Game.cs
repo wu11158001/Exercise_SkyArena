@@ -49,7 +49,7 @@ namespace NumericalValueManagement
     public class NumericalValue_Player
     {
         public static float moveSpeed = 2.5f;
-        public static int initial_Hp = 500;
+        public static int initial_Hp = 1000;
         public static int raiseUpgradeHp = 100;
         public static int initial_AttackPower = 50;
         public static int raiseUpgradeAttack = 5;

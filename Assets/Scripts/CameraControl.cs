@@ -71,7 +71,13 @@ public class CameraControl : MonoBehaviour
     /// CameraFollow
     /// </summary>
     void OnCameraFollow()
-    {           
+    {
+#if UNITY_STANDALONE_WIN
+        OnMouseControl();
+#elif UNITY_ANDROID
+        OnTouch();
+#endif
+
         OnCameraRotate();
 
         //Zoom        
@@ -83,12 +89,6 @@ public class CameraControl : MonoBehaviour
         targetPosition = lookAtPosition + Vector3.up * cameraHight - forwardVector * cameraDistance;
         transform.position = Vector3.Lerp(transform.position, targetPosition, lerpTime);
         transform.LookAt(targetObject);
-
-#if UNITY_EDITOR_WIN
-        OnMouseControl();
-#elif UNITY_ANDROID
-        OnTouch();
-#endif
     }
 
     /// <summary>
