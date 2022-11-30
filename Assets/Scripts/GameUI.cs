@@ -282,36 +282,39 @@ public class GameUI : MonoBehaviour
     {
         string hour = "", minute = "", second = "";
 
-        int total = (int)(GameDataManagement.Instance.OnAFKRewardTime().TotalSeconds);
-        if (total > 86400) total = 86400;
+        int totalSeconds = (int)(GameDataManagement.Instance.OnAFKRewardTime().TotalSeconds);
+        if (totalSeconds > 86400) totalSeconds = 86400;//Max Time
+        int totalHours = totalSeconds / 3600;
+        int totalMinutes = totalSeconds / 60 - totalHours * 60;
+        
 
         //Second
-        if (total % 60 == 0) second = "00";
-        else second = total - (60 * (int)GameDataManagement.Instance.OnAFKRewardTime().TotalMinutes) < 10 ?
-                $"0{ (total - (60 * (int)GameDataManagement.Instance.OnAFKRewardTime().TotalMinutes)).ToString()}" :
-                $"{(total - (60 * (int)GameDataManagement.Instance.OnAFKRewardTime().TotalMinutes)).ToString()}";
+        if (totalSeconds % 60 == 0) second = "00";
+        else second = totalSeconds - (60 * (int)GameDataManagement.Instance.OnAFKRewardTime().TotalMinutes) < 10 ?
+                $"0{(totalSeconds - (60 * (int)GameDataManagement.Instance.OnAFKRewardTime().TotalMinutes)).ToString()}" :
+                $"{(totalSeconds - (60 * (int)GameDataManagement.Instance.OnAFKRewardTime().TotalMinutes)).ToString()}";
 
-        //Minute
-        if ((int)GameDataManagement.Instance.OnAFKRewardTime().TotalMinutes == 0) minute = "00";
-        else minute = (int)GameDataManagement.Instance.OnAFKRewardTime().TotalMinutes < 10 ?
-                $"0{(int)GameDataManagement.Instance.OnAFKRewardTime().TotalMinutes}"
-                : $"{(int)GameDataManagement.Instance.OnAFKRewardTime().TotalMinutes}";
-
+        //Minute        
+        if (totalMinutes == 0) minute = "00";
+        else minute = totalMinutes < 10 ?
+                $"0{totalMinutes}"
+                : $"{totalMinutes}";
+        
         //Hour
-        if ((int)GameDataManagement.Instance.OnAFKRewardTime().TotalHours == 0) hour = "00";
-        else hour = (int)GameDataManagement.Instance.OnAFKRewardTime().TotalHours < 10 ?
-                $"0{(int)GameDataManagement.Instance.OnAFKRewardTime().TotalHours}"
-                : $"{(int)GameDataManagement.Instance.OnAFKRewardTime().TotalHours}";
+        if (totalHours == 0) hour = "00";
+        else hour = totalHours < 10 ?
+                $"0{totalHours}"
+                : $"{totalHours}";
 
         //Afk Time
         rewardTime_Text.text = $"{hour} : {minute} : {second}";
 
         //Experience        
-        GameDataManagement.Instance.afkExperienceReward = (total / NumericalValueManagement.NumericalValue_Game.afkRewardTiming) * NumericalValueManagement.NumericalValue_Game.akfExperienceReward;
+        GameDataManagement.Instance.afkExperienceReward = (totalSeconds / NumericalValueManagement.NumericalValue_Game.afkRewardTiming) * NumericalValueManagement.NumericalValue_Game.akfExperienceReward;
         rewardExperience_Text.text = $"EP: {GameDataManagement.Instance.afkExperienceReward}";
 
         //Gold
-        GameDataManagement.Instance.afkGoldReward = (total / NumericalValueManagement.NumericalValue_Game.afkRewardTiming) * NumericalValueManagement.NumericalValue_Game.akfGoldReward;
+        GameDataManagement.Instance.afkGoldReward = (totalSeconds / NumericalValueManagement.NumericalValue_Game.afkRewardTiming) * NumericalValueManagement.NumericalValue_Game.akfGoldReward;
         rewardGold_Text.text = $"Gold: {GameDataManagement.Instance.afkGoldReward}";
     }
     #endregion

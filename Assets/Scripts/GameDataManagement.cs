@@ -120,6 +120,7 @@ public class GameDataManagement : MonoBehaviour
     {
         DateTime currentTime = DateTime.Now;
         TimeSpan timeSpan = currentTime.Subtract(afkRewardStartTime);
+               
         return timeSpan;
     }
     
